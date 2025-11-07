@@ -20,6 +20,8 @@ Thumbs.db
 # Personal / Private
 private/
 drafts/
+.env
+.env.local
 
 # User Configuration (can be committed or not - your choice)
 .ai-journal-config.json
