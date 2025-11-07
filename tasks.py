@@ -87,21 +87,35 @@ def build(c):
 
 @task(check)
 def publish(c, test_pypi=False):
-    """Publish to PyPI (requires PYPI_TOKEN env var).
+    """Publish to PyPI (requires PYPI_TOKEN or TEST_PYPI_TOKEN env var).
     
     Args:
         test_pypi: If True, publish to test.pypi.org instead
     """
+    import os
+    
     # Build first
     build(c)
     
-    # Publish
+    # Get token from environment
     if test_pypi:
+        token = os.getenv("TEST_PYPI_TOKEN")
+        if not token:
+            print("❌ Error: TEST_PYPI_TOKEN environment variable not set")
+            print("Set it with: export TEST_PYPI_TOKEN='pypi-...'")
+            return
         print("📦 Publishing to Test PyPI...")
-        c.run("uv publish --index-url https://test.pypi.org/legacy/")
+        # Use single quotes for password with special characters
+        c.run(f"UV_PUBLISH_TOKEN='{token}' uv publish --publish-url https://test.pypi.org/legacy/")
     else:
+        token = os.getenv("PYPI_TOKEN")
+        if not token:
+            print("❌ Error: PYPI_TOKEN environment variable not set")
+            print("Set it with: export PYPI_TOKEN='pypi-...'")
+            return
         print("📦 Publishing to PyPI...")
-        c.run("uv publish")
+        # Use single quotes for password with special characters
+        c.run(f"UV_PUBLISH_TOKEN='{token}' uv publish")
 
 
 # Create namespace
