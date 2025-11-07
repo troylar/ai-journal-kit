@@ -292,4 +292,4 @@ def update(
         "• Your content and customizations untouched\n\nOpen your journal to see what's new!"
     )
 
-    show_success("Update Complete!", success_msg)
+    show_success(success_msg)

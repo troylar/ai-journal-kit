@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Fixes "No module named 'ai_journal_kit.templates'" error during `update` command
   - Templates directory now properly recognized as a Python module
   - Ensures IDE configs can be refreshed during updates
+- **Update command**: Fixed `show_success()` call with incorrect number of arguments
+  - Corrected function call to pass only the message parameter
+  - Resolves `TypeError: show_success() takes 1 positional argument but 2 were given`
 
 ## [1.0.5] - 2025-11-07
 
