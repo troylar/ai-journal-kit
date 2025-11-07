@@ -1,3 +1,3 @@
 """AI Journal Kit - Modern journaling system with AI coaching."""
 
-__version__ = "1.0.8"
+__version__ = "1.0.9"

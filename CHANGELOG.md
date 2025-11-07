@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.9] - 2025-11-07
+
+### Fixed
+- **Critical update command bug**: `--force` flag no longer skips package upgrade
+  - Previously `--force` would skip the pip upgrade entirely, causing silent failures
+  - Now package upgrade always happens, even with `--force`
+  - Better error messages when upgrade fails (shows stderr, suggests --no-cache-dir)
+  - `--force` now only skips version check/confirmation, as intended
+
+### Changed
+- **Update command behavior**: Package upgrade is now mandatory during updates
+  - Ensures IDE configs match installed package version
+  - Prevents stale configuration files
+  - More reliable update process
+
 ## [1.0.8] - 2025-11-07
 
 ### Added

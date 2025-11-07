@@ -205,24 +205,26 @@ def update(
         TextColumn("[progress.description]{task.description}"),
         transient=True,
     ) as progress:
-        # Step 1: Upgrade package (if not forcing)
-        if not force:
-            task_upgrade = progress.add_task("[cyan]Upgrading package...", total=1)
-            try:
-                # Use pip to upgrade the package
-                subprocess.run(
-                    ["python3", "-m", "pip", "install", "--upgrade", "ai-journal-kit"],
-                    check=True,
-                    capture_output=True,
-                    text=True,
-                )
-                progress.update(
-                    task_upgrade, completed=1, description="[green]Package upgraded![/green]"
-                )
-            except subprocess.CalledProcessError as e:
-                progress.update(task_upgrade, completed=1, description="[red]Upgrade failed.[/red]")
-                show_error("Package upgrade failed", str(e))
-                raise typer.Exit(1)
+        # Step 1: Upgrade package (always, even with --force)
+        task_upgrade = progress.add_task("[cyan]Upgrading package...", total=1)
+        try:
+            # Use pip to upgrade the package
+            result = subprocess.run(
+                ["python3", "-m", "pip", "install", "--upgrade", "ai-journal-kit"],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            progress.update(
+                task_upgrade, completed=1, description="[green]Package upgraded![/green]"
+            )
+        except subprocess.CalledProcessError as e:
+            progress.update(task_upgrade, completed=1, description="[red]Upgrade failed.[/red]")
+            show_error(
+                "Package upgrade failed",
+                f"{e.stderr if e.stderr else str(e)}\n\nTry: pip install --upgrade --no-cache-dir ai-journal-kit",
+            )
+            raise typer.Exit(1)
 
         # Step 2: Refresh IDE configs
         task_configs = progress.add_task(
