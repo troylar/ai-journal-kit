@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.10] - 2025-11-07
+
+### Fixed
+- **Cross-platform pip detection**: Update command now auto-detects the correct pip command
+  - Tries `pip`, `pip3`, `python -m pip`, `python3 -m pip` in order
+  - Works on Windows where `python3` doesn't exist (uses `pip` or `python -m pip`)
+  - Works on Linux/Mac where `pip` might not exist (uses `pip3` or `python3 -m pip`)
+  - Shows correct command in error messages based on detected pip
+
+### Changed
+- **Smart pip command selection**: No more hardcoded `python3 -m pip`
+  - Automatically adapts to user's system
+  - Better cross-platform compatibility
+
 ## [1.0.9] - 2025-11-07
 
 ### Fixed

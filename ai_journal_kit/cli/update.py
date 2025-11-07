@@ -12,6 +12,39 @@ from ai_journal_kit.core.templates import copy_ide_configs
 from ai_journal_kit.utils.ui import confirm, console, show_error, show_panel, show_success
 
 
+def detect_pip_command() -> list[str]:
+    """Detect which pip command works on this system.
+
+    Returns:
+        Command list that works (e.g., ['pip', 'install'] or ['python3', '-m', 'pip', 'install'])
+    """
+    # Try different pip commands in order of preference
+    commands = [
+        ["pip"],
+        ["pip3"],
+        ["python", "-m", "pip"],
+        ["python3", "-m", "pip"],
+    ]
+
+    for cmd in commands:
+        try:
+            # Test if command exists by checking version
+            result = subprocess.run(
+                cmd + ["--version"],
+                check=True,
+                capture_output=True,
+                text=True,
+                timeout=5,
+            )
+            if result.returncode == 0:
+                return cmd
+        except (subprocess.CalledProcessError, FileNotFoundError, subprocess.TimeoutExpired):
+            continue
+
+    # Fallback to pip (will fail with clear error if nothing works)
+    return ["pip"]
+
+
 def get_latest_version() -> str | None:
     """Query PyPI for the latest version of ai-journal-kit.
 
@@ -208,9 +241,12 @@ def update(
         # Step 1: Upgrade package (always, even with --force)
         task_upgrade = progress.add_task("[cyan]Upgrading package...", total=1)
         try:
-            # Use pip to upgrade the package
+            # Detect which pip command works on this system
+            pip_cmd = detect_pip_command()
+            upgrade_cmd = pip_cmd + ["install", "--upgrade", "ai-journal-kit"]
+
             subprocess.run(
-                ["python3", "-m", "pip", "install", "--upgrade", "ai-journal-kit"],
+                upgrade_cmd,
                 check=True,
                 capture_output=True,
                 text=True,
@@ -220,9 +256,10 @@ def update(
             )
         except subprocess.CalledProcessError as e:
             progress.update(task_upgrade, completed=1, description="[red]Upgrade failed.[/red]")
+            pip_cmd_str = " ".join(detect_pip_command())
             show_error(
                 "Package upgrade failed",
-                f"{e.stderr if e.stderr else str(e)}\n\nTry: pip install --upgrade --no-cache-dir ai-journal-kit",
+                f"{e.stderr if e.stderr else str(e)}\n\nTry: {pip_cmd_str} install --upgrade --no-cache-dir ai-journal-kit",
             )
             raise typer.Exit(1)
 
