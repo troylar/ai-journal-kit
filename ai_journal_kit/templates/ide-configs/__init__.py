@@ -1,0 +1,2 @@
+"""IDE configuration templates."""
+

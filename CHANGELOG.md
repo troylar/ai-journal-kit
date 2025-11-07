@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.6] - 2025-11-07
+
+### Fixed
+- **Module packaging**: Added `__init__.py` files to `templates/` and `templates/ide-configs/` directories
+  - Fixes "No module named 'ai_journal_kit.templates'" error during `update` command
+  - Templates directory now properly recognized as a Python module
+  - Ensures IDE configs can be refreshed during updates
+
 ## [1.0.5] - 2025-11-07
 
 ### Fixed
