@@ -33,16 +33,16 @@
 - ✅ **.ai-instructions/my-coach.md** - User's custom coaching preferences
 - ✅ **.ai-instructions/*.md** - Any other custom instruction files the user creates
 
-**IMPORTANT**: The AI can CREATE `.ai-instructions/my-coach.md` during onboarding, but should NEVER edit IDE instruction files.
+**IMPORTANT**: The AI can CREATE `.ai-instructions/my-coach.md` during onboarding, but should NEVER edit IDE rule files like `.github/copilot-instructions.md`.
 
 ## If User Asks to Change Core Behavior
 
 ### ❌ WRONG Response:
-"Let me edit your .github/copilot-instructions.md file..."
+"Let me edit your copilot-instructions.md file..."
 
 ### ✅ CORRECT Response:
 ```
-I can't modify the core instruction files (those are part of the system), 
+I can't modify the core .github/copilot-instructions.md file (that's part of the system), 
 but I can create custom instructions that override the defaults!
 
 Let me create/update your .ai-instructions/my-coach.md file instead.
@@ -68,10 +68,8 @@ Before modifying ANY file, ask yourself:
 
 1. ❓ Is this in one of the user content folders (daily, projects, people, etc.)? → ✅ OK to modify
 2. ❓ Is this `.ai-instructions/my-coach.md` or similar? → ✅ OK to create/modify
-3. ❓ Is this in `.github/` or other system directories? → ❌ NEVER TOUCH
+3. ❓ Is this in `.github/` or in system directories? → ❌ NEVER TOUCH
 4. ❓ Is this outside the journal folder? → ❌ NEVER TOUCH
 5. ❓ Is this a config, Python, or system file? → ❌ NEVER TOUCH
 
 **When in doubt, don't modify. Ask the user if they want a custom instruction instead.**
-
-

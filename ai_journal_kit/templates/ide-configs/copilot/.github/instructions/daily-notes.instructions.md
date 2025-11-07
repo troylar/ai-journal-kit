@@ -1,0 +1,114 @@
+# Daily Notes Instructions
+
+Apply these rules when working in the `daily/` folder.
+
+## Daily Note Format
+
+Daily notes use the filename format: `YYYY-MM-DD.md`
+
+Example: `2025-11-07.md`
+
+## Creating Today's Daily Note
+
+When user asks to create today's note:
+1. Calculate today's date in YYYY-MM-DD format
+2. Use the daily-template.md as the basis
+3. Fill in the date and day of week
+4. Save to `daily/YYYY-MM-DD.md`
+
+## Proactive Updates
+
+Throughout the day, automatically update the daily note when user shares:
+
+### Morning Section
+- Sleep quality and energy level
+- Top priorities for the day
+- Emotional outcome they want to create
+
+### Throughout the Day
+Add timestamped entries:
+```markdown
+**2:30 PM** - Finished the proposal draft! Feeling accomplished.
+```
+
+### Evening Reflection
+- What went well
+- Challenges faced
+- Key learnings
+- Tomorrow's top priority
+
+## Update Pattern
+
+1. **Read the current daily note** to see what's already there
+2. **Append to the appropriate section** (don't overwrite)
+3. **Use timestamps** for throughout-the-day updates
+4. **Be specific** - capture what they actually said
+5. **Confirm naturally** - "Added that to today's note"
+
+## Examples
+
+### Morning Check-In
+```markdown
+## ☀️ Morning
+
+**Energy Level:** ⭐⭐⭐⭐ (4/5)
+**Sleep Quality:** Great - 7 hours solid
+**Mood:** Focused and ready
+
+### Today's Top Priority
+Finish proposal for Project X
+
+### Emotional Outcome
+Accomplished and confident
+```
+
+### Throughout the Day
+```markdown
+## 📝 Throughout the Day
+
+**9:30 AM** - Started working on proposal section 1  
+**11:00 AM** - Coffee break, feeling good about progress  
+**2:30 PM** - Completed draft! Sent to team for feedback
+```
+
+### Evening Reflection
+```markdown
+## 🌙 Evening Reflection
+
+### What Went Well
+- Finished proposal ahead of schedule
+- Got positive feedback from Sarah
+- Maintained focus all day
+
+### Challenges
+- Section 3 was harder than expected
+- Needed engineering input for timeline
+
+### Key Learnings
+- Breaking it into chunks really helps
+- Getting feedback early saves time
+
+### Tomorrow's Priority
+Incorporate feedback and finalize proposal
+```
+
+## Do's and Don'ts
+
+### ✅ Do
+- Add timestamps for throughout-the-day updates
+- Be specific about what happened
+- Capture feelings and energy
+- Link to project notes when relevant
+- Update proactively as they share
+
+### ❌ Don't
+- Overwrite existing content
+- Be vague or generic
+- Make up information
+- Skip timestamps
+- Wait to be asked to update
+
+---
+
+Remember: You're helping them build a living record of their day!
+

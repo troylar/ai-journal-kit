@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.5] - 2025-11-07
+
+### Fixed
+- **GitHub Copilot support**: Added complete AI coaching instructions for Copilot users
+  - Main coaching instructions (`.github/copilot-instructions.md`)
+  - Daily notes path-specific rules (`.github/instructions/daily-notes.instructions.md`)
+  - System protection rules (`.github/instructions/system-protection.instructions.md`)
+  - Previously only had system-protection, now has full coaching support
+
 ## [1.0.4] - 2025-11-07
 
 ### Added
