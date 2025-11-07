@@ -37,28 +37,31 @@ def get_changelog(from_version: str, to_version: str) -> str | None:
     Returns:
         Markdown changelog or None if unavailable.
     """
-    # TODO: Fetch from GitHub releases API
-    # For now, return a placeholder
+    try:
+        import json
+        import urllib.request
+
+        # Fetch release notes from GitHub
+        url = f"https://api.github.com/repos/troylar/ai-journal-kit/releases/tags/v{to_version}"
+        with urllib.request.urlopen(url, timeout=5) as response:
+            data = json.loads(response.read().decode())
+            body = data.get("body", "")
+            if body:
+                return f"# What's New in {to_version}\n\n{body}"
+    except Exception:
+        pass
+
+    # Fallback to generic message if API fails
     return f"""
 # What's New in {to_version}
 
-## ✨ New Features
-- Onboarding flow: Journal now guides new users through customization
-- System protection: AI can't accidentally modify core files
-- WELCOME.md: Helpful starter guide in every new journal
-
-## 🛡️ AI Behavior Changes
-- Added protective rules to prevent editing system files
-- Onboarding rule now triggers on "help me get started"
-- All changes maintain backward compatibility
-
-## 🐛 Bug Fixes
-- Improved error handling in CLI commands
-- Better path validation across platforms
+Check the full changelog at:
+https://github.com/troylar/ai-journal-kit/releases/tag/v{to_version}
 
 ## 📦 Updates
-- IDE configs refreshed with latest rules
-- Templates updated for better user experience
+- Package updated to {to_version}
+- IDE configs will be refreshed with latest rules
+- See GitHub release for full details
 """
 
 
@@ -162,12 +165,14 @@ def update(
         if not force:
             task_upgrade = progress.add_task("[cyan]Upgrading package...", total=1)
             try:
+                # Use pip to upgrade the package
                 subprocess.run(
-                    ["uvx", "--upgrade", "ai-journal-kit"],
+                    ["python3", "-m", "pip", "install", "--upgrade", "ai-journal-kit"],
                     check=True,
                     capture_output=True,
+                    text=True,
                 )
-                progress.update(task_upgrade, completed=1, description="[green]Package upgraded.[/green]")
+                progress.update(task_upgrade, completed=1, description="[green]Package upgraded![/green]")
             except subprocess.CalledProcessError as e:
                 progress.update(task_upgrade, completed=1, description="[red]Upgrade failed.[/red]")
                 show_error("Package upgrade failed", str(e))
