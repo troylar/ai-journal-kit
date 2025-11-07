@@ -19,16 +19,15 @@ def get_latest_version() -> str | None:
         Latest version string or None if unable to check.
     """
     try:
-        subprocess.run(
-            ["python", "-m", "pip", "index", "versions", "ai-journal-kit"],
-            capture_output=True,
-            text=True,
-            check=True,
-        )
-        # Parse output to get latest version
-        # For now, return None (will be implemented when published to PyPI)
-        return None
-    except (subprocess.CalledProcessError, FileNotFoundError):
+        import json
+        import urllib.request
+
+        with urllib.request.urlopen(
+            "https://pypi.org/pypi/ai-journal-kit/json", timeout=5
+        ) as response:
+            data = json.loads(response.read().decode())
+            return data["info"]["version"]
+    except Exception:
         return None
 
 
