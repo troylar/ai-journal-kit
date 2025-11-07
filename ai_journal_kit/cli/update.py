@@ -209,7 +209,7 @@ def update(
         task_upgrade = progress.add_task("[cyan]Upgrading package...", total=1)
         try:
             # Use pip to upgrade the package
-            result = subprocess.run(
+            subprocess.run(
                 ["python3", "-m", "pip", "install", "--upgrade", "ai-journal-kit"],
                 check=True,
                 capture_output=True,
