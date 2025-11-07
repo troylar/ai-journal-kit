@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.4] - 2025-11-07
+
+### Added
+- **Template updating**: `--templates` flag for update command to refresh templates with automatic backup
+- **Beautiful new README**: Rich with emojis, clear value props, quick start
+- **Template management module**: Check, update, backup, and restore templates
+
+### Changed
+- **README completely revamped**: More exciting, value-focused, privacy-first messaging
+- **Emphasis on framework-agnostic nature**: Works with GTD, PARA, Bullet Journal, or your own system
+
 ## [1.0.3] - 2025-11-07
 
 ### Fixed
