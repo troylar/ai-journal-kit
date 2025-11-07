@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.7] - 2025-11-07
+
+### Changed
+- **Copilot configuration structure**: Reorganized GitHub Copilot instructions for consistency
+  - Moved `copilot-instructions.md` to `.github/instructions/journal-coach.instructions.md`
+  - All instructions now in `.github/instructions/` folder for better organization
+  - Matches pattern used by Cursor and Windsurf IDEs
+  
+### Fixed
+- **Update command**: Automatically cleans up old Copilot structure for existing users
+  - Removes outdated `copilot-instructions.md` from `.github/` root if present
+  - Applies new structure seamlessly during updates
+
 ## [1.0.6] - 2025-11-07
 
 ### Fixed

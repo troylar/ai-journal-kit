@@ -75,6 +75,14 @@ def copy_ide_configs(ide: str, destination: Path):
             github_dir = ide_source / ".github"
             if github_dir.exists():
                 dest_github = destination / ".github"
+                dest_github.mkdir(parents=True, exist_ok=True)
+                
+                # Clean up old structure (copilot-instructions.md in .github root)
+                old_copilot_file = dest_github / "copilot-instructions.md"
+                if old_copilot_file.exists():
+                    old_copilot_file.unlink()
+                
+                # Copy all files from .github (including instructions folder)
                 shutil.copytree(github_dir, dest_github, dirs_exist_ok=True)
 
 
