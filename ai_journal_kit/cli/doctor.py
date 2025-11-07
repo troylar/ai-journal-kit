@@ -164,4 +164,3 @@ def _print_check(label: str, passed: bool, verbose: bool):
         icon = "✓" if passed else "✗"
         color = "green" if passed else "red"
         console.print(f"  [{color}]{icon}[/{color}] {label}")
-

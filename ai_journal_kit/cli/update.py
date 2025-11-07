@@ -68,9 +68,13 @@ https://github.com/troylar/ai-journal-kit/releases/tag/v{to_version}
 def update(
     check: bool = typer.Option(False, "--check", help="Check for updates without installing"),
     no_confirm: bool = typer.Option(False, "--no-confirm", help="Skip confirmation prompt"),
-    force: bool = typer.Option(False, "--force", help="Force reinstall IDE configs even if up to date"),
+    force: bool = typer.Option(
+        False, "--force", help="Force reinstall IDE configs even if up to date"
+    ),
     dry_run: bool = typer.Option(False, "--dry-run", help="Show what would be updated"),
-    templates: bool = typer.Option(False, "--templates", help="Update templates to latest versions (with backup)"),
+    templates: bool = typer.Option(
+        False, "--templates", help="Update templates to latest versions (with backup)"
+    ),
 ):
     """Update AI Journal Kit to the latest version.
 
@@ -128,15 +132,20 @@ def update(
     # Show changelog
     changelog = get_changelog(current_version, latest_version)
     if changelog:
-        console.print(Panel(Markdown(changelog), title="[bold cyan]Changelog[/bold cyan]", border_style="cyan"))
+        console.print(
+            Panel(
+                Markdown(changelog), title="[bold cyan]Changelog[/bold cyan]", border_style="cyan"
+            )
+        )
         console.print()
 
     # Check for template updates if requested
     template_changes = {}
     if templates:
         from ai_journal_kit.core.template_updater import get_template_changes, show_template_changes
+
         template_changes = get_template_changes(config.journal_location)
-        
+
         if template_changes:
             console.print()
             show_template_changes(template_changes)
@@ -150,31 +159,35 @@ def update(
         f"• Package: [yellow]{current_version}[/yellow] → [green]{latest_version}[/green]\n"
         f"• IDE Configs: Refresh [cyan]{config.ide}[/cyan] configurations\n"
     )
-    
+
     if templates:
         if template_changes:
-            update_details += f"• Templates: Update [yellow]{len(template_changes)}[/yellow] template(s)\n"
+            update_details += (
+                f"• Templates: Update [yellow]{len(template_changes)}[/yellow] template(s)\n"
+            )
         else:
             update_details += "• Templates: [green]All up to date[/green]\n"
-    
+
     update_details += (
         f"• Journal: [green]{config.journal_location}[/green]\n\n"
         "[bold]What's Protected:[/bold]\n"
         "✓ All journal content (daily, projects, people, memories, etc.)\n"
         "✓ Your custom preferences (.ai-instructions/)\n"
     )
-    
+
     if templates and template_changes:
         update_details += "✓ Original templates (backed up with timestamp)\n"
-    
+
     update_details += "✓ Your data remains untouched\n\n[bold]What's Updated:[/bold]\n"
     update_details += "→ IDE configuration files with new features\n"
     update_details += "→ System rules and protections\n"
     update_details += "→ WELCOME.md (if it exists, will be replaced)\n"
-    
+
     if templates and template_changes:
-        update_details += f"→ [yellow]{len(template_changes)}[/yellow] template(s) to latest versions\n"
-    
+        update_details += (
+            f"→ [yellow]{len(template_changes)}[/yellow] template(s) to latest versions\n"
+        )
+
     show_panel("Update Plan", update_details)
 
     if not no_confirm and not dry_run:
@@ -203,39 +216,50 @@ def update(
                     capture_output=True,
                     text=True,
                 )
-                progress.update(task_upgrade, completed=1, description="[green]Package upgraded![/green]")
+                progress.update(
+                    task_upgrade, completed=1, description="[green]Package upgraded![/green]"
+                )
             except subprocess.CalledProcessError as e:
                 progress.update(task_upgrade, completed=1, description="[red]Upgrade failed.[/red]")
                 show_error("Package upgrade failed", str(e))
                 raise typer.Exit(1)
 
         # Step 2: Refresh IDE configs
-        task_configs = progress.add_task(f"[cyan]Refreshing {config.ide} configurations...", total=1)
+        task_configs = progress.add_task(
+            f"[cyan]Refreshing {config.ide} configurations...", total=1
+        )
         try:
             copy_ide_configs(config.ide, config.journal_location)
-            progress.update(task_configs, completed=1, description=f"[green]{config.ide.capitalize()} configs refreshed.[/green]")
+            progress.update(
+                task_configs,
+                completed=1,
+                description=f"[green]{config.ide.capitalize()} configs refreshed.[/green]",
+            )
         except Exception as e:
-            progress.update(task_configs, completed=1, description="[red]Config refresh failed.[/red]")
+            progress.update(
+                task_configs, completed=1, description="[red]Config refresh failed.[/red]"
+            )
             show_error("Failed to refresh IDE configs", str(e))
             raise typer.Exit(1)
 
         # Step 3: Update templates if requested
         if templates and template_changes:
             from ai_journal_kit.core.template_updater import update_templates
-            
+
             task_templates = progress.add_task(
-                f"[cyan]Updating {len(template_changes)} template(s)...", 
-                total=1
+                f"[cyan]Updating {len(template_changes)} template(s)...", total=1
             )
             try:
                 updated = update_templates(config.journal_location, backup=True)
                 progress.update(
-                    task_templates, 
-                    completed=1, 
-                    description=f"[green]{len(updated)} template(s) updated![/green]"
+                    task_templates,
+                    completed=1,
+                    description=f"[green]{len(updated)} template(s) updated![/green]",
                 )
             except Exception as e:
-                progress.update(task_templates, completed=1, description="[red]Template update failed.[/red]")
+                progress.update(
+                    task_templates, completed=1, description="[red]Template update failed.[/red]"
+                )
                 show_error("Failed to update templates", str(e))
                 raise typer.Exit(1)
 
@@ -245,8 +269,11 @@ def update(
             if welcome_path.exists():
                 task_welcome = progress.add_task("[cyan]Updating WELCOME.md...", total=1)
                 from ai_journal_kit.core.templates import copy_template
+
                 copy_template("WELCOME.md", welcome_path)
-                progress.update(task_welcome, completed=1, description="[green]WELCOME.md updated.[/green]")
+                progress.update(
+                    task_welcome, completed=1, description="[green]WELCOME.md updated.[/green]"
+                )
 
     # Build success message
     success_msg = (
@@ -255,13 +282,14 @@ def update(
         "[bold]What Changed:[/bold]\n"
         "• IDE configs refreshed with latest features\n"
     )
-    
+
     if templates and template_changes:
-        success_msg += f"• [green]{len(template_changes)}[/green] template(s) updated (originals backed up)\n"
-    
+        success_msg += (
+            f"• [green]{len(template_changes)}[/green] template(s) updated (originals backed up)\n"
+        )
+
     success_msg += (
-        "• Your content and customizations untouched\n\n"
-        "Open your journal to see what's new!"
+        "• Your content and customizations untouched\n\nOpen your journal to see what's new!"
     )
-    
+
     show_success("Update Complete!", success_msg)

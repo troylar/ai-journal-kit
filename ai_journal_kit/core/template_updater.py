@@ -176,4 +176,3 @@ def restore_template_backup(backup_path: Path) -> Path:
 
     shutil.copy2(backup_path, original_path)
     return original_path
-
