@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.2] - 2025-11-07
+
+### Fixed
+- **Version string**: Fixed `__version__` in `__init__.py` to match package version
+
 ## [1.0.1] - 2025-11-07
 
 ### Fixed
