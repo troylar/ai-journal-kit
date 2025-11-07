@@ -1,0 +1,54 @@
+---
+description: Project management - apply when working with project notes
+globs: ["projects/*.md"]
+alwaysApply: false
+---
+
+# Project Management
+
+When working with project notes in the `projects/` folder:
+
+## Template
+
+Project template: `../_core/templates/project-template.md`
+
+## Creating New Project
+
+```bash
+cp ../_core/templates/project-template.md projects/project-name.md
+```
+
+## Project Structure
+
+- Overview: What, why, motivation
+- Success criteria: Clear definition of "done"
+- Timeline: Milestones and dependencies
+- Tasks: Broken into phases
+- Progress log: Regular updates
+- Reflection: Post-completion learning
+
+## Project vs Area
+
+**Project = Has end date**
+- "Launch product by Q1"
+- "Complete kitchen renovation"
+- "Run 5K by March"
+
+**Area = Ongoing**
+- "Health & fitness"
+- "Career development"
+- Goes in `areas/` folder instead
+
+## Linking
+
+Link projects to:
+- Related daily notes: `[[2025-11-06]]`
+- Related areas: `[[health-fitness]]`
+- Related people: `[[john-manager]]`
+
+## When Complete
+
+1. Mark completion date
+2. Write retrospective (what worked, what didn't)
+3. Move to `../archive/projects/YYYY/`
+4. Celebrate the win!

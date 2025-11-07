@@ -1,0 +1,80 @@
+# Obsidian
+.obsidian/
+
+# Specify AI (speckit) - Development only
+.specify/
+.speckit/
+specs/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Personal / Private
+private/
+drafts/
+
+# User Configuration (can be committed or not - your choice)
+.ai-journal-config.json
+
+# Cursor Rules (MDC files in .cursor/rules/ are included by default)
+# These are the AI coaching rules - commit them for shared setup
+# Uncomment to ignore if you want to customize privately:
+# .cursor/
+
+# Backup Files
+*.bak
+*.backup
+_core_backup_*/
+
+# Log Files
+*.log
+
+# Node modules (if using any automation)
+node_modules/
+
+# Python (if using scripts)
+__pycache__/
+*.pyc
+.venv/
+venv/
+dist/
+build/
+*.egg-info/
+.pytest_cache/
+htmlcov/
+coverage/
+.coverage
+*.prof*
+
+# Temporary Files
+tmp/
+temp/
+
+# ============================================
+# USER JOURNAL CONTENT
+# ============================================
+# By default, journal/ content is IGNORED (private).
+# The folder structure is preserved with .gitkeep files.
+# 
+# If you want to version control your journal:
+#   1. Comment out the journal/* line below
+#   2. Be mindful of sensitive information
+#   3. Consider using a private repository
+# ============================================
+
+# Ignore all journal content (your private notes)
+journal/*
+
+# BUT keep the folder structure
+!journal/.gitkeep
+!journal/*/
+!journal/*/.gitkeep
+!journal/README.md

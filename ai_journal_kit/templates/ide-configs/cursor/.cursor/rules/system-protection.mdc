@@ -1,0 +1,133 @@
+---
+description: Prevents AI from modifying core system files and templates - CRITICAL SAFETY RULE
+globs:
+alwaysApply: true
+---
+
+# System Protection - DO NOT MODIFY CORE FILES
+
+**CRITICAL: This rule MUST be followed at all times.**
+
+## What the AI MUST NEVER Touch
+
+### Absolutely Forbidden (READ-ONLY):
+- **Any file in parent directory** (outside the journal folder)
+- **Package templates** (these are bundled in the system)
+- **IDE configuration rules** (`.cursor/rules/*.mdc`, `.windsurf/rules/*.md`, `CLAUDE.md`, `.github/copilot-instructions.md`)
+- **System documentation** (if any exists in `_core/` or similar)
+- **Any Python code** (`.py` files)
+- **Configuration files** (`config.json`, `pyproject.toml`, etc.)
+
+### Why These Are Protected:
+- They're part of the core system
+- They can be updated via `ai-journal-kit update`
+- Modifying them could break the journal
+- They're shared templates, not user content
+
+## What the AI CAN Modify
+
+### User Content (Full Access):
+- ✅ **daily/** - Daily notes
+- ✅ **projects/** - Project notes
+- ✅ **areas/** - Area notes  
+- ✅ **resources/** - Resource notes
+- ✅ **people/** - People notes
+- ✅ **memories/** - Memory captures
+- ✅ **archive/** - Archived items
+
+### User Customizations (Create/Edit Only):
+- ✅ **.ai-instructions/my-coach.md** - User's custom coaching preferences
+- ✅ **.ai-instructions/*.md** - Any other custom instruction files the user creates
+
+**IMPORTANT**: The AI can CREATE `.ai-instructions/my-coach.md` during onboarding, but should NEVER edit IDE rule files.
+
+## If User Asks to Change Core Behavior
+
+### ❌ WRONG Response:
+"Let me edit your .cursor/rules/journal-coach.mdc file..."
+
+### ✅ CORRECT Response:
+```
+I can't modify the core IDE rules (those are part of the system), 
+but I can create custom instructions that override the defaults!
+
+Let me create/update your .ai-instructions/my-coach.md file instead.
+This is YOUR file that customizes how I behave, and it takes 
+precedence over system defaults.
+
+What would you like to change about my behavior?
+```
+
+## Examples of Proper Boundaries
+
+### User: "Change how you greet me in the morning"
+**DO**: Create/update `.ai-instructions/my-coach.md` with custom greeting preferences  
+**DON'T**: Edit `.cursor/rules/journal-coach.mdc`
+
+### User: "Stop asking about my sleep quality"
+**DO**: Add to `.ai-instructions/my-coach.md`: "Don't ask about sleep in morning check-ins"  
+**DON'T**: Edit `.cursor/rules/daily-notes.mdc`
+
+### User: "I want you to be more direct and less energetic"
+**DO**: Update `.ai-instructions/my-coach.md` with communication style preferences  
+**DON'T**: Modify any `.cursor/rules/*.mdc` files
+
+### User: "Can you fix the journal-coach rule?"
+**DO**: Explain that system rules are managed by updates, suggest filing an issue if broken  
+**DON'T**: Attempt to edit system files
+
+## The Hierarchy (User > System)
+
+```
+User's Custom Instructions (.ai-instructions/my-coach.md)
+    ↓ [OVERRIDES]
+System Rules (.cursor/rules/*.mdc, etc.)
+```
+
+**The system rules check for `.ai-instructions/my-coach.md` and apply those preferences.**
+
+User customizations ALWAYS win. That's by design.
+
+## Error Messages
+
+If you're ever asked to modify a system file, respond:
+
+```
+I can't modify that file - it's part of the core system and 
+managed through the update command.
+
+However, I CAN customize my behavior for you! Let me create 
+or update your .ai-instructions/my-coach.md file instead.
+
+What specific behavior would you like to change?
+```
+
+## File Safety Checklist
+
+Before modifying ANY file, ask yourself:
+
+1. ❓ Is this in one of the user content folders (daily, projects, people, etc.)? → ✅ OK to modify
+2. ❓ Is this `.ai-instructions/my-coach.md` or similar? → ✅ OK to create/modify
+3. ❓ Is this in `.cursor/rules/`, `.windsurf/rules/`, or similar? → ❌ NEVER TOUCH
+4. ❓ Is this outside the journal folder? → ❌ NEVER TOUCH
+5. ❓ Is this a config, Python, or system file? → ❌ NEVER TOUCH
+
+**When in doubt, don't modify. Ask the user if they want a custom instruction instead.**
+
+## Philosophy
+
+The journal is designed so users can:
+- Get system improvements via `ai-journal-kit update`
+- Customize behavior via `.ai-instructions/` files
+- Never have updates overwrite their customizations
+
+**By protecting system files, we ensure updates work smoothly and users don't break their journal.**
+
+## Technical Implementation
+
+The user customization system works through these rules:
+- `user-customizations.mdc` checks for `.ai-instructions/my-coach.md`
+- If found, those preferences override system defaults
+- This is safe because user files are never touched by updates
+
+**Never bypass this system by editing core rules directly.**

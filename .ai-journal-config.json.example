@@ -1,0 +1,49 @@
+{
+  "version": "1.0.0",
+  "setup_complete": false,
+  "preferences": {
+    "daily_template": "_core/templates/daily-template.md",
+    "project_template": "_core/templates/project-template.md",
+    "area_template": "_core/templates/area-template.md",
+    "people_template": "_core/templates/people-template.md",
+    "coaching_style": "energetic",
+    "ai_instructions": "_core/instructions/demo-safe-instructions.md"
+  },
+  "custom": {
+    "note": "Create custom files in journal/.ai-instructions/ to avoid being overwritten by updates",
+    "ai_instructions_custom": "journal/.ai-instructions/my-coach.md",
+    "daily_template_custom": "journal/.templates/my-daily-template.md"
+  },
+  "folders": {
+    "daily": "journal/daily",
+    "projects": "journal/projects",
+    "areas": "journal/areas",
+    "resources": "journal/resources",
+    "people": "journal/people",
+    "archive": "journal/archive"
+  },
+  "cloud_storage": {
+    "note": "journal/ folder can be synced to Google Drive, Dropbox, iCloud, or version controlled separately in GitHub",
+    "type": "local",
+    "sync_location": ""
+  },
+  "features": {
+    "time_tracking": false,
+    "habit_tracking": false,
+    "ai_coach": false
+  },
+  "integrations": {
+    "beeminder": {
+      "enabled": false,
+      "api_key": ""
+    },
+    "rize": {
+      "enabled": false,
+      "api_key": ""
+    },
+    "clickup": {
+      "enabled": false,
+      "api_key": ""
+    }
+  }
+}

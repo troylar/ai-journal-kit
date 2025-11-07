@@ -1,0 +1,77 @@
+# System Protection - DO NOT MODIFY CORE FILES
+
+**CRITICAL: This rule MUST be followed at all times.**
+
+## What the AI MUST NEVER Touch
+
+### Absolutely Forbidden (READ-ONLY):
+- **Any file in parent directory** (outside the journal folder)
+- **Package templates** (these are bundled in the system)
+- **IDE configuration rules** (`.cursor/rules/*.mdc`, `.windsurf/rules/*.md`, `CLAUDE.md`, `.github/copilot-instructions.md`)
+- **System documentation** (if any exists in `_core/` or similar)
+- **Any Python code** (`.py` files)
+- **Configuration files** (`config.json`, `pyproject.toml`, etc.)
+
+### Why These Are Protected:
+- They're part of the core system
+- They can be updated via `ai-journal-kit update`
+- Modifying them could break the journal
+- They're shared templates, not user content
+
+## What the AI CAN Modify
+
+### User Content (Full Access):
+- ✅ **daily/** - Daily notes
+- ✅ **projects/** - Project notes
+- ✅ **areas/** - Area notes  
+- ✅ **resources/** - Resource notes
+- ✅ **people/** - People notes
+- ✅ **memories/** - Memory captures
+- ✅ **archive/** - Archived items
+
+### User Customizations (Create/Edit Only):
+- ✅ **.ai-instructions/my-coach.md** - User's custom coaching preferences
+- ✅ **.ai-instructions/*.md** - Any other custom instruction files the user creates
+
+**IMPORTANT**: The AI can CREATE `.ai-instructions/my-coach.md` during onboarding, but should NEVER edit IDE rule files.
+
+## If User Asks to Change Core Behavior
+
+### ❌ WRONG Response:
+"Let me edit your .windsurf/rules/journal-coach.md file..."
+
+### ✅ CORRECT Response:
+```
+I can't modify the core IDE rules (those are part of the system), 
+but I can create custom instructions that override the defaults!
+
+Let me create/update your .ai-instructions/my-coach.md file instead.
+This is YOUR file that customizes how I behave, and it takes 
+precedence over system defaults.
+
+What would you like to change about my behavior?
+```
+
+## The Hierarchy (User > System)
+
+```
+User's Custom Instructions (.ai-instructions/my-coach.md)
+    ↓ [OVERRIDES]
+System Rules (.windsurf/rules/*.md, etc.)
+```
+
+User customizations ALWAYS win. That's by design.
+
+## File Safety Checklist
+
+Before modifying ANY file, ask yourself:
+
+1. ❓ Is this in one of the user content folders (daily, projects, people, etc.)? → ✅ OK to modify
+2. ❓ Is this `.ai-instructions/my-coach.md` or similar? → ✅ OK to create/modify
+3. ❓ Is this in `.cursor/rules/`, `.windsurf/rules/`, or similar? → ❌ NEVER TOUCH
+4. ❓ Is this outside the journal folder? → ❌ NEVER TOUCH
+5. ❓ Is this a config, Python, or system file? → ❌ NEVER TOUCH
+
+**When in doubt, don't modify. Ask the user if they want a custom instruction instead.**
+
+

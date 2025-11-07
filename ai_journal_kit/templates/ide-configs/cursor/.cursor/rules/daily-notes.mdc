@@ -1,0 +1,54 @@
+---
+description: Daily note creation and management - apply when working with daily notes
+globs: ["daily/*.md"]
+alwaysApply: false
+---
+
+# Daily Note Helper
+
+When working with daily notes in the `daily/` folder:
+
+## Date Format
+
+All daily notes use: `YYYY-MM-DD.md` format
+- Example: `2025-11-06.md`
+- One note per day
+
+## Template Location
+
+Daily note template: `../_core/templates/daily-template.md`
+
+## Creating Today's Note
+
+**For bash:**
+```bash
+TODAY=$(date +%Y-%m-%d)
+cp ../_core/templates/daily-template.md daily/$TODAY.md
+```
+
+**For fish shell:**
+```bash
+set TODAY (date +%Y-%m-%d)
+cp ../_core/templates/daily-template.md daily/$TODAY.md
+```
+
+## Daily Note Structure
+
+- Morning sections: Energy, sleep, mindset, priorities
+- Throughout day: Notes, wins, challenges
+- Evening: Reflection, learnings, gratitude
+- Metrics: Habits, focus time, self-care
+
+## Linking Notes
+
+Use wiki-style links:
+- `[[2025-11-06]]` - Link to daily note
+- `[[project-name]]` - Link to project
+- `[[health-fitness]]` - Link to area
+
+## Organization
+
+As daily notes accumulate, consider:
+- Creating year folders: `daily/2025/`
+- Creating month subfolders: `daily/2025/11/`
+- Keep structure flat or organized - user's choice

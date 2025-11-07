@@ -1,0 +1,87 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ai-journal-kit"
+version = "1.0.0"
+description = "AI-powered journaling system with beautiful CLI for setup, customization, and updates"
+authors = [{ name = "Troy Larson", email = "troy@calvinware.com" }]
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+keywords = ["journal", "ai", "productivity", "cli", "markdown", "coaching"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business",
+    "Topic :: Text Processing :: Markup :: Markdown",
+]
+
+dependencies = [
+    "typer>=0.9.0",
+    "rich>=13.0.0",
+    "platformdirs>=4.0.0",
+    "pydantic>=2.0.0",
+    "questionary>=2.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "invoke>=2.2.0",
+    "ruff>=0.1.0",
+]
+
+[project.scripts]
+ai-journal-kit = "ai_journal_kit.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/troylar/ai-journal-kit"
+Repository = "https://github.com/troylar/ai-journal-kit"
+Issues = "https://github.com/troylar/ai-journal-kit/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["ai_journal_kit"]
+
+[tool.hatch.build.targets.wheel.shared-data]
+"ai_journal_kit/templates" = "ai_journal_kit/templates"
+
+[tool.pytest.ini_options]
+markers = [
+    "unit: Fast unit tests (no I/O, mocked dependencies)",
+    "integration: Integration tests (real filesystem, no network)",
+    "e2e: End-to-end tests (full CLI workflows)",
+    "slow: Slow tests (skip in CI on PR)",
+]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+addopts = [
+    "--cov=ai_journal_kit",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-fail-under=80",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP"]
+ignore = ["E501"]  # Line too long (handled by formatter)
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+

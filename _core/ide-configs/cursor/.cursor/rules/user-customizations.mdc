@@ -1,0 +1,60 @@
+---
+description: User customization loader - loads custom AI coaching preferences
+globs:
+alwaysApply: true
+---
+
+# User Customization Loader
+
+Check for user-specific customizations in `.ai-instructions/` folder.
+
+## Custom Instruction Files
+
+If any of these files exist, load and apply them:
+
+### `.ai-instructions/my-coach.md`
+User's personal coaching preferences that override or extend defaults:
+- Preferred coaching style
+- Personal goals
+- Habits to track
+- Communication preferences
+- Custom check-in protocols
+
+### `.ai-instructions/accountability.md`
+Strict accountability mode - no-BS coaching:
+- Direct challenges
+- Hold accountable for commitments
+- Less supportive, more pushing
+
+### `.ai-instructions/deep-work.md`
+Focus session mode:
+- Help maintain deep work
+- Minimize interruptions
+- Track flow states
+- Optimize for concentration
+
+### `.ai-instructions/planning.md`
+Strategic planning mode:
+- Big picture thinking
+- Goal setting and prioritization
+- Long-term vision
+- Systems thinking
+
+## How to Apply
+
+1. **Check if file exists** before referencing
+2. **Load content** if present
+3. **Apply as override** - user preferences trump defaults
+4. **Combine intelligently** - merge user prefs with base instructions
+
+## Creating Custom Instructions
+
+Users create by:
+```bash
+cp .ai-instructions/my-coach.md.example .ai-instructions/my-coach.md
+# Then edit to customize
+```
+
+## Priority
+
+User customizations in `.ai-instructions/` > System defaults in `.cursor/rules/`
