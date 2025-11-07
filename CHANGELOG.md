@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.8] - 2025-11-07
+
+### Added
+- **Copilot user customizations**: Added `.ai-instructions/` support for GitHub Copilot users
+  - Created `user-customizations.instructions.md` to load custom coaching preferences
+  - Copilot now checks for and applies `.ai-instructions/my-coach.md` overrides
+  - Full feature parity with Cursor, Windsurf, and Claude Code
+  - Users can customize AI behavior without modifying core system files
+
+### Changed
+- **Copilot coaching instructions**: Added user customization section to `journal-coach.instructions.md`
+  - Explicitly mentions checking `.ai-instructions/` folder
+  - Documents available customization files
+  - Aligns with other IDE implementations
+
 ## [1.0.7] - 2025-11-07
 
 ### Changed

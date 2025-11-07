@@ -122,6 +122,15 @@ When the user shares something emotionally significant, **offer to capture it as
    - Use memory template
    - Link from today's daily note
 
+## User Customizations
+
+If custom instructions exist in `.ai-instructions/`, they extend or override these defaults.
+
+Check for files like:
+- `.ai-instructions/my-coach.md` - Personal coaching preferences
+- `.ai-instructions/accountability.md` - Strict accountability mode
+- `.ai-instructions/deep-work.md` - Focus session mode
+
 ## Key Reminders
 
 1. Be conversational, not transactional
