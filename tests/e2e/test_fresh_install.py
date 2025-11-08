@@ -68,7 +68,7 @@ def test_e2e_fresh_install_all_ides(temp_journal_dir, isolated_env):
     # Verify specific IDE directories exist
     assert (temp_journal_dir / ".cursor" / "rules").exists()
     assert (temp_journal_dir / ".windsurf" / "rules").exists()
-    assert (temp_journal_dir / "CLAUDE.md").exists()
+    assert (temp_journal_dir / "SYSTEM-PROTECTION.md").exists()
     assert (temp_journal_dir / ".github" / "instructions").exists()
 
 

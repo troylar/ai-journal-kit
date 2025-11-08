@@ -139,9 +139,9 @@ def test_setup_installs_claude_config(temp_journal_dir, isolated_config):
     # Verify Claude Code config installed
     assert_ide_config_installed(temp_journal_dir, "claude-code")
     
-    # Check CLAUDE.md file
-    claude_file = temp_journal_dir / "CLAUDE.md"
-    assert claude_file.exists()
+    # Check SYSTEM-PROTECTION.md file exists
+    protection_file = temp_journal_dir / "SYSTEM-PROTECTION.md"
+    assert protection_file.exists()
 
 
 @pytest.mark.integration
@@ -197,6 +197,11 @@ def test_setup_with_custom_path(tmp_path, isolated_config):
         "--ide", "cursor",
         "--no-confirm"
     ])
+    
+    # Debug: print output if failed
+    if result.exit_code != 0:
+        print(f"\nSetup failed with exit code {result.exit_code}")
+        print(f"Output: {result.output}")
     
     assert result.exit_code == 0
     

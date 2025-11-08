@@ -64,12 +64,10 @@ def copy_ide_configs(ide: str, destination: Path):
                     shutil.copy2(md_file, dest_dir / md_file.name)
 
         elif ide_name == "claude-code":
-            # CLAUDE.md goes in root and subdirectories
-            for claude_file in ide_source.glob("**/CLAUDE.md"):
-                rel_path = claude_file.relative_to(ide_source)
-                dest_file = destination / rel_path
-                dest_file.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copy2(claude_file, dest_file)
+            # Copy all .md files from claude-code template to journal root
+            for md_file in ide_source.glob("*.md"):
+                dest_file = destination / md_file.name
+                shutil.copy2(md_file, dest_file)
 
         elif ide_name == "copilot":
             github_dir = ide_source / ".github"
