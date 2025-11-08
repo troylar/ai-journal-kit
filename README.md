@@ -12,7 +12,7 @@
 [![CI](https://github.com/troylar/ai-journal-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/troylar/ai-journal-kit/actions/workflows/ci.yml)
 [![Security Scan](https://github.com/troylar/ai-journal-kit/actions/workflows/security.yml/badge.svg)](https://github.com/troylar/ai-journal-kit/actions/workflows/security.yml)
 [![codecov](https://codecov.io/gh/troylar/ai-journal-kit/branch/main/graph/badge.svg)](https://codecov.io/gh/troylar/ai-journal-kit)
-[![Tests](https://img.shields.io/badge/tests-21%20passing-brightgreen.svg)](https://github.com/troylar/ai-journal-kit/actions)
+[![Tests](https://img.shields.io/badge/tests-141%20passing-brightgreen.svg)](https://github.com/troylar/ai-journal-kit/actions)
 
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 [![Security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
@@ -498,6 +498,51 @@ A: The AI Journal Kit is free and open source (MIT License). You only pay for yo
 
 **Q: Can I sync across computers?**  
 A: Yes! Put your `journal/` folder in Dropbox, Google Drive, or iCloud. The CLI stays installed per-machine.
+
+---
+
+## 🧪 For Developers
+
+### Comprehensive Test Coverage
+
+AI Journal Kit has a robust test suite with **141 tests** covering:
+
+- **Unit Tests** (`tests/unit/`): Fast, focused tests for individual components
+- **Integration Tests** (`tests/integration/`): Real filesystem operations, command workflows  
+- **E2E Tests** (`tests/e2e/`): Complete user journeys across the entire system
+
+### Running Tests
+
+```bash
+# Run all tests
+pytest
+
+# Run specific test types
+pytest tests/unit/          # Unit tests only
+pytest tests/integration/   # Integration tests only
+pytest tests/e2e/           # E2E tests only
+
+# Using invoke tasks
+invoke test               # All tests with coverage
+invoke test.unit          # Unit tests only
+invoke test.integration   # Integration tests only
+invoke test.e2e           # E2E tests only
+invoke test.quick         # Fast run (no coverage)
+
+# Simulate full CI pipeline locally
+invoke ci.local
+```
+
+### Contributing
+
+We welcome contributions! Before submitting a PR:
+
+1. **Run tests**: `pytest` or `invoke test`
+2. **Run linting**: `ruff check ai_journal_kit tests`
+3. **Run security scan**: `bandit -r ai_journal_kit`
+4. **Simulate CI**: `invoke ci.local`
+
+All tests must pass on **Ubuntu**, **macOS**, and **Windows** before merging.
 
 ---
 
