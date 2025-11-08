@@ -331,3 +331,54 @@ def test_setup_handles_cancellation(temp_journal_dir, isolated_config):
     # Should handle cancellation gracefully
     assert result.exit_code != 0 or "cancelled" in result.output.lower()
 
+
+@pytest.mark.integration
+def test_setup_with_invalid_path(isolated_config):
+    """Test setup handles invalid path gracefully (covers lines 86-88)."""
+    runner = CliRunner()
+    result = runner.invoke(app, [
+        "setup",
+        "/invalid/\0/path",  # Invalid path with null byte
+        "--ide", "cursor",
+        "--no-confirm"
+    ])
+
+    # Should fail with error
+    assert result.exit_code != 0
+    assert "error" in result.output.lower() or "invalid" in result.output.lower()
+
+
+@pytest.mark.integration
+def test_setup_with_invalid_ide(temp_journal_dir, isolated_config):
+    """Test setup handles invalid IDE gracefully (covers lines 97-99)."""
+    runner = CliRunner()
+    result = runner.invoke(app, [
+        "setup",
+        str(temp_journal_dir),
+        "--ide", "invalid-ide-name",
+        "--no-confirm"
+    ])
+
+    # Should fail with error
+    assert result.exit_code != 0
+    assert "ide" in result.output.lower() or "invalid" in result.output.lower()
+
+
+@pytest.mark.integration
+def test_setup_with_parent_creation_declined(temp_journal_dir, isolated_config):
+    """Test setup when user declines parent directory creation (covers lines 74-81)."""
+    # Use nested path that doesn't exist
+    nested_path = temp_journal_dir / "nonexistent" / "journal"
+
+    runner = CliRunner()
+    result = runner.invoke(app, [
+        "setup",
+        str(nested_path),
+        "--ide", "cursor"
+    ], input="n\n")  # Decline parent creation
+
+    # Should cancel setup
+    assert result.exit_code != 0
+    assert "cancel" in result.output.lower() or "error" in result.output.lower()
+
+

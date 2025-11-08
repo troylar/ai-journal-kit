@@ -139,7 +139,7 @@ def _check_ide_configs(config) -> bool:
     elif config.ide == "windsurf":
         return (config.journal_location / ".windsurf" / "rules").exists()
     elif config.ide == "claude-code":
-        return (config.journal_location / "CLAUDE.md").exists()
+        return (config.journal_location / "SYSTEM-PROTECTION.md").exists()
     elif config.ide == "copilot":
         return (config.journal_location / ".github" / "copilot-instructions.md").exists()
     elif config.ide == "all":
