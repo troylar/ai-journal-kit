@@ -4,9 +4,7 @@ Unit tests for status command.
 Tests configuration display and health checks.
 """
 
-from datetime import datetime
 from io import StringIO
-from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import pytest
