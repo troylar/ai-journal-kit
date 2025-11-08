@@ -70,11 +70,11 @@ def test_validate_path_expands_home_directory(tmp_path):
 def test_validate_ide_accepts_valid_choices():
     """Test that validate_ide accepts all valid IDE choices (lines 49-55)."""
     valid_ides = ["cursor", "windsurf", "claude-code", "copilot", "all"]
-    
+
     for ide in valid_ides:
         result = validate_ide(ide)
         assert result == ide.lower()
-    
+
     # Test case insensitivity
     assert validate_ide("CURSOR") == "cursor"
     assert validate_ide("Windsurf") == "windsurf"
@@ -85,7 +85,7 @@ def test_validate_ide_rejects_invalid_choice():
     """Test that validate_ide rejects invalid IDE choices (lines 52-53)."""
     with pytest.raises(ValueError, match="Invalid IDE"):
         validate_ide("invalid-ide")
-    
+
     with pytest.raises(ValueError, match="Must be one of"):
         validate_ide("vscode")
 
@@ -95,7 +95,7 @@ def test_path_is_writable_for_existing_directory(tmp_path):
     """Test path_is_writable for existing directories (lines 67-68)."""
     test_dir = tmp_path / "writable"
     test_dir.mkdir()
-    
+
     # Should be writable
     assert path_is_writable(test_dir) is True
 
@@ -104,7 +104,7 @@ def test_path_is_writable_for_existing_directory(tmp_path):
 def test_path_is_writable_for_nonexistent_path(tmp_path):
     """Test path_is_writable for nonexistent paths (lines 69-71)."""
     nonexistent = tmp_path / "nonexistent"
-    
+
     # Should check parent's writability
     assert path_is_writable(nonexistent) is True
 
@@ -113,14 +113,14 @@ def test_path_is_writable_for_nonexistent_path(tmp_path):
 def test_path_is_writable_for_readonly_parent(tmp_path):
     """Test path_is_writable when parent is read-only (line 71)."""
     import os
-    
+
     # Create a directory and make it read-only
     readonly_dir = tmp_path / "readonly"
     readonly_dir.mkdir()
-    
+
     # Make readonly (remove write permission)
     os.chmod(readonly_dir, 0o555)
-    
+
     try:
         nonexistent = readonly_dir / "test"
         result = path_is_writable(nonexistent)
