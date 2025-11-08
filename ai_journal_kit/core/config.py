@@ -48,7 +48,14 @@ class Config(BaseModel):
 
 def get_config_path() -> Path:
     """Get platform-specific config file path."""
-    config_dir = Path(user_config_dir("ai-journal-kit", appauthor=False))
+    # Allow override via environment variable for testing
+    import os
+
+    config_dir_str = os.getenv("AI_JOURNAL_CONFIG_DIR")
+    if config_dir_str:
+        config_dir = Path(config_dir_str)
+    else:
+        config_dir = Path(user_config_dir("ai-journal-kit", appauthor=False))
     config_dir.mkdir(parents=True, exist_ok=True)
     return config_dir / "config.json"
 
