@@ -82,8 +82,9 @@ def create_journal_fixture(
     )
     
     if config_dir:
+        # save_config() uses get_config_path() internally which reads AI_JOURNAL_CONFIG_DIR
+        save_config(config)
         config_path = config_dir / "config.json"
-        save_config(config, config_path)
     else:
         config_path = None
     
