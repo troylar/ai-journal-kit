@@ -122,3 +122,26 @@ def test_list_available_templates():
     assert len(templates) > 0
     # Should include our known templates
     assert any("template" in t.lower() for t in templates)
+
+
+@pytest.mark.unit
+def test_copy_ide_configs_copilot_with_old_structure(temp_journal_dir):
+    """Test Copilot config handles migration from old structure (line 81-83)."""
+    # Create old structure with custom content
+    (temp_journal_dir / ".github").mkdir()
+    old_file = temp_journal_dir / ".github" / "copilot-instructions.md"
+    old_file.write_text("# My custom old instructions")
+
+    # Copy new structure
+    copy_ide_configs("copilot", temp_journal_dir)
+
+    # File exists (from template), but old custom content was replaced
+    assert old_file.exists()
+    # Should have new template content (not our custom text)
+    content = old_file.read_text()
+    assert "# My custom old instructions" not in content
+
+    # New instructions folder should exist
+    instructions_folder = temp_journal_dir / ".github" / "instructions"
+    assert instructions_folder.exists()
+
