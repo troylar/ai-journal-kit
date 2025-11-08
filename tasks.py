@@ -117,6 +117,20 @@ def integration(c, verbose=False):
 
 
 @task
+def e2e(c, verbose=False):
+    """Run end-to-end tests.
+    
+    Args:
+        verbose: Show verbose output
+    """
+    safe_print("🧪 Running e2e tests...")
+    cmd = "pytest tests/e2e/"
+    if verbose:
+        cmd += " -v"
+    c.run(cmd)
+
+
+@task
 def all(c, verbose=False, parallel=True):
     """Run all tests with coverage.
     
@@ -167,6 +181,7 @@ def watch(c):
 
 test_ns.add_task(unit)
 test_ns.add_task(integration)
+test_ns.add_task(e2e)
 test_ns.add_task(all, default=True)
 test_ns.add_task(quick)
 test_ns.add_task(coverage)
