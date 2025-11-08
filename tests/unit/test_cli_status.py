@@ -189,3 +189,32 @@ def test_config_path_validator_with_path(isolated_config_dir, monkeypatch):
     # Should expand ~ and resolve to absolute path
     assert config.journal_location.is_absolute()
     assert "test-journal" in str(config.journal_location)
+
+
+@pytest.mark.unit
+def test_get_config_path_without_env_override(tmp_path):
+    """Test get_config_path uses platformdirs default when no env var set (line 58)."""
+    import os
+    from importlib import reload
+
+    from ai_journal_kit.core import config as config_module
+
+    # Temporarily remove env var
+    old_value = os.environ.pop("AI_JOURNAL_CONFIG_DIR", None)
+
+    try:
+        # Force reload to use default path
+        reload(config_module)
+
+        path = config_module.get_config_path()
+
+        # Should use platformdirs path
+        assert "ai-journal-kit" in str(path)
+        assert path.name == "config.json"
+
+    finally:
+        # Restore for other tests
+        if old_value:
+            os.environ["AI_JOURNAL_CONFIG_DIR"] = old_value
+        reload(config_module)
+
