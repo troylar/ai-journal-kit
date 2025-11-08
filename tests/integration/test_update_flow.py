@@ -102,7 +102,6 @@ def test_update_preserves_journal_entries(temp_journal_dir, isolated_config):
 
 
 @pytest.mark.integration
-@pytest.mark.xfail(reason="Update --force flag may not fully implement template refresh yet")
 def test_update_refreshes_core_templates(temp_journal_dir, isolated_config):
     """Test update refreshes core system templates."""
     # Create journal
@@ -117,12 +116,12 @@ def test_update_refreshes_core_templates(temp_journal_dir, isolated_config):
     if welcome_file.exists():
         welcome_file.write_text("# Modified Welcome\n\nThis should be updated.")
     
-    # Run update with force to refresh templates
+    # Run update with force and no-confirm to refresh templates
     runner = CliRunner()
-    result = runner.invoke(app, ["update", "--force"])
+    result = runner.invoke(app, ["update", "--force", "--no-confirm"])
     
     # Update should succeed
-    assert result.exit_code == 0 or "up to date" in result.output.lower()
+    assert result.exit_code == 0, f"Update failed: {result.output}"
 
 
 @pytest.mark.integration
@@ -224,7 +223,6 @@ def test_update_handles_corrupted_config(temp_journal_dir, isolated_config):
 
 
 @pytest.mark.integration
-@pytest.mark.xfail(reason="Update --force flag behavior needs verification")
 def test_update_with_force_flag(temp_journal_dir, isolated_config):
     """Test update with --force flag forces template refresh."""
     # Create journal
@@ -234,12 +232,12 @@ def test_update_with_force_flag(temp_journal_dir, isolated_config):
         config_dir=isolated_config
     )
     
-    # Run update with force
+    # Run update with force and no-confirm for testing
     runner = CliRunner()
-    result = runner.invoke(app, ["update", "--force"])
+    result = runner.invoke(app, ["update", "--force", "--no-confirm"])
     
     # Should succeed
-    assert result.exit_code == 0
+    assert result.exit_code == 0, f"Update --force failed: {result.output}"
     
     # Journal structure should remain valid
     assert_journal_structure_valid(temp_journal_dir)

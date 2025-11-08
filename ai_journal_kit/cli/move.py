@@ -67,6 +67,9 @@ def move(
         if not new_path.parent.exists():
             if dry_run:
                 console.print(f"[dim][DRY RUN] Would create parent: {new_path.parent}[/dim]")
+            elif no_confirm:
+                # Auto-create parent when no-confirm is set
+                new_path.parent.mkdir(parents=True, exist_ok=True)
             else:
                 create_parent = confirm(
                     f"Parent directory doesn't exist. Create {new_path.parent}?"

@@ -18,7 +18,6 @@ from tests.integration.helpers import assert_journal_structure_valid
 
 
 @pytest.mark.integration
-@pytest.mark.xfail(reason="Doctor command detection logic needs verification")
 def test_doctor_detects_missing_folders(temp_journal_dir, isolated_config):
     """Test doctor detects missing required folders."""
     # Create journal
@@ -37,12 +36,12 @@ def test_doctor_detects_missing_folders(temp_journal_dir, isolated_config):
     runner = CliRunner()
     result = runner.invoke(app, ["doctor"])
     
-    # Should detect issues
-    assert result.exit_code == 0  # Doctor succeeds even when finding issues
+    # Should detect issues (exit code 1 when issues found)
+    assert result.exit_code == 1, "Doctor should exit with code 1 when issues are found"
     
-    # Should mention missing folders
+    # Should show that issues were found
     output_lower = result.output.lower()
-    assert "daily" in output_lower or "projects" in output_lower or "missing" in output_lower
+    assert "issue" in output_lower or "problem" in output_lower, f"Doctor should report issues found: {result.output}"
 
 
 @pytest.mark.integration

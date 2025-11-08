@@ -209,7 +209,6 @@ def test_move_handles_cancellation(temp_journal_dir, isolated_config, tmp_path):
 
 
 @pytest.mark.integration
-@pytest.mark.xfail(reason="Move command has a bug with nested paths - needs investigation")
 def test_move_to_cloud_drive(temp_journal_dir, isolated_config, tmp_path):
     """Test move to cloud drive path (simulated)."""
     # Create journal
