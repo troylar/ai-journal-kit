@@ -160,3 +160,4 @@ def test_status_verbose_mode(temp_journal_dir, isolated_config):
     # Can't reliably compare lengths, but should succeed
     assert result_normal.exit_code == 0
 
+

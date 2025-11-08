@@ -98,3 +98,4 @@ def test_e2e_upgrade_multiple_versions(temp_journal_dir, isolated_env):
     # Structure should remain valid after multiple updates
     assert_journal_structure_valid(temp_journal_dir)
 
+
