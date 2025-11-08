@@ -67,6 +67,9 @@ def setup(
         if not journal_path.parent.exists():
             if dry_run:
                 console.print(f"[dim][DRY RUN] Would create parent: {journal_path.parent}[/dim]")
+            elif no_confirm:
+                # Auto-create parent when no-confirm is set
+                journal_path.parent.mkdir(parents=True, exist_ok=True)
             else:
                 create_parent = confirm(
                     f"Parent directory doesn't exist. Create {journal_path.parent}?"

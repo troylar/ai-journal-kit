@@ -202,8 +202,10 @@ def test_setup_with_custom_path(tmp_path, isolated_config):
     if result.exit_code != 0:
         print(f"\nSetup failed with exit code {result.exit_code}")
         print(f"Output: {result.output}")
+        if result.exception:
+            print(f"Exception: {result.exception}")
     
-    assert result.exit_code == 0
+    assert result.exit_code == 0, f"Setup failed: {result.output}"
     
     # Verify journal created at custom path
     assert custom_path.exists()
@@ -261,12 +263,15 @@ def test_setup_handles_deleted_journal(temp_journal_dir, isolated_config):
         "setup",
         "--location", str(temp_journal_dir),
         "--ide", "cursor",
-        "--no-confirm",
-        "--force"  # Force recreation
+        "--no-confirm"
     ])
     
-    # Should succeed or provide clear guidance
-    assert result2.exit_code == 0 or "missing" in result2.output.lower()
+    # Should succeed (allows recreation of deleted journal)
+    assert result2.exit_code == 0, f"Setup should handle deleted journal: {result2.output}"
+    
+    # Journal should be recreated
+    assert temp_journal_dir.exists()
+    assert_journal_structure_valid(temp_journal_dir)
 
 
 @pytest.mark.integration
