@@ -3,6 +3,8 @@
 Auto-generated from all feature plans. Last updated: 2025-11-08
 
 ## Active Technologies
+- Python 3.10+ (project requires 3.10+) + pytest, pytest-bdd, pytest-xdist, typer, click (001-e2e-tests)
+- File system (markdown files, JSON config) (001-e2e-tests)
 
 - Python 3.10, 3.11, 3.12, 3.13 (matrix testing) + pytest, pytest-cov, pytest-xdist, ruff, bandit, uv (existing) (002-testing-cicd-setup)
 
@@ -22,6 +24,7 @@ cd src [ONLY COMMANDS FOR ACTIVE TECHNOLOGIES][ONLY COMMANDS FOR ACTIVE TECHNOLO
 Python 3.10, 3.11, 3.12, 3.13 (matrix testing): Follow standard conventions
 
 ## Recent Changes
+- 001-e2e-tests: Added Python 3.10+ (project requires 3.10+) + pytest, pytest-bdd, pytest-xdist, typer, click
 
 - 002-testing-cicd-setup: Added Python 3.10, 3.11, 3.12, 3.13 (matrix testing) + pytest, pytest-cov, pytest-xdist, ruff, bandit, uv (existing)
 
