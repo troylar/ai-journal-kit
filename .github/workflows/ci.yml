@@ -100,6 +100,16 @@ jobs:
       - name: Run tests (via invoke)
         run: invoke test --verbose
       
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'
+        with:
+          files: ./coverage.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false  # Don't fail CI if Codecov upload fails
+          flags: unittests
+          name: codecov-umbrella
+      
       - name: Upload coverage artifacts
         uses: actions/upload-artifact@v4
         if: always()
