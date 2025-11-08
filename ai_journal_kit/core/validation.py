@@ -65,7 +65,7 @@ def path_is_writable(path: Path) -> bool:
         True if writable, False otherwise
     """
     if path.exists():
-        return path.is_dir() and path.stat().st_mode & 0o200
+        return bool(path.is_dir() and (path.stat().st_mode & 0o200))
     else:
         # Check if parent is writable
-        return path.parent.exists() and path.parent.stat().st_mode & 0o200
+        return bool(path.parent.exists() and (path.parent.stat().st_mode & 0o200))

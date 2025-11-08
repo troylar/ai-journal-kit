@@ -189,7 +189,7 @@ def local(c):
     except Exception as e:
         print(f"❌ Linting failed: {e}")
         return
-    
+
     safe_print("\n" + "="*60)
     safe_print("STEP 2: Security Scan")
     safe_print("="*60)
@@ -198,7 +198,7 @@ def local(c):
     except Exception as e:
         print(f"❌ Security scan failed: {e}")
         return
-    
+
     safe_print("\n" + "="*60)
     safe_print("STEP 3: Tests")
     safe_print("="*60)
@@ -207,7 +207,7 @@ def local(c):
     except Exception as e:
         print(f"❌ Tests failed: {e}")
         return
-    
+
     safe_print("\n" + "="*60)
     safe_print("✅ ALL CI CHECKS PASSED!")
     safe_print("="*60)
@@ -234,24 +234,25 @@ def matrix(c):
 def check_workflows(c):
     """Validate GitHub Actions workflow syntax."""
     safe_print("🔍 Checking workflow files...")
-    import yaml
     from pathlib import Path
-    
+
+    import yaml
+
     workflows_dir = Path(".github/workflows")
     if not workflows_dir.exists():
         safe_print("❌ No .github/workflows directory found")
         return
-    
+
     for workflow_file in workflows_dir.glob("*.yml"):
         print(f"  Checking {workflow_file.name}...")
         try:
             with open(workflow_file) as f:
                 yaml.safe_load(f)
-            print(f"    ✅ Valid YAML")
+            print("    ✅ Valid YAML")
         except Exception as e:
             print(f"    ❌ Invalid: {e}")
             return
-    
+
     safe_print("\n✅ All workflow files are valid!")
 
 
@@ -264,31 +265,31 @@ ci_ns.add_task(check_workflows)
 def pre_commit(c):
     """Run all pre-commit checks (format, lint, security, quick test)."""
     safe_print("🎯 Running pre-commit checks...")
-    
+
     safe_print("\n1️⃣  Formatting code...")
     format(c)
-    
+
     safe_print("\n2️⃣  Linting...")
     try:
         lint(c)
     except Exception:
         safe_print("❌ Linting failed. Run 'invoke lint-fix' to auto-fix issues.")
         return
-    
+
     safe_print("\n3️⃣  Security scan...")
     try:
         security(c)
     except Exception:
         safe_print("❌ Security scan found issues.")
         return
-    
+
     safe_print("\n4️⃣  Quick tests...")
     try:
         quick(c)
     except Exception:
         safe_print("❌ Tests failed.")
         return
-    
+
     safe_print("\n" + "="*60)
     safe_print("✅ ALL PRE-COMMIT CHECKS PASSED! Safe to commit.")
     safe_print("="*60)
@@ -298,31 +299,31 @@ def pre_commit(c):
 def pre_push(c):
     """Run all checks before pushing (includes full test suite)."""
     safe_print("🚀 Running pre-push checks...")
-    
+
     safe_print("\n1️⃣  Formatting...")
     format(c)
-    
+
     safe_print("\n2️⃣  Linting...")
     try:
         lint(c)
     except Exception:
         safe_print("❌ Linting failed. Run 'invoke lint-fix' to auto-fix.")
         return
-    
+
     safe_print("\n3️⃣  Security scan...")
     try:
         security(c)
     except Exception:
         safe_print("❌ Security scan found issues.")
         return
-    
+
     safe_print("\n4️⃣  Full test suite...")
     try:
         all(c)
     except Exception:
         safe_print("❌ Tests failed.")
         return
-    
+
     safe_print("\n" + "="*60)
     safe_print("✅ ALL PRE-PUSH CHECKS PASSED! Safe to push.")
     safe_print("="*60)
@@ -344,10 +345,10 @@ def publish(c, test_pypi=False):
         test_pypi: If True, publish to test.pypi.org instead
     """
     import os
-    
+
     # Build first
     build(c)
-    
+
     # Get token from environment
     if test_pypi:
         token = os.getenv("TEST_PYPI_TOKEN")

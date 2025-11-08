@@ -5,6 +5,7 @@ Tests status display, configuration checking, and error handling.
 """
 
 import json
+
 import pytest
 
 from ai_journal_kit.core.config import Config, load_config, save_config, update_config
