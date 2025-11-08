@@ -136,3 +136,31 @@ def test_is_linux_detection():
     assert platform_module.is_linux() is True
     assert platform_module.get_platform_name() == "Linux"
 
+
+@pytest.mark.unit
+@patch("sys.platform", "win32")
+def test_is_windows_detection():
+    """Test Windows detection (line 26)."""
+    from importlib import reload
+
+    from ai_journal_kit.utils import platform as platform_module
+    reload(platform_module)
+
+    assert platform_module.is_windows() is True
+    assert platform_module.get_platform_name() == "Windows"
+
+
+@pytest.mark.unit
+@patch("sys.platform", "unknown_os")
+@patch("platform.system", return_value="UnknownOS")
+def test_get_platform_name_unknown_system(mock_system):
+    """Test get_platform_name for unknown platforms (line 32)."""
+    from importlib import reload
+
+    from ai_journal_kit.utils import platform as platform_module
+    reload(platform_module)
+
+    name = platform_module.get_platform_name()
+    assert name == "UnknownOS"
+    mock_system.assert_called_once()
+
