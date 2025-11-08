@@ -1,0 +1,53 @@
+name: Security Scan
+
+on:
+  push:
+    branches: ["main", "develop"]
+  pull_request:
+    branches: ["main", "develop"]
+  schedule:
+    # Run daily at 9 AM UTC
+    - cron: '0 9 * * *'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  bandit:
+    name: Bandit Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      
+      - name: Install dependencies
+        run: pip install invoke bandit
+      
+      - name: Run security scan (via invoke)
+        run: invoke security
+      
+      - name: Generate security report (via invoke)
+        run: invoke security-report
+      
+      - name: Upload Bandit report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bandit-security-report
+          path: bandit-report.json
+          retention-days: 90
+      
+      - name: Check for high-severity issues
+        run: |
+          # Fail if high-severity issues are found
+          if grep -q '"issue_severity": "HIGH"' bandit-report.json; then
+            echo "❌ High-severity security issues found!"
+            echo "Run 'invoke security-report' locally to see details"
+            exit 1
+          fi
+          echo "✅ No high-severity security issues found"
+

@@ -1,0 +1,29 @@
+# ai-markdown-journal Development Guidelines
+
+Auto-generated from all feature plans. Last updated: 2025-11-08
+
+## Active Technologies
+
+- Python 3.10, 3.11, 3.12, 3.13 (matrix testing) + pytest, pytest-cov, pytest-xdist, ruff, bandit, uv (existing) (002-testing-cicd-setup)
+
+## Project Structure
+
+```text
+src/
+tests/
+```
+
+## Commands
+
+cd src [ONLY COMMANDS FOR ACTIVE TECHNOLOGIES][ONLY COMMANDS FOR ACTIVE TECHNOLOGIES] pytest [ONLY COMMANDS FOR ACTIVE TECHNOLOGIES][ONLY COMMANDS FOR ACTIVE TECHNOLOGIES] ruff check .
+
+## Code Style
+
+Python 3.10, 3.11, 3.12, 3.13 (matrix testing): Follow standard conventions
+
+## Recent Changes
+
+- 002-testing-cicd-setup: Added Python 3.10, 3.11, 3.12, 3.13 (matrix testing) + pytest, pytest-cov, pytest-xdist, ruff, bandit, uv (existing)
+
+<!-- MANUAL ADDITIONS START -->
+<!-- MANUAL ADDITIONS END -->

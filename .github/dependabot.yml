@@ -1,0 +1,38 @@
+version: 2
+updates:
+  # Python dependencies
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "automated"
+    reviewers:
+      - "troylar"
+    
+    # Group dependencies for cleaner PRs
+    groups:
+      # Development dependencies
+      development-dependencies:
+        patterns:
+          - "pytest*"
+          - "ruff"
+          - "bandit"
+          - "invoke"
+      
+      # Production dependencies
+      production-dependencies:
+        patterns:
+          - "typer"
+          - "rich"
+          - "questionary"
+          - "platformdirs"
+          - "pydantic"
+

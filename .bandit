@@ -1,0 +1,31 @@
+# Bandit Security Scanner Configuration
+# https://bandit.readthedocs.io/
+
+# Directories to exclude from scanning
+exclude_dirs:
+  - /tests/
+  - /specs/
+  - /.specify/
+  - /.speckit/
+  - /build/
+  - /dist/
+  - /.venv/
+  - /venv/
+
+# Test IDs to skip
+# These are expected/acceptable for a CLI tool
+skips:
+  - B101  # assert_used - OK in tests
+  - B601  # paramiko_calls - not applicable
+  - B404  # import subprocess - Expected for CLI tool
+  - B603  # subprocess without shell - We use shell=False (safe)
+  - B310  # urllib.urlopen - We only use HTTPS URLs with timeouts
+  - B110  # try/except/pass - Acceptable for graceful degradation
+  - B112  # try/except/continue - Acceptable for iteration error handling
+
+# Severity and confidence levels
+# Only report high-severity issues
+# Options: low, medium, high
+severity_level: high
+confidence_level: medium
+

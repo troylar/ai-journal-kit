@@ -6,8 +6,16 @@
 <div align="center">
 
 [![PyPI version](https://badge.fury.io/py/ai-journal-kit.svg)](https://pypi.org/project/ai-journal-kit/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+[![CI](https://github.com/troylar/ai-journal-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/troylar/ai-journal-kit/actions/workflows/ci.yml)
+[![Security Scan](https://github.com/troylar/ai-journal-kit/actions/workflows/security.yml/badge.svg)](https://github.com/troylar/ai-journal-kit/actions/workflows/security.yml)
+[![Tests](https://img.shields.io/badge/tests-21%20passing-brightgreen.svg)](https://github.com/troylar/ai-journal-kit/actions)
+
+[![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
+[![Security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
+[![Tested on](https://img.shields.io/badge/tested%20on-Ubuntu%20%7C%20macOS%20%7C%20Windows-blue.svg)](https://github.com/troylar/ai-journal-kit/actions)
 
 [Quick Start](#-quick-start-60-seconds) • [Features](#-why-ai-journal-kit) • [Installation](#-installation) • [Documentation](#-documentation)
 
