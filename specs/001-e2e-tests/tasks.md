@@ -81,7 +81,7 @@
 
 ---
 
-## Phase 4: User Story 2 - Update Command Validation (Priority: P2)
+## Phase 4: User Story 2 - Update Command Validation (Priority: P2) ✅ COMPLETE
 
 **Goal**: Comprehensive integration tests for update command ensuring customization preservation
 
@@ -95,26 +95,26 @@
 
 ### Implementation Tasks
 
-- [ ] T032 [US2] Create tests/integration/test_update_flow.py skeleton
-- [ ] T033 [P] [US2] Add test_update_preserves_custom_templates() in tests/integration/test_update_flow.py
-- [ ] T034 [P] [US2] Add test_update_preserves_ai_instructions() in tests/integration/test_update_flow.py
-- [ ] T035 [P] [US2] Add test_update_preserves_journal_entries() in tests/integration/test_update_flow.py
-- [ ] T036 [P] [US2] Add test_update_refreshes_core_templates() in tests/integration/test_update_flow.py
-- [ ] T037 [P] [US2] Add test_update_adds_new_ide_configs() in tests/integration/test_update_flow.py
-- [ ] T038 [P] [US2] Add test_update_migrates_old_structure() in tests/integration/test_update_flow.py
-- [ ] T039 [P] [US2] Add test_update_dry_run_mode() in tests/integration/test_update_flow.py
-- [ ] T040 [P] [US2] Add test_update_handles_corrupted_config() in tests/integration/test_update_flow.py
-- [ ] T041 [P] [US2] Add test_update_with_force_flag() in tests/integration/test_update_flow.py
+- [X] T032 [US2] Create tests/integration/test_update_flow.py skeleton
+- [X] T033 [P] [US2] Add test_update_preserves_custom_templates() in tests/integration/test_update_flow.py
+- [X] T034 [P] [US2] Add test_update_preserves_ai_instructions() in tests/integration/test_update_flow.py
+- [X] T035 [P] [US2] Add test_update_preserves_journal_entries() in tests/integration/test_update_flow.py
+- [X] T036 [P] [US2] Add test_update_refreshes_core_templates() in tests/integration/test_update_flow.py
+- [X] T037 [P] [US2] Add test_update_adds_new_ide_configs() in tests/integration/test_update_flow.py
+- [X] T038 [P] [US2] Add test_update_migrates_old_structure() in tests/integration/test_update_flow.py
+- [X] T039 [P] [US2] Add test_update_dry_run_mode() in tests/integration/test_update_flow.py
+- [X] T040 [P] [US2] Add test_update_handles_corrupted_config() in tests/integration/test_update_flow.py
+- [X] T041 [P] [US2] Add test_update_with_force_flag() in tests/integration/test_update_flow.py
 
 ### E2E Tests
 
-- [ ] T042 [US2] Create tests/e2e/test_upgrade_workflow.py skeleton
-- [ ] T043 [P] [US2] Add test_e2e_upgrade_preserves_everything() in tests/e2e/test_upgrade_workflow.py
-- [ ] T044 [P] [US2] Add test_e2e_upgrade_multiple_versions() in tests/e2e/test_upgrade_workflow.py
+- [X] T042 [US2] Create tests/e2e/test_upgrade_workflow.py skeleton
+- [X] T043 [P] [US2] Add test_e2e_upgrade_preserves_everything() in tests/e2e/test_upgrade_workflow.py
+- [X] T044 [P] [US2] Add test_e2e_upgrade_multiple_versions() in tests/e2e/test_upgrade_workflow.py
 
 ---
 
-## Phase 5: User Story 3 - Status & Doctor Commands Validation (Priority: P3)
+## Phase 5: User Story 3 - Status & Doctor Commands Validation (Priority: P3) ✅ COMPLETE
 
 **Goal**: Integration tests for diagnostic commands (status and doctor)
 
@@ -128,25 +128,25 @@
 
 ### Implementation Tasks - Status Command
 
-- [ ] T045 [US3] Create tests/integration/test_status_diagnostics.py skeleton
-- [ ] T046 [P] [US3] Add test_status_healthy_journal() in tests/integration/test_status_diagnostics.py
-- [ ] T047 [P] [US3] Add test_status_missing_folders() in tests/integration/test_status_diagnostics.py
-- [ ] T048 [P] [US3] Add test_status_missing_ide_configs() in tests/integration/test_status_diagnostics.py
-- [ ] T049 [P] [US3] Add test_status_corrupted_config() in tests/integration/test_status_diagnostics.py
-- [ ] T050 [P] [US3] Add test_status_json_output() in tests/integration/test_status_diagnostics.py
-- [ ] T051 [P] [US3] Add test_status_verbose_mode() in tests/integration/test_status_diagnostics.py
+- [X] T045 [US3] Create tests/integration/test_status_diagnostics.py skeleton
+- [X] T046 [P] [US3] Add test_status_healthy_journal() in tests/integration/test_status_diagnostics.py
+- [X] T047 [P] [US3] Add test_status_missing_folders() in tests/integration/test_status_diagnostics.py
+- [X] T048 [P] [US3] Add test_status_missing_ide_configs() in tests/integration/test_status_diagnostics.py
+- [X] T049 [P] [US3] Add test_status_corrupted_config() in tests/integration/test_status_diagnostics.py
+- [X] T050 [P] [US3] Add test_status_json_output() in tests/integration/test_status_diagnostics.py
+- [X] T051 [P] [US3] Add test_status_verbose_mode() in tests/integration/test_status_diagnostics.py
 
 ### Implementation Tasks - Doctor Command
 
-- [ ] T052 [US3] Create tests/integration/test_doctor_repairs.py skeleton
-- [ ] T053 [P] [US3] Add test_doctor_detects_missing_folders() in tests/integration/test_doctor_repairs.py
-- [ ] T054 [P] [US3] Add test_doctor_detects_corrupted_config() in tests/integration/test_doctor_repairs.py
-- [ ] T055 [P] [US3] Add test_doctor_suggests_repairs() in tests/integration/test_doctor_repairs.py
-- [ ] T056 [P] [US3] Add test_doctor_repairs_structure() in tests/integration/test_doctor_repairs.py
+- [X] T052 [US3] Create tests/integration/test_doctor_repairs.py skeleton
+- [X] T053 [P] [US3] Add test_doctor_detects_missing_folders() in tests/integration/test_doctor_repairs.py
+- [X] T054 [P] [US3] Add test_doctor_detects_corrupted_config() in tests/integration/test_doctor_repairs.py
+- [X] T055 [P] [US3] Add test_doctor_suggests_repairs() in tests/integration/test_doctor_repairs.py
+- [X] T056 [P] [US3] Add test_doctor_repairs_structure() in tests/integration/test_doctor_repairs.py
 
 ---
 
-## Phase 6: User Story 4 - Move Command Validation (Priority: P3)
+## Phase 6: User Story 4 - Move Command Validation (Priority: P3) ✅ COMPLETE
 
 **Goal**: Integration tests for move command ensuring safe journal relocation
 
@@ -160,14 +160,14 @@
 
 ### Implementation Tasks
 
-- [ ] T057 [US4] Create tests/integration/test_move_journal.py skeleton
-- [ ] T058 [P] [US4] Add test_move_relocates_all_files() in tests/integration/test_move_journal.py
-- [ ] T059 [P] [US4] Add test_move_updates_config() in tests/integration/test_move_journal.py
-- [ ] T060 [P] [US4] Add test_move_preserves_ide_configs() in tests/integration/test_move_journal.py
-- [ ] T061 [P] [US4] Add test_move_updates_symlinks() in tests/integration/test_move_journal.py
-- [ ] T062 [P] [US4] Add test_move_dry_run_mode() in tests/integration/test_move_journal.py
-- [ ] T063 [P] [US4] Add test_move_handles_cancellation() in tests/integration/test_move_journal.py
-- [ ] T064 [P] [US4] Add test_move_to_cloud_drive() in tests/integration/test_move_journal.py
+- [X] T057 [US4] Create tests/integration/test_move_journal.py skeleton
+- [X] T058 [P] [US4] Add test_move_relocates_all_files() in tests/integration/test_move_journal.py
+- [X] T059 [P] [US4] Add test_move_updates_config() in tests/integration/test_move_journal.py
+- [X] T060 [P] [US4] Add test_move_preserves_ide_configs() in tests/integration/test_move_journal.py
+- [X] T061 [P] [US4] Add test_move_updates_symlinks() in tests/integration/test_move_journal.py
+- [X] T062 [P] [US4] Add test_move_dry_run_mode() in tests/integration/test_move_journal.py
+- [X] T063 [P] [US4] Add test_move_handles_cancellation() in tests/integration/test_move_journal.py
+- [X] T064 [P] [US4] Add test_move_to_cloud_drive() in tests/integration/test_move_journal.py
 
 ---
 
