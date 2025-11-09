@@ -574,3 +574,87 @@ def test_update_success_message_includes_templates(temp_journal_dir, isolated_co
                         # Success message should mention templates
                         if result.exit_code == 0:
                             assert "template" in result.output.lower()
+
+
+@pytest.mark.integration
+def test_update_detects_dev_version_newer_than_pypi(temp_journal_dir, isolated_config):
+    """Test update detects when current version is newer than PyPI (dev version)."""
+    from unittest.mock import patch
+
+    # Create journal
+    create_journal_fixture(path=temp_journal_dir, ide="cursor", config_dir=isolated_config)
+
+    # Mock version where current (1.0.12) > latest (1.0.11)
+    with patch("ai_journal_kit.__version__", "1.0.12"):
+        with patch("ai_journal_kit.cli.update.get_latest_version", return_value="1.0.11"):
+            runner = CliRunner()
+            result = runner.invoke(app, ["update"])
+
+            # Should exit successfully without updating
+            assert result.exit_code == 0
+            assert "newer than PyPI" in result.output
+            assert "development version" in result.output.lower()
+            # Should NOT have attempted package upgrade
+            assert "upgraded" not in result.output.lower() or "up to date" in result.output.lower()
+
+
+@pytest.mark.integration
+def test_update_dev_version_with_force_refreshes_configs(temp_journal_dir, isolated_config):
+    """Test update with --force refreshes IDE configs even when on dev version."""
+    from unittest.mock import patch
+
+    # Create journal
+    create_journal_fixture(path=temp_journal_dir, ide="cursor", config_dir=isolated_config)
+
+    # Mock version where current (1.0.12) > latest (1.0.11)
+    with patch("ai_journal_kit.__version__", "1.0.12"):
+        with patch("ai_journal_kit.cli.update.get_latest_version", return_value="1.0.11"):
+            with patch("subprocess.run"):  # Mock package upgrade
+                runner = CliRunner()
+                result = runner.invoke(app, ["update", "--force", "--no-confirm"])
+
+                # Should proceed with IDE config refresh
+                assert result.exit_code == 0
+                # Should show forcing message
+                assert "forc" in result.output.lower()
+
+
+@pytest.mark.integration
+def test_update_equal_versions_no_update_needed(temp_journal_dir, isolated_config):
+    """Test update correctly identifies when already on latest version."""
+    from unittest.mock import patch
+
+    # Create journal
+    create_journal_fixture(path=temp_journal_dir, ide="cursor", config_dir=isolated_config)
+
+    # Mock version where current == latest
+    with patch("ai_journal_kit.__version__", "1.0.11"):
+        with patch("ai_journal_kit.cli.update.get_latest_version", return_value="1.0.11"):
+            runner = CliRunner()
+            result = runner.invoke(app, ["update"])
+
+            # Should exit successfully without updating
+            assert result.exit_code == 0
+            assert "already on the latest version" in result.output.lower()
+            assert "no updates needed" in result.output.lower()
+
+
+@pytest.mark.integration
+def test_update_current_less_than_latest_proceeds(temp_journal_dir, isolated_config):
+    """Test update proceeds normally when current version is older than PyPI."""
+    from unittest.mock import patch
+
+    # Create journal
+    create_journal_fixture(path=temp_journal_dir, ide="cursor", config_dir=isolated_config)
+
+    # Mock version where current (1.0.10) < latest (1.0.11)
+    with patch("ai_journal_kit.__version__", "1.0.10"):
+        with patch("ai_journal_kit.cli.update.get_latest_version", return_value="1.0.11"):
+            with patch("subprocess.run"):  # Mock package upgrade
+                runner = CliRunner()
+                result = runner.invoke(app, ["update", "--no-confirm"])
+
+                # Should proceed with update
+                assert result.exit_code == 0
+                # Should show update process
+                assert "1.0.10" in result.output and "1.0.11" in result.output

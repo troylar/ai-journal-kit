@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.12] - 2025-11-09
+
+### Fixed
+- **Update command downgrade protection**: Fixed bug where update command would attempt to downgrade when running development version
+  - Now properly compares semantic versions using `packaging.version.parse()`
+  - Detects when current version is newer than PyPI and refuses to downgrade
+  - Shows clear warning when running development version
+  - Use `--force` to refresh IDE configs without package downgrade
+
 ## [1.0.11] - 2025-11-09
 
 ### Fixed

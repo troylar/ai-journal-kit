@@ -3,6 +3,7 @@
 import subprocess
 
 import typer
+from packaging.version import parse as parse_version
 from rich.markdown import Markdown
 from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, TextColumn
@@ -150,12 +151,38 @@ def update(
     else:
         console.print(f"  Latest version:  [cyan]{latest_version}[/cyan]\n")
 
-        if latest_version == current_version and not force:
-            console.print("[green]✓ You're already on the latest version![/green]\n")
-            if check:
+        # Compare versions properly to detect downgrades
+        try:
+            current_parsed = parse_version(current_version)
+            latest_parsed = parse_version(latest_version)
+
+            if current_parsed > latest_parsed:
+                console.print(
+                    "[yellow]⚠️  Your version is newer than PyPI![/yellow]\n"
+                    f"  Current: [cyan]{current_version}[/cyan]\n"
+                    f"  PyPI:    [dim]{latest_version}[/dim]\n\n"
+                    "[dim]This usually means you're running a development version.[/dim]\n"
+                )
+                if not force:
+                    console.print("[yellow]Use --force to reinstall IDE configs anyway.[/yellow]\n")
+                    raise typer.Exit(0)
+                else:
+                    console.print("[yellow]Forcing IDE config refresh...[/yellow]\n")
+                    latest_version = current_version  # Don't downgrade
+            elif current_parsed == latest_parsed and not force:
+                console.print("[green]✓ You're already on the latest version![/green]\n")
+                if check:
+                    raise typer.Exit(0)
+                console.print("No updates needed. Use --force to reinstall IDE configs.\n")
                 raise typer.Exit(0)
-            console.print("No updates needed. Use --force to reinstall IDE configs.\n")
-            raise typer.Exit(0)
+        except (ValueError, TypeError, AttributeError):
+            # Fallback to string comparison if version parsing fails
+            if latest_version == current_version and not force:
+                console.print("[green]✓ You're already on the latest version![/green]\n")
+                if check:
+                    raise typer.Exit(0)
+                console.print("No updates needed. Use --force to reinstall IDE configs.\n")
+                raise typer.Exit(0)
 
     if check:
         console.print(f"\n[yellow]Update available: {current_version} → {latest_version}[/yellow]")
