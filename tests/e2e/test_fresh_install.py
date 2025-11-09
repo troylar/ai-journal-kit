@@ -39,7 +39,8 @@ def test_e2e_fresh_install_cursor(temp_journal_dir, isolated_env):
 
     # Verify success
     assert result.returncode == 0, f"Setup failed: {result.stderr}"
-    assert "success" in result.stdout.lower() or "complete" in result.stdout.lower()
+    stdout_text = result.stdout or ""
+    assert "success" in stdout_text.lower() or "complete" in stdout_text.lower()
 
     # Verify journal structure created
     assert temp_journal_dir.exists()

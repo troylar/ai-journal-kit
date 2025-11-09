@@ -25,7 +25,7 @@ def test_main_as_module():
         import pathlib
 
         main_file = pathlib.Path(__file__).parent.parent.parent / "ai_journal_kit" / "__main__.py"
-        code = compile(main_file.read_text(), str(main_file), "exec")
+        code = compile(main_file.read_text(encoding="utf-8"), str(main_file), "exec")
 
         # Execute with __name__ set to "__main__" to trigger the if block
         exec(code, {"__name__": "__main__"})

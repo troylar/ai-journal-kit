@@ -52,7 +52,7 @@ def test_e2e_upgrade_preserves_everything(temp_journal_dir, isolated_env):
 
     # Custom file should still exist
     assert custom_file.exists()
-    assert "My Important Note" in custom_file.read_text()
+    assert "My Important Note" in custom_file.read_text(encoding="utf-8")
 
     # Structure should remain valid
     assert_journal_structure_valid(temp_journal_dir)

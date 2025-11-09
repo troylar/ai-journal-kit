@@ -36,7 +36,7 @@ def test_backup_template_creates_timestamped_backup(temp_journal_dir):
     assert backup_path.suffix == ".md"
 
     # Verify content is copied
-    assert backup_path.read_text() == "# Daily Template\nContent here"
+    assert backup_path.read_text(encoding="utf-8") == "# Daily Template\nContent here"
 
 
 @pytest.mark.unit
@@ -309,7 +309,7 @@ def test_restore_template_backup_restores_file(temp_journal_dir):
 
     # Should restore to original path
     assert restored_path == original
-    assert original.read_text() == "# Old version"
+    assert original.read_text(encoding="utf-8") == "# Old version"
 
 
 @pytest.mark.unit
@@ -334,4 +334,4 @@ def test_restore_template_backup_parses_name_correctly(temp_journal_dir):
     expected = temp_journal_dir / "my-custom-template.md"
     assert restored_path == expected
     assert expected.exists()
-    assert expected.read_text() == "# Backup content"
+    assert expected.read_text(encoding="utf-8") == "# Backup content"

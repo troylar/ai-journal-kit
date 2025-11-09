@@ -39,7 +39,7 @@ def test_update_preserves_custom_templates(temp_journal_dir, isolated_config):
 
     # Custom template should still exist
     assert custom_template.exists()
-    assert "My Custom Template" in custom_template.read_text()
+    assert "My Custom Template" in custom_template.read_text(encoding="utf-8")
 
 
 @pytest.mark.integration
@@ -63,7 +63,7 @@ def test_update_preserves_ai_instructions(temp_journal_dir, isolated_config):
 
     # Custom instructions should still exist
     assert custom_coach.exists()
-    assert "Be very direct and concise" in custom_coach.read_text()
+    assert "Be very direct and concise" in custom_coach.read_text(encoding="utf-8")
 
 
 @pytest.mark.integration

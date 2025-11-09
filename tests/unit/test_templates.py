@@ -65,7 +65,7 @@ def test_copy_ide_configs_skips_existing_files(temp_journal_dir):
 
     # Custom file should still exist
     assert custom_file.exists()
-    assert custom_file.read_text() == "# Custom rule"
+    assert custom_file.read_text(encoding="utf-8") == "# Custom rule"
 
 
 @pytest.mark.unit
@@ -138,7 +138,7 @@ def test_copy_ide_configs_copilot_with_old_structure(temp_journal_dir):
     # File exists (from template), but old custom content was replaced
     assert old_file.exists()
     # Should have new template content (not our custom text)
-    content = old_file.read_text()
+    content = old_file.read_text(encoding="utf-8")
     assert "# My custom old instructions" not in content
 
     # New instructions folder should exist
