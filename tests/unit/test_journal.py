@@ -129,3 +129,32 @@ def test_create_structure_is_idempotent(temp_journal_dir):
 
     # WELCOME.md should exist (not duplicated)
     assert (temp_journal_dir / "WELCOME.md").exists()
+
+
+@pytest.mark.unit
+def test_create_structure_with_default_framework(temp_journal_dir):
+    """Test create_structure with default framework."""
+    create_structure(temp_journal_dir, framework="default")
+
+    # Should create standard structure
+    for folder in REQUIRED_FOLDERS:
+        assert (temp_journal_dir / folder).exists()
+
+    # Should have WELCOME.md but no framework-specific templates
+    assert (temp_journal_dir / "WELCOME.md").exists()
+
+
+@pytest.mark.unit
+def test_create_structure_with_gtd_framework(temp_journal_dir):
+    """Test create_structure with GTD framework copies templates."""
+    create_structure(temp_journal_dir, framework="gtd")
+
+    # Should create standard structure
+    for folder in REQUIRED_FOLDERS:
+        assert (temp_journal_dir / folder).exists()
+
+    # Should have GTD templates
+    assert (temp_journal_dir / "daily-template.md").exists()
+    assert (temp_journal_dir / "project-template.md").exists()
+    assert (temp_journal_dir / "someday-maybe-template.md").exists()
+    assert (temp_journal_dir / "waiting-for-template.md").exists()
