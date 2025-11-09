@@ -76,8 +76,8 @@ def test_copy_template(temp_journal_dir):
 
     assert dest_file.exists()
     assert dest_file.is_file()
-    # Verify it has content
-    content = dest_file.read_text()
+    # Verify it has content (use UTF-8 for Windows compatibility with emojis)
+    content = dest_file.read_text(encoding="utf-8")
     assert len(content) > 0
 
 

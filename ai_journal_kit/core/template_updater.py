@@ -4,10 +4,9 @@ import shutil
 from datetime import datetime
 from pathlib import Path
 
-from rich.console import Console
 from rich.table import Table
 
-console = Console()
+from ai_journal_kit.utils.ui import console
 
 
 def backup_template(template_path: Path) -> Path:

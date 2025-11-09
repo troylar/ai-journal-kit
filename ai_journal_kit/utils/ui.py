@@ -1,5 +1,6 @@
 """Rich UI helpers for beautiful CLI output."""
 
+import sys
 from collections.abc import Callable
 
 import questionary
@@ -10,8 +11,18 @@ from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn
 from rich.prompt import Confirm, Prompt
 from rich.table import Table
 
-console = Console()
-error_console = Console(stderr=True)
+# Ensure UTF-8 encoding for Windows compatibility with Unicode characters
+# On Windows, force UTF-8 to handle emojis and special characters in templates
+_console_kwargs = {}
+if sys.platform == "win32":
+    # Reconfigure stdout/stderr to use UTF-8 on Windows
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
+    if hasattr(sys.stderr, "reconfigure"):
+        sys.stderr.reconfigure(encoding="utf-8")
+
+console = Console(**_console_kwargs)
+error_console = Console(stderr=True, **_console_kwargs)
 
 
 def ask_path(prompt: str, default: str = "~/journal") -> str:
