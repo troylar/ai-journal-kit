@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Framework-Specific Templates**: Choose your preferred journaling methodology during setup
+  - **GTD (Getting Things Done)**: Next actions, waiting for lists, someday/maybe, context-based organization
+  - **PARA (Projects, Areas, Resources, Archive)**: Clear separation of projects vs ongoing areas, resource library
+  - **Bullet Journal**: Rapid logging, monthly logs, future log, custom collections
+  - **Zettelkasten**: Atomic notes, permanent notes, index system, emphasis on linking
+  - **Default**: Flexible framework that adapts to any workflow
+  - Each framework includes custom templates tailored to the methodology
+  - Add `--framework` flag to setup command for non-interactive selection
+  - Interactive framework selector with descriptions during setup
+  - 15+ framework-specific templates across all methodologies
+
+### Changed
+- Setup now prompts for framework choice in addition to IDE and location
+- Config model updated to store selected framework
+- Templates automatically copied based on chosen framework
+- Non-interactive setup (with `--no-confirm`) defaults to 'default' framework
+
+### Technical
+- Added `validate_framework()` function for framework validation
+- Added `ask_framework()` UI function for interactive framework selection
+- Updated `create_structure()` to accept framework parameter
+- Added `copy_framework_templates()` function
+- 17 new tests (9 integration + 8 unit) for framework functionality
+- Test coverage maintained at 98%
+
 ## [1.0.13] - 2025-11-09
 
 ### Added
