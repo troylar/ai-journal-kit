@@ -1,7 +1,5 @@
 """Unit tests for manifest module."""
 
-import json
-from pathlib import Path
 
 import pytest
 
