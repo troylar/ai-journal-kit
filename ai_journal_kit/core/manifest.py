@@ -100,7 +100,9 @@ class Manifest:
                 pass  # Keep absolute if not relative
 
         file_key = str(file_path)
-        file_hash = self._compute_hash(file_path if file_path.is_absolute() else relative_to / file_path)
+        file_hash = self._compute_hash(
+            file_path if file_path.is_absolute() else relative_to / file_path
+        )
 
         self.files[file_key] = FileEntry(
             source=source,

@@ -40,7 +40,18 @@ def test_list_journals_multiple(temp_journal_dir, isolated_config):
     runner = CliRunner()
     result = runner.invoke(
         app,
-        ["setup", "--name", "business", "--location", str(journal2), "--framework", "gtd", "--ide", "cursor", "--no-confirm"],
+        [
+            "setup",
+            "--name",
+            "business",
+            "--location",
+            str(journal2),
+            "--framework",
+            "gtd",
+            "--ide",
+            "cursor",
+            "--no-confirm",
+        ],
         catch_exceptions=False,
     )
     assert result.exit_code == 0
@@ -93,7 +104,18 @@ def test_use_journal_switches_active(temp_journal_dir, isolated_config):
     runner = CliRunner()
     result = runner.invoke(
         app,
-        ["setup", "--name", "business", "--location", str(journal2), "--framework", "gtd", "--ide", "cursor", "--no-confirm"],
+        [
+            "setup",
+            "--name",
+            "business",
+            "--location",
+            str(journal2),
+            "--framework",
+            "gtd",
+            "--ide",
+            "cursor",
+            "--no-confirm",
+        ],
         catch_exceptions=False,
     )
     assert result.exit_code == 0
@@ -136,7 +158,18 @@ def test_use_journal_updates_status(temp_journal_dir, isolated_config):
     runner = CliRunner()
     runner.invoke(
         app,
-        ["setup", "--name", "business", "--location", str(journal2), "--framework", "gtd", "--ide", "cursor", "--no-confirm"],
+        [
+            "setup",
+            "--name",
+            "business",
+            "--location",
+            str(journal2),
+            "--framework",
+            "gtd",
+            "--ide",
+            "cursor",
+            "--no-confirm",
+        ],
         catch_exceptions=False,
     )
 
@@ -170,7 +203,18 @@ def test_env_var_overrides_active_journal(temp_journal_dir, isolated_config, mon
     runner = CliRunner()
     runner.invoke(
         app,
-        ["setup", "--name", "business", "--location", str(journal2), "--framework", "gtd", "--ide", "cursor", "--no-confirm"],
+        [
+            "setup",
+            "--name",
+            "business",
+            "--location",
+            str(journal2),
+            "--framework",
+            "gtd",
+            "--ide",
+            "cursor",
+            "--no-confirm",
+        ],
         catch_exceptions=False,
     )
 
@@ -183,6 +227,7 @@ def test_env_var_overrides_active_journal(temp_journal_dir, isolated_config, mon
 
     # Verify get_active_journal_name respects env var
     from ai_journal_kit.core.config import get_active_journal_name
+
     active_name = get_active_journal_name()
     assert active_name == "business"
 
@@ -200,7 +245,18 @@ def test_list_shows_correct_active_indicator(temp_journal_dir, isolated_config):
     runner = CliRunner()
     runner.invoke(
         app,
-        ["setup", "--name", "business", "--location", str(journal2), "--framework", "gtd", "--ide", "cursor", "--no-confirm"],
+        [
+            "setup",
+            "--name",
+            "business",
+            "--location",
+            str(journal2),
+            "--framework",
+            "gtd",
+            "--ide",
+            "cursor",
+            "--no-confirm",
+        ],
         catch_exceptions=False,
     )
 

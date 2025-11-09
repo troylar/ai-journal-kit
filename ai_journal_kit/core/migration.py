@@ -1,6 +1,5 @@
 """Migration utilities for upgrading existing journals to new versions."""
 
-
 from ai_journal_kit.core.config import load_config
 from ai_journal_kit.core.manifest import Manifest
 

@@ -104,9 +104,10 @@ def assert_config_valid(
         else:
             config_journal = Path(config_data["journal_location"])
 
-        assert config_journal == expected_journal or config_journal.resolve() == expected_journal.resolve(), (
-            f"Config journal location mismatch: {config_journal} != {expected_journal}"
-        )
+        assert (
+            config_journal == expected_journal
+            or config_journal.resolve() == expected_journal.resolve()
+        ), f"Config journal location mismatch: {config_journal} != {expected_journal}"
 
     if expected_ide:
         if is_multi_journal:
@@ -117,9 +118,7 @@ def assert_config_valid(
         else:
             config_ide = config_data["ide"]
 
-        assert config_ide == expected_ide, (
-            f"Config IDE mismatch: {config_ide} != {expected_ide}"
-        )
+        assert config_ide == expected_ide, f"Config IDE mismatch: {config_ide} != {expected_ide}"
 
 
 def assert_template_exists(journal_path: Path, template_name: str) -> None:

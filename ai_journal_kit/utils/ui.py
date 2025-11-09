@@ -54,9 +54,7 @@ def ask_ide(prompt: str = "Which AI editor do you use?") -> str:
     return ide_map[answer]
 
 
-def ask_framework(
-    prompt: str = "Which journaling framework would you like to use?"
-) -> str:
+def ask_framework(prompt: str = "Which journaling framework would you like to use?") -> str:
     """Ask user for framework preference with visual selector."""
     choices = [
         "Default (flexible)",

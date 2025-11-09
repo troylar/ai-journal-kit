@@ -86,7 +86,9 @@ def switch_framework(
         "zettelkasten": "Zettelkasten",
     }
 
-    console.print(f"\n[bold cyan]Framework Switch: {framework_names.get(current_framework, current_framework)} → {framework_names.get(framework, framework)}[/bold cyan]\n")
+    console.print(
+        f"\n[bold cyan]Framework Switch: {framework_names.get(current_framework, current_framework)} → {framework_names.get(framework, framework)}[/bold cyan]\n"
+    )
 
     # Show interactive checklist
     if not no_confirm:
@@ -98,7 +100,9 @@ def switch_framework(
 
         # If customized templates exist, offer resolution options
         if customized_templates:
-            action = ask_customization_resolution(customized_templates, framework_names.get(framework, framework))
+            action = ask_customization_resolution(
+                customized_templates, framework_names.get(framework, framework)
+            )
             if action == "cancel":
                 console.print("[yellow]Framework switch cancelled.[/yellow]")
                 raise typer.Exit(0)
@@ -137,7 +141,9 @@ def switch_framework(
 
     # Success message
     show_success("Framework switched successfully!")
-    console.print(f"\n[bold]New framework:[/bold] [green]{framework_names.get(framework, framework)}[/green]")
+    console.print(
+        f"\n[bold]New framework:[/bold] [green]{framework_names.get(framework, framework)}[/green]"
+    )
     console.print("\n[dim]Your journal notes (daily/, projects/, etc.) are untouched.[/dim]\n")
 
 
@@ -155,7 +161,9 @@ def show_interactive_checklist(framework: str, framework_name: str, customized_c
     table.add_row("✓", "Old templates backed up to .framework-backups/")
 
     if customized_count > 0:
-        table.add_row("✓", f"{customized_count} customized template(s) detected - you'll choose what to do")
+        table.add_row(
+            "✓", f"{customized_count} customized template(s) detected - you'll choose what to do"
+        )
 
     console.print(table)
 
@@ -253,13 +261,17 @@ def execute_framework_switch(
         safe_dir = journal_path / ".ai-instructions" / "templates"
         safe_dir.mkdir(parents=True, exist_ok=True)
 
-        console.print(f"\n[cyan]Moving {len(customized_templates)} customized templates to safe zone...[/cyan]")
+        console.print(
+            f"\n[cyan]Moving {len(customized_templates)} customized templates to safe zone...[/cyan]"
+        )
         for template_file in customized_templates:
             safe_path = safe_dir / template_file.name
             shutil.copy2(template_file, safe_path)
             console.print(f"  → {template_file.name} → .ai-instructions/templates/")
 
-        console.print("\n[green]✓[/green] Your customizations are now in [cyan].ai-instructions/templates/[/cyan]")
+        console.print(
+            "\n[green]✓[/green] Your customizations are now in [cyan].ai-instructions/templates/[/cyan]"
+        )
         console.print("[dim]They will override framework templates when creating notes.[/dim]\n")
 
     # Install new framework templates

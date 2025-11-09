@@ -14,7 +14,16 @@ def test_setup_first_journal_defaults_to_default_name(temp_journal_dir, isolated
     runner = CliRunner()
     result = runner.invoke(
         app,
-        ["setup", "--location", str(temp_journal_dir), "--framework", "gtd", "--ide", "cursor", "--no-confirm"],
+        [
+            "setup",
+            "--location",
+            str(temp_journal_dir),
+            "--framework",
+            "gtd",
+            "--ide",
+            "cursor",
+            "--no-confirm",
+        ],
         catch_exceptions=False,
     )
 
@@ -41,7 +50,18 @@ def test_setup_second_journal_with_name(temp_journal_dir, isolated_config):
     runner = CliRunner()
     result = runner.invoke(
         app,
-        ["setup", "--name", "business", "--location", str(journal2), "--framework", "gtd", "--ide", "cursor", "--no-confirm"],
+        [
+            "setup",
+            "--name",
+            "business",
+            "--location",
+            str(journal2),
+            "--framework",
+            "gtd",
+            "--ide",
+            "cursor",
+            "--no-confirm",
+        ],
         catch_exceptions=False,
     )
 
@@ -67,7 +87,18 @@ def test_setup_duplicate_name_fails(temp_journal_dir, isolated_config):
     runner = CliRunner()
     result = runner.invoke(
         app,
-        ["setup", "--name", "default", "--location", str(journal2), "--framework", "gtd", "--ide", "cursor", "--no-confirm"],
+        [
+            "setup",
+            "--name",
+            "default",
+            "--location",
+            str(journal2),
+            "--framework",
+            "gtd",
+            "--ide",
+            "cursor",
+            "--no-confirm",
+        ],
         catch_exceptions=False,
     )
 
@@ -81,7 +112,18 @@ def test_setup_named_journal_creates_manifest(temp_journal_dir, isolated_config)
     runner = CliRunner()
     result = runner.invoke(
         app,
-        ["setup", "--name", "test", "--location", str(temp_journal_dir), "--framework", "gtd", "--ide", "cursor", "--no-confirm"],
+        [
+            "setup",
+            "--name",
+            "test",
+            "--location",
+            str(temp_journal_dir),
+            "--framework",
+            "gtd",
+            "--ide",
+            "cursor",
+            "--no-confirm",
+        ],
         catch_exceptions=False,
     )
 
@@ -98,7 +140,16 @@ def test_setup_first_journal_is_automatically_active(temp_journal_dir, isolated_
     runner = CliRunner()
     runner.invoke(
         app,
-        ["setup", "--location", str(temp_journal_dir), "--framework", "default", "--ide", "cursor", "--no-confirm"],
+        [
+            "setup",
+            "--location",
+            str(temp_journal_dir),
+            "--framework",
+            "default",
+            "--ide",
+            "cursor",
+            "--no-confirm",
+        ],
         catch_exceptions=False,
     )
 
@@ -124,7 +175,18 @@ def test_setup_second_journal_does_not_change_active(temp_journal_dir, isolated_
     runner = CliRunner()
     runner.invoke(
         app,
-        ["setup", "--name", "business", "--location", str(journal2), "--framework", "gtd", "--ide", "cursor", "--no-confirm"],
+        [
+            "setup",
+            "--name",
+            "business",
+            "--location",
+            str(journal2),
+            "--framework",
+            "gtd",
+            "--ide",
+            "cursor",
+            "--no-confirm",
+        ],
         catch_exceptions=False,
     )
 
@@ -142,7 +204,18 @@ def test_setup_multiple_journals_all_independent(temp_journal_dir, isolated_conf
     journal1 = temp_journal_dir / "personal"
     runner.invoke(
         app,
-        ["setup", "--name", "personal", "--location", str(journal1), "--framework", "default", "--ide", "cursor", "--no-confirm"],
+        [
+            "setup",
+            "--name",
+            "personal",
+            "--location",
+            str(journal1),
+            "--framework",
+            "default",
+            "--ide",
+            "cursor",
+            "--no-confirm",
+        ],
         catch_exceptions=False,
     )
 
@@ -150,7 +223,18 @@ def test_setup_multiple_journals_all_independent(temp_journal_dir, isolated_conf
     journal2 = temp_journal_dir / "business"
     runner.invoke(
         app,
-        ["setup", "--name", "business", "--location", str(journal2), "--framework", "gtd", "--ide", "windsurf", "--no-confirm"],
+        [
+            "setup",
+            "--name",
+            "business",
+            "--location",
+            str(journal2),
+            "--framework",
+            "gtd",
+            "--ide",
+            "windsurf",
+            "--no-confirm",
+        ],
         catch_exceptions=False,
     )
 
@@ -158,7 +242,18 @@ def test_setup_multiple_journals_all_independent(temp_journal_dir, isolated_conf
     journal3 = temp_journal_dir / "test"
     runner.invoke(
         app,
-        ["setup", "--name", "test", "--location", str(journal3), "--framework", "para", "--ide", "claude-code", "--no-confirm"],
+        [
+            "setup",
+            "--name",
+            "test",
+            "--location",
+            str(journal3),
+            "--framework",
+            "para",
+            "--ide",
+            "claude-code",
+            "--no-confirm",
+        ],
         catch_exceptions=False,
     )
 

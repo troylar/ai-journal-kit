@@ -22,7 +22,9 @@ def list_journals(
     """
     multi_config = load_multi_journal_config()
     if not multi_config or not multi_config.journals:
-        show_error("No journals configured", "Run 'ai-journal-kit setup' to create your first journal")
+        show_error(
+            "No journals configured", "Run 'ai-journal-kit setup' to create your first journal"
+        )
         raise typer.Exit(1)
 
     active_name = get_active_journal_name()
@@ -72,4 +74,6 @@ def list_journals(
         console.print(table)
         console.print()
         console.print("[dim]Switch journals with: [cyan]ai-journal-kit use <name>[/cyan][/dim]")
-        console.print("[dim]Override for single command: [cyan]AI_JOURNAL=<name> ai-journal-kit <command>[/cyan][/dim]\n")
+        console.print(
+            "[dim]Override for single command: [cyan]AI_JOURNAL=<name> ai-journal-kit <command>[/cyan][/dim]\n"
+        )

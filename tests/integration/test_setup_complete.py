@@ -207,7 +207,9 @@ def test_setup_prevents_duplicate_installation(temp_journal_dir, isolated_config
     assert "name required" in result2.output.lower() or "use --name" in result2.output.lower()
 
 
-@pytest.mark.skip(reason="Behavior changed with multi-journal support - use doctor command to repair deleted journals")
+@pytest.mark.skip(
+    reason="Behavior changed with multi-journal support - use doctor command to repair deleted journals"
+)
 @pytest.mark.integration
 def test_setup_handles_deleted_journal(temp_journal_dir, isolated_config):
     """Test setup handles case where journal was manually deleted.

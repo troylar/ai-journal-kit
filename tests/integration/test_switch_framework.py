@@ -24,9 +24,7 @@ def test_switch_framework_from_default_to_gtd(temp_journal_dir, isolated_config)
     )
 
     runner = CliRunner()
-    result = runner.invoke(
-        app, ["switch-framework", "gtd", "--no-confirm"], catch_exceptions=False
-    )
+    result = runner.invoke(app, ["switch-framework", "gtd", "--no-confirm"], catch_exceptions=False)
 
     # Should succeed
     assert result.exit_code == 0, f"Switch failed: {result.output}"
