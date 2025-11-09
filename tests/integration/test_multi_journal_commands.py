@@ -126,7 +126,9 @@ def test_use_journal_switches_active(temp_journal_dir, isolated_config):
     result = runner.invoke(app, ["use", "business"], catch_exceptions=False)
 
     assert result.exit_code == 0
-    assert "Switched to journal 'business'" in result.output
+    # Output contains ANSI codes and emoji, check for key parts
+    assert "Switched to journal" in result.output
+    assert "'business'" in result.output
 
     # Verify config was updated
     multi_config = load_multi_journal_config()
