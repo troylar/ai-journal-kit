@@ -54,6 +54,32 @@ def ask_ide(prompt: str = "Which AI editor do you use?") -> str:
     return ide_map[answer]
 
 
+def ask_framework(
+    prompt: str = "Which journaling framework would you like to use?"
+) -> str:
+    """Ask user for framework preference with visual selector."""
+    choices = [
+        "Default (flexible)",
+        "GTD (Getting Things Done)",
+        "PARA (Projects, Areas, Resources, Archive)",
+        "Bullet Journal",
+        "Zettelkasten (knowledge management)",
+    ]
+
+    answer = questionary.select(prompt, choices=choices, default="Default (flexible)").ask()
+
+    # Map display names back to internal names
+    framework_map = {
+        "Default (flexible)": "default",
+        "GTD (Getting Things Done)": "gtd",
+        "PARA (Projects, Areas, Resources, Archive)": "para",
+        "Bullet Journal": "bullet-journal",
+        "Zettelkasten (knowledge management)": "zettelkasten",
+    }
+
+    return framework_map[answer]
+
+
 def confirm(prompt: str) -> bool:
     """Ask user for confirmation."""
     return Confirm.ask(f"[yellow]{prompt}[/yellow]")

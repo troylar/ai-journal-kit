@@ -19,6 +19,7 @@ class Config(BaseModel):
 
     journal_location: Path
     ide: Literal["cursor", "windsurf", "claude-code", "copilot", "all"]
+    framework: Literal["default", "gtd", "para", "bullet-journal", "zettelkasten"] = "default"
     version: str = "1.0.0"
     created_at: datetime = Field(default_factory=datetime.now)
     last_updated: datetime = Field(default_factory=datetime.now)

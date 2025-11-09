@@ -8,8 +8,9 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 from ai_journal_kit.core.config import Config, load_config, save_config
 from ai_journal_kit.core.journal import create_structure
 from ai_journal_kit.core.templates import copy_ide_configs
-from ai_journal_kit.core.validation import validate_ide, validate_path
+from ai_journal_kit.core.validation import validate_framework, validate_ide, validate_path
 from ai_journal_kit.utils.ui import (
+    ask_framework,
     ask_ide,
     ask_path,
     confirm,
@@ -25,6 +26,12 @@ def setup(
     ide: str = typer.Option(
         None, "--ide", "-i", help="AI editor: cursor/windsurf/claude-code/copilot/all"
     ),
+    framework: str = typer.Option(
+        None,
+        "--framework",
+        "-f",
+        help="Journaling framework: default/gtd/para/bullet-journal/zettelkasten",
+    ),
     no_confirm: bool = typer.Option(False, "--no-confirm", help="Skip confirmation prompt"),
     dry_run: bool = typer.Option(
         False, "--dry-run", help="Show what would be done without doing it"
@@ -34,6 +41,7 @@ def setup(
 
     Interactive setup that guides you through:
     - Choosing journal location (local or cloud)
+    - Selecting journaling framework
     - Selecting your AI editor
     - Creating journal structure
     - Installing AI coach configurations
@@ -98,12 +106,33 @@ def setup(
         show_error(str(e))
         raise typer.Exit(1)
 
+    # Framework selection
+    if framework is None:
+        framework = ask_framework()
+
+    # Validate framework
+    try:
+        framework = validate_framework(framework)
+    except ValueError as e:
+        show_error(str(e))
+        raise typer.Exit(1)
+
     # Show summary
     from ai_journal_kit.core.config import get_config_path
+
+    # Get framework display name
+    framework_names = {
+        "default": "Default (flexible)",
+        "gtd": "GTD (Getting Things Done)",
+        "para": "PARA (Projects, Areas, Resources, Archive)",
+        "bullet-journal": "Bullet Journal",
+        "zettelkasten": "Zettelkasten",
+    }
 
     summary = f"""[bold cyan]Setup Configuration[/bold cyan]
 
 • Journal Location: [yellow]{journal_path}[/yellow]
+• Framework: [yellow]{framework_names.get(framework, framework)}[/yellow]
 • AI Editor: [yellow]{ide}[/yellow]
 • Config File: [yellow]{get_config_path()}[/yellow]
 
@@ -139,7 +168,7 @@ This will create your journal structure and install AI coaching configurations.
         ) as progress:
             # Create journal structure
             task1 = progress.add_task("Creating journal structure...", total=None)
-            create_structure(journal_path)
+            create_structure(journal_path, framework=framework)
             progress.update(task1, completed=True)
 
             # Install IDE configs
@@ -149,7 +178,7 @@ This will create your journal structure and install AI coaching configurations.
 
             # Create config
             task3 = progress.add_task("Saving configuration...", total=None)
-            config = Config(journal_location=journal_path, ide=ide)
+            config = Config(journal_location=journal_path, ide=ide, framework=framework)
             save_config(config)
             progress.update(task3, completed=True)
 
