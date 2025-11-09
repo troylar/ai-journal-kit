@@ -106,9 +106,14 @@ def setup(
         show_error(str(e))
         raise typer.Exit(1)
 
-    # Framework selection
+    # Framework selection - default to "default" if not provided
     if framework is None:
-        framework = ask_framework()
+        # Only prompt in interactive mode (no --no-confirm)
+        if not no_confirm and not dry_run:
+            framework = ask_framework()
+        else:
+            # Use default framework for non-interactive setups
+            framework = "default"
 
     # Validate framework
     try:
