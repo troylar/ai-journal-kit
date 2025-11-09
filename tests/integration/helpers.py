@@ -83,20 +83,42 @@ def assert_config_valid(
     except json.JSONDecodeError as e:
         raise AssertionError(f"Config file contains invalid JSON: {e}")
 
-    # Validate required fields
-    assert "journal_location" in config_data, "Config missing 'journal_location' field"
-    assert "ide" in config_data, "Config missing 'ide' field"
+    # Validate required fields (support both old and new formats)
+    is_multi_journal = "journals" in config_data and "active_journal" in config_data
+    is_legacy = "journal_location" in config_data and "ide" in config_data
+
+    assert is_multi_journal or is_legacy, (
+        "Config missing required fields. Expected either "
+        "multi-journal format ('journals', 'active_journal') or "
+        "legacy format ('journal_location', 'ide')"
+    )
 
     # Check expected values if provided
     if expected_journal:
-        config_journal = Path(config_data["journal_location"])
-        assert config_journal == expected_journal, (
+        if is_multi_journal:
+            # For multi-journal, check the active journal's location
+            active_name = config_data["active_journal"]
+            journals = config_data["journals"]
+            assert active_name in journals, f"Active journal '{active_name}' not in journals"
+            config_journal = Path(journals[active_name]["location"])
+        else:
+            config_journal = Path(config_data["journal_location"])
+
+        assert config_journal == expected_journal or config_journal.resolve() == expected_journal.resolve(), (
             f"Config journal location mismatch: {config_journal} != {expected_journal}"
         )
 
     if expected_ide:
-        assert config_data["ide"] == expected_ide, (
-            f"Config IDE mismatch: {config_data['ide']} != {expected_ide}"
+        if is_multi_journal:
+            # For multi-journal, check the active journal's IDE
+            active_name = config_data["active_journal"]
+            journals = config_data["journals"]
+            config_ide = journals[active_name]["ide"]
+        else:
+            config_ide = config_data["ide"]
+
+        assert config_ide == expected_ide, (
+            f"Config IDE mismatch: {config_ide} != {expected_ide}"
         )
 
 

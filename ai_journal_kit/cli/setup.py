@@ -5,8 +5,13 @@ from pathlib import Path
 import typer
 from rich.progress import Progress, SpinnerColumn, TextColumn
 
-from ai_journal_kit.core.config import Config, load_config, save_config
+from ai_journal_kit.core.config import (
+    JournalProfile,
+    load_multi_journal_config,
+    save_multi_journal_config,
+)
 from ai_journal_kit.core.journal import create_structure
+from ai_journal_kit.core.manifest import Manifest
 from ai_journal_kit.core.templates import copy_ide_configs
 from ai_journal_kit.core.validation import validate_framework, validate_ide, validate_path
 from ai_journal_kit.utils.ui import (
@@ -32,6 +37,12 @@ def setup(
         "-f",
         help="Journaling framework: default/gtd/para/bullet-journal/zettelkasten",
     ),
+    name: str = typer.Option(
+        None,
+        "--name",
+        "-n",
+        help="Name for this journal (for multiple journals). Defaults to 'default'",
+    ),
     no_confirm: bool = typer.Option(False, "--no-confirm", help="Skip confirmation prompt"),
     dry_run: bool = typer.Option(
         False, "--dry-run", help="Show what would be done without doing it"
@@ -46,22 +57,38 @@ def setup(
     - Creating journal structure
     - Installing AI coach configurations
     """
-    # Check if already set up
-    existing_config = load_config()
-    if existing_config and not dry_run:
-        # Check if the journal location actually exists
-        if existing_config.journal_location.exists():
-            show_error(
-                f"Journal already set up at {existing_config.journal_location}",
-                "To reconfigure, run: ai-journal-kit move",
-            )
-            raise typer.Exit(1)
+    # Load existing multi-journal config
+    multi_config = load_multi_journal_config()
+    if multi_config is None:
+        # First journal setup - create new multi-config
+        from ai_journal_kit.core.config import MultiJournalConfig
+
+        multi_config = MultiJournalConfig()
+
+    # Determine journal name
+    if name is None:
+        # Default to "default" for first journal, otherwise prompt
+        if not multi_config.journals:
+            name = "default"
         else:
-            # Journal was deleted - warn but allow setup
-            console.print(
-                f"[yellow]Note: Previous journal at {existing_config.journal_location} no longer exists.[/yellow]"
-            )
-            console.print("[yellow]Creating new journal configuration...[/yellow]\n")
+            # Multiple journals exist - require name
+            if not no_confirm and not dry_run:
+                name = typer.prompt("Journal name")
+            else:
+                show_error(
+                    "Journal name required",
+                    "Use --name to specify a name for additional journals",
+                )
+                raise typer.Exit(1)
+
+    # Check if journal with this name already exists
+    if multi_config.has_journal(name) and not dry_run:
+        profile = multi_config.journals[name]
+        show_error(
+            f"Journal '{name}' already exists at {profile.location}",
+            f"Choose a different name or use: ai-journal-kit use {name}",
+        )
+        raise typer.Exit(1)
 
     # Interactive prompts if options not provided
     if location is None:
@@ -181,11 +208,41 @@ This will create your journal structure and install AI coaching configurations.
             copy_ide_configs(ide, journal_path)
             progress.update(task2, completed=True)
 
-            # Create config
+            # Create journal profile
             task3 = progress.add_task("Saving configuration...", total=None)
-            config = Config(journal_location=journal_path, ide=ide, framework=framework)
-            save_config(config)
+            profile = JournalProfile(
+                name=name,
+                location=journal_path,
+                ide=ide,
+                framework=framework,
+                version="1.0.0",
+            )
+            multi_config.add_journal(profile)
+
+            # Set as active if it's the first/only journal
+            if len(multi_config.journals) == 1:
+                multi_config.set_active(name)
+
+            save_multi_journal_config(multi_config)
             progress.update(task3, completed=True)
+
+            # Create initial manifest to track installed files
+            task4 = progress.add_task("Creating system manifest...", total=None)
+            manifest = Manifest(version="1.0.0", framework=framework)
+
+            # Track all installed templates
+            for template_file in journal_path.glob("*-template.md"):
+                manifest.add_file(
+                    template_file,
+                    source=f"framework:{framework}",
+                    customized=False,
+                    relative_to=journal_path,
+                )
+
+            # Save manifest
+            manifest_path = journal_path / ".system-manifest.json"
+            manifest.save(manifest_path)
+            progress.update(task4, completed=True)
 
         # Success message
         show_success("Setup complete!")

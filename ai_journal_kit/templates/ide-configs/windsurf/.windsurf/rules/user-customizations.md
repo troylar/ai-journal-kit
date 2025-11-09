@@ -71,6 +71,6 @@ echo "# Load first" > .ai-instructions/01-priority-rules.md
 
 ## Priority
 
-User customizations in `.ai-instructions/*.md` > System defaults in `.github/instructions/`
+User customizations in `.ai-instructions/*.md` > System defaults in `.windsurf/rules/`
 
 **Never modify system rule files** - users customize via `.ai-instructions/` only.

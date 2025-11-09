@@ -7,6 +7,7 @@ from rich.table import Table
 
 from ai_journal_kit.core.config import get_config_path, load_config
 from ai_journal_kit.core.journal import get_folder_stats, validate_structure
+from ai_journal_kit.core.migration import ensure_manifest_exists
 from ai_journal_kit.utils.ui import console
 
 
@@ -31,6 +32,9 @@ def status(
             console.print("AI Journal Kit is installed but not configured.")
             console.print("Run [cyan]'ai-journal-kit setup'[/cyan] to get started.\n")
         raise typer.Exit(0)
+
+    # Ensure manifest exists (auto-migrate old journals)
+    ensure_manifest_exists()
 
     # Health checks
     structure_valid, missing = validate_structure(config.journal_location)

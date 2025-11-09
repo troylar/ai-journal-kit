@@ -6,55 +6,77 @@ alwaysApply: true
 
 # User Customization Loader
 
-Check for user-specific customizations in `.ai-instructions/` folder.
+**CRITICAL**: Load ALL `.md` files from `.ai-instructions/` folder automatically.
 
-## Custom Instruction Files
+## How It Works
 
-If any of these files exist, load and apply them:
+The `.ai-instructions/` folder is user-owned territory. ANY `.md` file placed here is automatically loaded and applied to extend or override system defaults.
 
-### `.ai-instructions/my-coach.md`
-User's personal coaching preferences that override or extend defaults:
-- Preferred coaching style
-- Personal goals
-- Habits to track
+### Loading Order
+
+Files are loaded alphabetically by filename. Users can control priority with numbered prefixes:
+- `01-coaching-style.md` (loads first)
+- `02-workflows.md` (loads second)
+- `03-integrations.md` (loads third)
+- `my-preferences.md` (loads alphabetically)
+
+### Common Patterns
+
+Users may organize instructions by topic:
+
+**`.ai-instructions/my-coach.md`** - Personal coaching preferences
+- Preferred coaching style and tone
+- Personal goals and habits to track
 - Communication preferences
 - Custom check-in protocols
 
-### `.ai-instructions/accountability.md`
-Strict accountability mode - no-BS coaching:
-- Direct challenges
+**`.ai-instructions/accountability.md`** - Strict accountability mode
+- Direct challenges, no-BS coaching
 - Hold accountable for commitments
-- Less supportive, more pushing
 
-### `.ai-instructions/deep-work.md`
-Focus session mode:
+**`.ai-instructions/deep-work.md`** - Focus session mode
 - Help maintain deep work
-- Minimize interruptions
-- Track flow states
-- Optimize for concentration
+- Track flow states and concentration
 
-### `.ai-instructions/planning.md`
-Strategic planning mode:
-- Big picture thinking
-- Goal setting and prioritization
-- Long-term vision
-- Systems thinking
+**`.ai-instructions/workflows.md`** - Custom workflows
+- Project management preferences
+- Note organization patterns
+
+**`.ai-instructions/integrations.md`** - Tool integrations
+- API keys and configurations
+- Third-party tool workflows
+
+### Template Overrides
+
+Users can also override framework templates by placing them in:
+
+**`.ai-instructions/templates/`**
+- `daily-template.md` - Custom daily note template
+- `project-template.md` - Custom project template
+- `*-template.md` - Any other template overrides
+
+These templates take priority over framework templates and are safe from all updates.
 
 ## How to Apply
 
-1. **Check if file exists** before referencing
-2. **Load content** if present
-3. **Apply as override** - user preferences trump defaults
-4. **Combine intelligently** - merge user prefs with base instructions
+1. **Load ALL `.md` files** from `.ai-instructions/` (excluding subdirectories)
+2. **Apply as overrides** - user preferences trump system defaults
+3. **Combine intelligently** - merge user prefs with base instructions
+4. **Respect priority** - files load alphabetically (use numbered prefixes for order)
 
 ## Creating Custom Instructions
 
-Users create by:
+Users create custom instructions by simply adding `.md` files:
 ```bash
-cp .ai-instructions/my-coach.md.example .ai-instructions/my-coach.md
-# Then edit to customize
+# Create a new instruction file
+echo "# My Custom Coaching Style\nBe direct and concise." > .ai-instructions/coaching.md
+
+# Or use numbered prefixes for specific order
+echo "# Load first" > .ai-instructions/01-priority-rules.md
 ```
 
 ## Priority
 
-User customizations in `.ai-instructions/` > System defaults in `.cursor/rules/`
+User customizations in `.ai-instructions/*.md` > System defaults in `.cursor/rules/`
+
+**Never modify system rule files** - users customize via `.ai-instructions/` only.

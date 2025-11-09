@@ -9,6 +9,7 @@ from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, TextColumn
 
 from ai_journal_kit.core.config import load_config
+from ai_journal_kit.core.migration import ensure_manifest_exists
 from ai_journal_kit.core.templates import copy_ide_configs
 from ai_journal_kit.utils.ui import confirm, console, show_error, show_panel, show_success
 
@@ -125,6 +126,9 @@ def update(
     if not config:
         show_error("Journal not set up", "Run 'ai-journal-kit setup' first")
         raise typer.Exit(1)
+
+    # Ensure manifest exists (auto-migrate old journals)
+    ensure_manifest_exists()
 
     console.print("[bold cyan]Checking for updates...[/bold cyan]\n")
 

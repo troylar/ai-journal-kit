@@ -5,6 +5,38 @@ from importlib.resources import files
 from pathlib import Path
 
 
+def resolve_template(template_name: str, journal_path: Path) -> Path | None:
+    """Resolve template path using priority order.
+
+    Priority:
+    1. .ai-instructions/templates/ (user overrides - highest priority)
+    2. Journal root (current framework templates)
+    3. Package default (fallback)
+
+    Args:
+        template_name: Template filename (e.g., 'daily-template.md')
+        journal_path: Journal root directory
+
+    Returns:
+        Path to template file, or None if not found
+    """
+    # Highest priority: user overrides in .ai-instructions/templates/
+    user_template = journal_path / ".ai-instructions" / "templates" / template_name
+    if user_template.exists():
+        return user_template
+
+    # Medium priority: journal root (current framework templates)
+    journal_template = journal_path / template_name
+    if journal_template.exists():
+        return journal_template
+
+    # Lowest priority: package default
+    try:
+        return get_template(template_name)
+    except (FileNotFoundError, ValueError):
+        return None
+
+
 def get_template(name: str) -> Path:
     """Get path to a specific template resource.
 

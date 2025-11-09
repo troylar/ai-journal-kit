@@ -186,6 +186,10 @@ ai-journal-kit setup --framework para             # PARA method
 ai-journal-kit setup --framework bullet-journal   # Bullet Journal
 ai-journal-kit setup --framework zettelkasten     # Zettelkasten
 
+# Create named journal (for multiple journals)
+ai-journal-kit setup --name personal              # Create "personal" journal
+ai-journal-kit setup --name business --framework gtd   # Named journal with framework
+
 # Switch to a different framework (with timestamped backup)
 ai-journal-kit switch-framework para              # Switch to PARA
 ai-journal-kit switch-framework gtd               # Switch to GTD
@@ -198,6 +202,11 @@ ai-journal-kit add-ide claude-code   # Add Claude Code config
 ai-journal-kit add-ide copilot       # Add GitHub Copilot config
 ai-journal-kit add-ide all           # Add all IDE configs
 ai-journal-kit add-ide               # Interactive prompt
+
+# Multi-journal management
+ai-journal-kit list                  # Show all configured journals
+ai-journal-kit use business          # Switch to "business" journal
+AI_JOURNAL=business ai-journal-kit status  # Temporarily use specific journal
 
 # Check journal health
 ai-journal-kit status
@@ -339,6 +348,76 @@ AI: "Let's reflect on today:
 
 [Captures your reflection in the daily note]
 ```
+
+---
+
+## 📚 Multiple Journals
+
+### Separate Work from Personal Life
+
+Do you keep separate journals for different areas of your life? AI Journal Kit makes it easy to manage multiple independent journals:
+
+#### Create Multiple Journals
+
+```bash
+# First journal defaults to "default"
+ai-journal-kit setup --location ~/personal-journal --framework bullet-journal
+
+# Create additional journals with unique names
+ai-journal-kit setup --name business --location ~/work-journal --framework gtd
+ai-journal-kit setup --name research --location ~/research --framework zettelkasten
+```
+
+#### Switch Between Journals
+
+```bash
+# View all journals
+ai-journal-kit list
+
+# Output:
+#  Name      Location           Framework    IDE     Status
+#  default   ~/personal-journal bullet-journal cursor  ✓ Active
+#  business  ~/work-journal     gtd           cursor
+#  research  ~/research         zettelkasten  cursor
+
+# Switch to a different journal
+ai-journal-kit use business
+
+# Now all commands operate on the "business" journal
+ai-journal-kit status    # Shows business journal status
+```
+
+#### Temporary Journal Override
+
+Use the `AI_JOURNAL` environment variable to temporarily use a different journal:
+
+```bash
+# Quick check on business journal without switching
+AI_JOURNAL=business ai-journal-kit status
+
+# Run multiple commands on research journal
+AI_JOURNAL=research ai-journal-kit status
+AI_JOURNAL=research ai-journal-kit doctor
+```
+
+#### Use Cases
+
+- **🏢 Work/Personal Split**: Keep professional projects separate from personal journaling
+- **🔬 Research Projects**: Separate journal for each major research topic with Zettelkasten
+- **🎯 Different Frameworks**: Use GTD for work, Bullet Journal for personal life
+- **👥 Team Collaboration**: Separate journal for each team or project
+- **🧪 Testing**: Try new frameworks without affecting your main journal
+
+#### How It Works
+
+Each journal is completely independent:
+- ✅ **Own location** - Different folder on disk
+- ✅ **Own framework** - GTD, PARA, or any other methodology
+- ✅ **Own IDE** - Can use different editors
+- ✅ **Own templates** - Customizations don't affect other journals
+- ✅ **Own content** - Notes never mix between journals
+
+**Configuration is stored centrally** in `~/.config/ai-journal-kit/config.json` (or platform equivalent), tracking all your journals and which one is active.
 
 ---
 
