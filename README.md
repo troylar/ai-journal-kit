@@ -30,8 +30,8 @@
 ### 🔐 **100% Private**
 Your journal stays on **YOUR** computer. No cloud sync required. No data collection. No privacy compromises.
 
-### 🎨 **5 Built-in Frameworks**
-Choose **YOUR** methodology: GTD, PARA, Bullet Journal, Zettelkasten, or flexible Default. Switch anytime!
+### 🎨 **5 Built-in Frameworks (or Create Your Own!)**
+Choose **YOUR** methodology: GTD®, PARA™, Bullet Journal®, Zettelkasten, or start with our flexible Default. Switch anytime!
 
 ### 📚 **Multi-Journal Support**
 Separate work from personal. Manage multiple independent journals with different frameworks and settings.
@@ -436,21 +436,21 @@ Each framework is designed for different workflows and preferences:
 - Memory capture for insights
 - **Perfect if**: You want to start simple and evolve your system organically
 
-#### ⚡ **GTD (Getting Things Done)** - Best for: Productivity enthusiasts, task managers
+#### ⚡ **GTD® (Getting Things Done®)** - Best for: Productivity enthusiasts, task managers
 - Next Actions organized by context (@work, @home, @calls, etc.)
 - Waiting For tracking
 - Someday/Maybe lists
 - Weekly review process
 - **Perfect if**: You love David Allen's methodology and want comprehensive task management
 
-#### 📁 **PARA (Projects, Areas, Resources, Archive)** - Best for: Knowledge workers, organizers
+#### 📁 **PARA™ (Projects, Areas, Resources, Archive)** - Best for: Knowledge workers, organizers
 - Clear separation of Projects (time-bound) vs Areas (ongoing)
 - Resource library for references
 - Archive for completed items
 - Goal-oriented structure
 - **Perfect if**: You want to organize everything by actionability (Tiago Forte's method)
 
-#### 🔘 **Bullet Journal** - Best for: Visual thinkers, habit trackers
+#### 🔘 **Bullet Journal®** - Best for: Visual thinkers, habit trackers
 - Rapid logging with tasks, events, notes
 - Monthly logs with calendar view
 - Future log for long-term planning
@@ -840,6 +840,20 @@ Built with love for better journaling and personal growth.
 **Author**: Troy Larson ([@troylar](https://github.com/troylar))  
 **License**: MIT  
 **Repository**: [github.com/troylar/ai-journal-kit](https://github.com/troylar/ai-journal-kit)
+
+---
+
+## ™️ Trademarks & Attribution
+
+**GTD®** and **Getting Things Done®** are registered trademarks of the David Allen Company.
+
+**Bullet Journal®** is a registered trademark of Ryder Carroll.
+
+**PARA™** is a methodology created by Tiago Forte (Forte Labs).
+
+**Zettelkasten** is a note-taking methodology developed by Niklas Luhmann and is not trademarked.
+
+**AI Journal Kit is an independent project** and is not affiliated with, endorsed by, or sponsored by any of the above trademark holders or methodology creators. The software provides templates and folder structures that are compatible with and inspired by these popular productivity methodologies. Users are encouraged to learn more about these methodologies directly from their creators and official resources.
 
 ---
 

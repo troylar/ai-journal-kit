@@ -5,13 +5,15 @@ All notable changes to AI Journal Kit will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+> **Note**: GTD® and Getting Things Done® are registered trademarks of David Allen Company. Bullet Journal® is a registered trademark of Ryder Carroll. PARA™ is a methodology by Tiago Forte. AI Journal Kit provides compatible templates and is not affiliated with these trademark holders.
+
 ## [Unreleased]
 
 ### Added
 - **Framework-Specific Templates**: Choose your preferred journaling methodology during setup
-  - **GTD (Getting Things Done)**: Next actions, waiting for lists, someday/maybe, context-based organization
-  - **PARA (Projects, Areas, Resources, Archive)**: Clear separation of projects vs ongoing areas, resource library
-  - **Bullet Journal**: Rapid logging, monthly logs, future log, custom collections
+  - **GTD® (Getting Things Done®)**: Next actions, waiting for lists, someday/maybe, context-based organization
+  - **PARA™ (Projects, Areas, Resources, Archive)**: Clear separation of projects vs ongoing areas, resource library
+  - **Bullet Journal®**: Rapid logging, monthly logs, future log, custom collections
   - **Zettelkasten**: Atomic notes, permanent notes, index system, emphasis on linking
   - **Default**: Flexible framework that adapts to any workflow
   - Each framework includes custom templates tailored to the methodology
