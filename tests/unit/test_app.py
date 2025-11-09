@@ -51,3 +51,4 @@ def test_app_has_all_commands():
     assert "update" in output_lower
     assert "move" in output_lower
 
+

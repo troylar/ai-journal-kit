@@ -4,9 +4,7 @@ Unit tests for template updater functionality.
 Tests template backup, update detection, and restoration.
 """
 
-import shutil
 from datetime import datetime
-from pathlib import Path
 from unittest.mock import patch
 
 import pytest

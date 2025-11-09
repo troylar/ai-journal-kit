@@ -17,13 +17,13 @@ def create_config_fixture(
 ) -> Config:
     """
     Factory for creating Config objects for testing.
-    
+
     Args:
         journal_location: Path to journal directory
         ide: IDE configuration (cursor, windsurf, claude-code, copilot, all)
         version: Version string
         config_dir: Optional directory to save config file
-        
+
     Returns:
         Config: Configured Config object
     """
@@ -43,10 +43,10 @@ def create_config_fixture(
 def create_corrupted_config(config_dir: Path) -> Path:
     """
     Create a corrupted config file for testing error handling.
-    
+
     Args:
         config_dir: Directory to create corrupted config
-        
+
     Returns:
         Path: Path to corrupted config file
     """
@@ -58,10 +58,10 @@ def create_corrupted_config(config_dir: Path) -> Path:
 def create_incomplete_config(config_dir: Path) -> Path:
     """
     Create an incomplete config file for testing validation.
-    
+
     Args:
         config_dir: Directory to create incomplete config
-        
+
     Returns:
         Path: Path to incomplete config file
     """

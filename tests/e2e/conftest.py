@@ -14,10 +14,10 @@ import pytest
 def isolated_env(tmp_path):
     """
     Provide isolated environment variables for e2e subprocess tests.
-    
+
     Args:
         tmp_path: pytest's built-in tmp_path fixture
-        
+
     Returns:
         dict: Environment variables for subprocess calls
     """
@@ -40,10 +40,10 @@ def isolated_env(tmp_path):
 def temp_journal_dir(tmp_path):
     """
     Provide isolated temporary directory for journal in e2e tests.
-    
+
     Args:
         tmp_path: pytest's built-in tmp_path fixture
-        
+
     Returns:
         Path: Temporary directory for journal installation
     """

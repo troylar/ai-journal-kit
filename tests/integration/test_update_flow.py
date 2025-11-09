@@ -37,7 +37,7 @@ def test_update_preserves_custom_templates(temp_journal_dir, isolated_config):
 
     # Run update
     runner = CliRunner()
-    result = runner.invoke(app, ["update"])
+    result = runner.invoke(app, ["update", "--no-confirm"])
 
     # Update should succeed
     assert result.exit_code == 0 or "up to date" in result.output.lower()
@@ -65,7 +65,7 @@ def test_update_preserves_ai_instructions(temp_journal_dir, isolated_config):
 
     # Run update
     runner = CliRunner()
-    result = runner.invoke(app, ["update"])
+    result = runner.invoke(app, ["update", "--no-confirm"])
 
     # Update should succeed
     assert result.exit_code == 0 or "up to date" in result.output.lower()
@@ -91,7 +91,7 @@ def test_update_preserves_journal_entries(temp_journal_dir, isolated_config):
 
     # Run update
     runner = CliRunner()
-    result = runner.invoke(app, ["update"])
+    result = runner.invoke(app, ["update", "--no-confirm"])
 
     # Update should succeed
     assert result.exit_code == 0 or "up to date" in result.output.lower()
@@ -140,7 +140,7 @@ def test_update_adds_new_ide_configs(temp_journal_dir, isolated_config):
 
     # Run update (in real implementation, this would add new configs)
     runner = CliRunner()
-    result = runner.invoke(app, ["update"])
+    result = runner.invoke(app, ["update", "--no-confirm"])
 
     # Update should succeed
     assert result.exit_code == 0 or "up to date" in result.output.lower()
@@ -166,7 +166,7 @@ def test_update_migrates_old_structure(temp_journal_dir, isolated_config):
 
     # Run update
     runner = CliRunner()
-    result = runner.invoke(app, ["update"])
+    result = runner.invoke(app, ["update", "--no-confirm"])
 
     # Update should succeed
     assert result.exit_code == 0 or "up to date" in result.output.lower()
@@ -290,6 +290,7 @@ def test_update_with_network_error_handling(temp_journal_dir, isolated_config):
 def test_update_detect_pip_handles_exceptions(temp_journal_dir, isolated_config):
     """Test detect_pip_command handles exceptions (lines 41-45)."""
     from unittest.mock import patch
+
     from ai_journal_kit.cli.update import detect_pip_command
 
     # Mock subprocess.run to raise various exceptions
@@ -303,6 +304,7 @@ def test_update_detect_pip_handles_exceptions(temp_journal_dir, isolated_config)
 def test_update_get_latest_version_handles_exception(temp_journal_dir, isolated_config):
     """Test get_latest_version handles exceptions (lines 63-64)."""
     from unittest.mock import patch
+
     from ai_journal_kit.cli.update import get_latest_version
 
     # Mock urllib to raise exception
@@ -315,6 +317,7 @@ def test_update_get_latest_version_handles_exception(temp_journal_dir, isolated_
 def test_update_get_changelog_handles_exception_with_fallback(temp_journal_dir, isolated_config):
     """Test get_changelog handles exception and returns fallback (lines 84-88)."""
     from unittest.mock import patch
+
     from ai_journal_kit.cli.update import get_changelog
 
     # Mock urllib to raise exception
@@ -509,8 +512,8 @@ def test_update_dry_run_exits_without_changes(temp_journal_dir, isolated_config)
 @pytest.mark.integration
 def test_update_handles_pip_upgrade_failure(temp_journal_dir, isolated_config):
     """Test update handles subprocess failure gracefully (lines 257-264)."""
-    from unittest.mock import patch
     import subprocess
+    from unittest.mock import patch
 
     create_journal_fixture(
         path=temp_journal_dir,

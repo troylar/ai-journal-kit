@@ -360,7 +360,7 @@ def test_move_verbose_output(temp_journal_dir, isolated_config, tmp_path):
     # Should show verbose output
     if result.exit_code == 0:
         # If verbose flag exists and works
-        output_lower = result.output.lower()
+        result.output.lower()
         # Just verify it executed successfully
         assert new_location.exists()
 
@@ -444,8 +444,9 @@ def test_move_handles_nonexistent_source(isolated_config, tmp_path):
 @pytest.mark.integration
 def test_move_no_config_error(tmp_path):
     """Test move shows error when no config exists (lines 36-37)."""
-    from ai_journal_kit.core.config import get_config_path
     import os
+
+    from ai_journal_kit.core.config import get_config_path
 
     # Make sure no config exists
     config_file = get_config_path()

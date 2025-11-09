@@ -526,6 +526,7 @@ def test_doctor_fix_broken_symlink(temp_journal_dir, isolated_config):
 def test_doctor_fix_handles_create_structure_exception(temp_journal_dir, isolated_config):
     """Test doctor --fix handles exception when creating structure fails (lines 97-98)."""
     from unittest.mock import patch
+
     from ai_journal_kit.core.config import Config, save_config
 
     # Create config pointing to journal
@@ -550,6 +551,7 @@ def test_doctor_fix_handles_create_structure_exception(temp_journal_dir, isolate
 def test_doctor_fix_handles_copy_ide_configs_exception(temp_journal_dir, isolated_config):
     """Test doctor --fix handles exception when copying IDE configs fails (lines 105-106)."""
     from unittest.mock import patch
+
     from ai_journal_kit.core.config import Config, save_config
     from ai_journal_kit.core.journal import create_structure
 
@@ -575,6 +577,7 @@ def test_doctor_fix_handles_create_link_exception(temp_journal_dir, isolated_con
         pytest.skip("Symlink test - Unix only")
 
     from unittest.mock import patch
+
     from ai_journal_kit.core.config import Config, save_config
     from ai_journal_kit.core.journal import create_structure
     from ai_journal_kit.core.templates import copy_ide_configs
@@ -721,7 +724,6 @@ def test_doctor_is_writable_handles_permission_error(temp_journal_dir, isolated_
 @pytest.mark.integration
 def test_doctor_checks_unknown_ide_returns_false(temp_journal_dir, isolated_config):
     """Test _check_ide_configs returns False for unknown IDE (line 147)."""
-    from ai_journal_kit.core.config import Config, save_config
     from ai_journal_kit.core.journal import create_structure
 
     create_structure(temp_journal_dir)

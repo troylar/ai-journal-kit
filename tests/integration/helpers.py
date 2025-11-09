@@ -13,10 +13,10 @@ from ai_journal_kit.core.journal import REQUIRED_FOLDERS
 def assert_journal_structure_valid(journal_path: Path) -> None:
     """
     Assert that journal has all required folders.
-    
+
     Args:
         journal_path: Path to journal directory
-        
+
     Raises:
         AssertionError: If any required folder is missing
     """
@@ -32,11 +32,11 @@ def assert_journal_structure_valid(journal_path: Path) -> None:
 def assert_ide_config_installed(journal_path: Path, ide: str) -> None:
     """
     Assert that IDE configuration is installed correctly.
-    
+
     Args:
         journal_path: Path to journal directory
         ide: IDE name (cursor, windsurf, claude-code, copilot, all)
-        
+
     Raises:
         AssertionError: If IDE config is not installed correctly
     """
@@ -61,12 +61,12 @@ def assert_ide_config_installed(journal_path: Path, ide: str) -> None:
 def assert_config_valid(config_path: Path, expected_journal: Path = None, expected_ide: str = None) -> None:
     """
     Assert that config file exists and contains valid configuration.
-    
+
     Args:
         config_path: Path to config file
         expected_journal: Optional expected journal location
         expected_ide: Optional expected IDE value
-        
+
     Raises:
         AssertionError: If config is invalid or doesn't match expected values
     """
@@ -98,11 +98,11 @@ def assert_config_valid(config_path: Path, expected_journal: Path = None, expect
 def assert_template_exists(journal_path: Path, template_name: str) -> None:
     """
     Assert that a specific template file exists in journal.
-    
+
     Args:
         journal_path: Path to journal directory
         template_name: Name of template file to check
-        
+
     Raises:
         AssertionError: If template does not exist
     """
@@ -114,10 +114,10 @@ def assert_template_exists(journal_path: Path, template_name: str) -> None:
 def count_markdown_files(directory: Path) -> int:
     """
     Count markdown files in a directory.
-    
+
     Args:
         directory: Path to directory
-        
+
     Returns:
         int: Number of .md files in directory
     """

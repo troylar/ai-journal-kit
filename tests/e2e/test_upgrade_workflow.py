@@ -39,7 +39,8 @@ def test_e2e_upgrade_preserves_everything(temp_journal_dir, isolated_env):
     result_update = subprocess.run(
         [
             sys.executable, "-m", "ai_journal_kit",
-            "update"
+            "update",
+            "--no-confirm"
         ],
         capture_output=True,
         text=True,
@@ -77,7 +78,7 @@ def test_e2e_upgrade_multiple_versions(temp_journal_dir, isolated_env):
 
     # First update
     result_update1 = subprocess.run(
-        [sys.executable, "-m", "ai_journal_kit", "update"],
+        [sys.executable, "-m", "ai_journal_kit", "update", "--no-confirm"],
         capture_output=True,
         text=True,
         env=isolated_env
@@ -85,7 +86,7 @@ def test_e2e_upgrade_multiple_versions(temp_journal_dir, isolated_env):
 
     # Second update (should handle already-updated state)
     result_update2 = subprocess.run(
-        [sys.executable, "-m", "ai_journal_kit", "update"],
+        [sys.executable, "-m", "ai_journal_kit", "update", "--no-confirm"],
         capture_output=True,
         text=True,
         env=isolated_env
@@ -97,5 +98,6 @@ def test_e2e_upgrade_multiple_versions(temp_journal_dir, isolated_env):
 
     # Structure should remain valid after multiple updates
     assert_journal_structure_valid(temp_journal_dir)
+
 
 

@@ -6,17 +6,17 @@ Tests cross-platform link creation, validation, and updates.
 
 import sys
 from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 import pytest
 
 from ai_journal_kit.core.symlinks import (
+    _create_junction_windows,
+    _create_symlink_unix,
     create_link,
+    get_link_target,
     is_broken,
     update_link_target,
-    get_link_target,
-    _create_symlink_unix,
-    _create_junction_windows,
 )
 
 
@@ -243,7 +243,7 @@ def test_is_broken_handles_permission_error(temp_journal_dir):
 @pytest.mark.unit
 def test_is_broken_windows_broken_junction(temp_journal_dir):
     """Test is_broken detects broken Windows junction (line 73)."""
-    link = temp_journal_dir / "link"
+    temp_journal_dir / "link"
 
     # We need to mock both the link and its parent
     # link.exists() returns False, link.is_symlink() returns False

@@ -14,10 +14,10 @@ import pytest
 def temp_journal_dir(tmp_path):
     """
     Provide isolated temporary directory for journal.
-    
+
     Args:
         tmp_path: pytest's built-in tmp_path fixture
-        
+
     Returns:
         Path: Temporary directory for journal installation
     """
@@ -30,14 +30,14 @@ def temp_journal_dir(tmp_path):
 def isolated_config(tmp_path, monkeypatch):
     """
     Isolate config file location for test.
-    
+
     Sets AI_JOURNAL_CONFIG_DIR environment variable to temporary location
     to prevent tests from interfering with user's actual configuration.
-    
+
     Args:
         tmp_path: pytest's built-in tmp_path fixture
         monkeypatch: pytest's monkeypatch fixture
-        
+
     Returns:
         Path: Temporary config directory
     """
@@ -58,11 +58,11 @@ def isolated_config(tmp_path, monkeypatch):
 def isolated_env(tmp_path, monkeypatch):
     """
     Provide isolated environment variables for e2e tests.
-    
+
     Args:
         tmp_path: pytest's built-in tmp_path fixture
         monkeypatch: pytest's monkeypatch fixture
-        
+
     Returns:
         dict: Environment variables for subprocess calls
     """
@@ -79,7 +79,7 @@ def isolated_env(tmp_path, monkeypatch):
 def reset_config_after_test():
     """
     Ensure config module is reset after each test.
-    
+
     This prevents config state from leaking between tests.
     """
     yield

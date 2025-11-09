@@ -17,7 +17,7 @@ from ai_journal_kit.core.templates import copy_ide_configs
 class JournalFixture:
     """
     Represents a configured journal installation for testing.
-    
+
     Attributes:
         path: Path to journal directory
         ide: IDE configuration installed
@@ -59,13 +59,13 @@ def create_journal_fixture(
 ) -> JournalFixture:
     """
     Factory for creating configured journal installations.
-    
+
     Args:
         path: Path where journal should be created
         ide: IDE to configure (cursor, windsurf, claude-code, copilot, all)
         has_content: Whether to add sample daily notes
         config_dir: Optional config directory path for config file
-        
+
     Returns:
         JournalFixture: Configured journal for testing
     """

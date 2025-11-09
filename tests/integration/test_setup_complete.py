@@ -501,7 +501,6 @@ def test_setup_with_invalid_ide_choice(temp_journal_dir, isolated_config):
 @pytest.mark.integration
 def test_setup_exception_during_creation(temp_journal_dir, isolated_config):
     """Test setup handles exceptions during journal creation (lines 163-165)."""
-    from unittest.mock import patch
 
     runner = CliRunner()
 
