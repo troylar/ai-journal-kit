@@ -1,6 +1,5 @@
 """Unit tests for manifest module."""
 
-
 import pytest
 
 from ai_journal_kit.core.manifest import (
