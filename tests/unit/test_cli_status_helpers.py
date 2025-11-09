@@ -68,7 +68,7 @@ def test_check_ide_configs_windsurf_missing(temp_journal_dir):
 @pytest.mark.unit
 def test_check_ide_configs_claude_code(temp_journal_dir):
     """Test IDE config check for Claude Code."""
-    (temp_journal_dir / "CLAUDE.md").touch()
+    (temp_journal_dir / "SYSTEM-PROTECTION.md").touch()
 
     config = MagicMock()
     config.ide = "claude-code"
