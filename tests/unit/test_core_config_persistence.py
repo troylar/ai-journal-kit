@@ -36,10 +36,13 @@ def test_save_and_load_multi_journal_config_roundtrip(tmp_path, monkeypatch):
     config_path = tmp_path / "config.json"
     monkeypatch.setattr("ai_journal_kit.core.config.get_config_path", lambda: config_path)
 
+    # Use tmp_path for journal location to work on all platforms
+    journal_location = tmp_path / "test-journal"
+
     # Create test profile
     profile = JournalProfile(
         name="test",
-        location=Path("/test/journal"),
+        location=journal_location,
         ide="cursor",
         framework="gtd",
         version="1.0.0",
@@ -71,7 +74,7 @@ def test_save_and_load_multi_journal_config_roundtrip(tmp_path, monkeypatch):
 
     loaded_profile = loaded_config.journals["test"]
     assert loaded_profile.name == "test"
-    assert loaded_profile.location == Path("/test/journal")
+    assert loaded_profile.location == journal_location
     assert loaded_profile.ide == "cursor"
     assert loaded_profile.framework == "gtd"
 
