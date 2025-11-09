@@ -186,6 +186,11 @@ ai-journal-kit setup --framework para             # PARA method
 ai-journal-kit setup --framework bullet-journal   # Bullet Journal
 ai-journal-kit setup --framework zettelkasten     # Zettelkasten
 
+# Switch to a different framework (with timestamped backup)
+ai-journal-kit switch-framework para              # Switch to PARA
+ai-journal-kit switch-framework gtd               # Switch to GTD
+ai-journal-kit switch-framework                   # Interactive selection
+
 # Add IDE configurations to existing journal
 ai-journal-kit add-ide cursor        # Add Cursor config
 ai-journal-kit add-ide windsurf      # Add Windsurf config
@@ -433,6 +438,75 @@ The spacing effect shows that information is better retained when study sessions
 ## Sources
 - "Make It Stick" by Brown et al.
 ```
+
+### Switching Frameworks
+
+**Changed your mind?** You can switch frameworks at any time without losing your journal content!
+
+```bash
+ai-journal-kit switch-framework para              # Switch to PARA
+ai-journal-kit switch-framework gtd               # Switch to GTD
+ai-journal-kit switch-framework                   # Interactive selection
+```
+
+#### What Gets Backed Up
+
+When you switch frameworks, all your existing templates are automatically backed up:
+
+```
+journal/
+└── .framework-backups/
+    ├── 20250115-143022-123456/    # Timestamped backup from first switch
+    │   ├── daily-template.md
+    │   ├── project-template.md
+    │   └── waiting-for-template.md
+    └── 20250120-091545-789012/    # Another backup from second switch
+        ├── daily-template.md
+        ├── area-template.md
+        └── resource-template.md
+```
+
+Each backup is timestamped down to the microsecond, so you can switch multiple times and keep all your customized templates.
+
+#### What Stays Untouched
+
+Your actual journal content **never changes**:
+- ✅ All daily notes (`daily/`)
+- ✅ All project notes (`projects/`)
+- ✅ All people notes (`people/`)
+- ✅ All memories (`memories/`)
+- ✅ Any custom folders or files you've created
+
+**Only the templates change** - your notes are 100% safe!
+
+#### Example Workflow
+
+```bash
+# 1. Start with GTD
+ai-journal-kit setup --framework gtd
+
+# 2. Journal for a few months, customize templates
+# ... edit waiting-for-template.md with your own style ...
+
+# 3. Want to try PARA? Switch safely!
+ai-journal-kit switch-framework para
+# ✅ Your GTD templates (including customizations) are backed up
+# ✅ PARA templates are installed
+# ✅ All your journal notes are untouched
+
+# 4. Changed your mind? Go back!
+# Just restore from .framework-backups/TIMESTAMP/ if needed
+```
+
+#### When to Switch
+
+You might want to switch frameworks if:
+- 📈 **Your workflow evolved** - Started simple with Default, now ready for GTD
+- 🔄 **Testing methodologies** - Trying different systems to find your fit
+- 🎯 **Life changes** - New job/role needs different organization (e.g., researcher → Zettelkasten)
+- 🧪 **Experimenting** - Want to try a methodology you've been reading about
+
+**No commitment!** Switch as often as you like - your journal content is always safe.
 
 ---
 

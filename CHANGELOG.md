@@ -18,6 +18,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Add `--framework` flag to setup command for non-interactive selection
   - Interactive framework selector with descriptions during setup
   - 15+ framework-specific templates across all methodologies
+- **New `switch-framework` command**: Change journaling frameworks safely after setup
+  - Switch between any framework (default, GTD, PARA, Bullet Journal, Zettelkasten)
+  - Automatic timestamped backups of existing templates before switching
+  - Backups stored in `.framework-backups/` with microsecond-precision timestamps
+  - Multiple backups preserved - switch as many times as you want
+  - Journal content (daily/, projects/, people/, etc.) completely untouched
+  - Interactive framework selection or specify framework directly
+  - Use `ai-journal-kit switch-framework <framework>` or interactive prompt
+  - Preserves all template customizations in timestamped backups
 
 ### Changed
 - Setup now prompts for framework choice in addition to IDE and location
@@ -30,7 +39,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `ask_framework()` UI function for interactive framework selection
 - Updated `create_structure()` to accept framework parameter
 - Added `copy_framework_templates()` function
-- 17 new tests (9 integration + 8 unit) for framework functionality
+- Added `switch_framework()` CLI command with backup functionality
+- Added `update_config()` function to update framework in config
+- 27 new tests (19 integration + 8 unit) for framework and switching functionality
+  - 10 comprehensive tests for switch-framework command covering:
+    - Framework switching between all frameworks
+    - Timestamped backup creation
+    - Multiple backup preservation
+    - Journal content preservation
+    - Error handling (no setup, invalid framework, same framework)
+    - Interactive mode
 - Test coverage maintained at 98%
 
 ## [1.0.13] - 2025-11-09

@@ -8,6 +8,7 @@ from ai_journal_kit.cli.doctor import doctor as doctor_command
 from ai_journal_kit.cli.move import move as move_command
 from ai_journal_kit.cli.setup import setup as setup_command
 from ai_journal_kit.cli.status import status as status_command
+from ai_journal_kit.cli.switch_framework import switch_framework as switch_framework_command
 from ai_journal_kit.cli.update import update as update_command
 
 app = typer.Typer(
@@ -42,6 +43,7 @@ def main(
 # Register commands
 app.command(name="setup")(setup_command)
 app.command(name="add-ide")(add_ide_command)
+app.command(name="switch-framework")(switch_framework_command)
 app.command(name="status")(status_command)
 app.command(name="doctor")(doctor_command)
 app.command(name="update")(update_command)
