@@ -1,7 +1,7 @@
 # 📝✨ AI Journal Kit
 
-> **Your Personal AI Coach for Journaling, Growth & Clarity**  
-> 100% Private • Fully Customizable • Works with Any Framework
+> **Your Personal AI Coach for Journaling, Growth & Clarity**
+> 100% Private • Built-in Frameworks (GTD, PARA, Bullet Journal, Zettelkasten) • Fully Customizable
 
 <div align="center">
 
@@ -12,14 +12,14 @@
 [![CI](https://github.com/troylar/ai-journal-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/troylar/ai-journal-kit/actions/workflows/ci.yml)
 [![Security Scan](https://github.com/troylar/ai-journal-kit/actions/workflows/security.yml/badge.svg)](https://github.com/troylar/ai-journal-kit/actions/workflows/security.yml)
 [![codecov](https://codecov.io/gh/troylar/ai-journal-kit/branch/main/graph/badge.svg)](https://codecov.io/gh/troylar/ai-journal-kit)
-[![Tests](https://img.shields.io/badge/tests-277%20passing-brightgreen.svg)](https://github.com/troylar/ai-journal-kit/actions)
+[![Tests](https://img.shields.io/badge/tests-294%20passing-brightgreen.svg)](https://github.com/troylar/ai-journal-kit/actions)
 [![Coverage](https://img.shields.io/badge/coverage-98%25-brightgreen.svg)](https://github.com/troylar/ai-journal-kit/actions)
 
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 [![Security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
 [![Tested on](https://img.shields.io/badge/tested%20on-Ubuntu%20%7C%20macOS%20%7C%20Windows-blue.svg)](https://github.com/troylar/ai-journal-kit/actions)
 
-[Quick Start](#-quick-start-60-seconds) • [Features](#-why-ai-journal-kit) • [Installation](#-installation) • [Documentation](#-documentation)
+[Quick Start](#-quick-start-60-seconds) • [Features](#-why-ai-journal-kit) • [Frameworks](#-journaling-frameworks) • [Installation](#-installation) • [Documentation](#-documentation)
 
 </div>
 
@@ -56,7 +56,10 @@ Built for **YOUR** favorite tools:
 uvx ai-journal-kit setup
 ```
 
-That's it! The AI will guide you through setup interactively.
+That's it! The AI will guide you through setup interactively, including:
+- **Choose your journal location** (local or cloud folder)
+- **Pick a journaling framework** (GTD, PARA, Bullet Journal, Zettelkasten, or flexible default)
+- **Select your AI editor** (Cursor, Windsurf, Claude Code, GitHub Copilot)
 
 ### 2️⃣ Open Your Journal
 
@@ -177,6 +180,12 @@ ai-journal-kit setup
 # Interactive setup wizard
 ai-journal-kit setup
 
+# Setup with specific framework
+ai-journal-kit setup --framework gtd              # GTD methodology
+ai-journal-kit setup --framework para             # PARA method
+ai-journal-kit setup --framework bullet-journal   # Bullet Journal
+ai-journal-kit setup --framework zettelkasten     # Zettelkasten
+
 # Add IDE configurations to existing journal
 ai-journal-kit add-ide cursor        # Add Cursor config
 ai-journal-kit add-ide windsurf      # Add Windsurf config
@@ -205,16 +214,21 @@ ai-journal-kit move
 
 ## 🌟 Key Features
 
-### 🎨 **Framework Agnostic**
-Not opinionated! Use any journaling methodology:
+### 🎨 **Built-in Framework Support**
+Choose your preferred journaling methodology during setup, or use the flexible default:
 
-- **GTD** (Getting Things Done)
-- **PARA** (Projects, Areas, Resources, Archive)
-- **Bullet Journal**
-- **Zettelkasten**
-- **Your own system!**
+- **Default** - Flexible structure that adapts to any workflow
+- **GTD** (Getting Things Done) - Next actions, waiting for, someday/maybe lists
+- **PARA** - Projects, Areas, Resources, Archive organization
+- **Bullet Journal** - Rapid logging, monthly logs, collections
+- **Zettelkasten** - Atomic notes, permanent notes, index system
 
-The AI adapts to **YOUR** structure, not the other way around.
+Each framework includes:
+- ✅ **Custom templates** tailored to the methodology
+- ✅ **Optimized folder structure** matching the framework
+- ✅ **Framework-specific workflows** in your templates
+
+**Still flexible!** You can customize any framework or create your own system.
 
 ### 🛡️ **AI Protection Built-In**
 The AI **cannot** modify:
@@ -319,6 +333,105 @@ AI: "Let's reflect on today:
      - What's your top priority tomorrow?"
 
 [Captures your reflection in the daily note]
+```
+
+---
+
+## 📋 Journaling Frameworks
+
+### What Framework Should I Choose?
+
+Each framework is designed for different workflows and preferences:
+
+#### 🎯 **Default** - Best for: Beginners, flexible workflows
+- Simple daily notes with morning/evening structure
+- Project and people tracking
+- Memory capture for insights
+- **Perfect if**: You want to start simple and evolve your system organically
+
+#### ⚡ **GTD (Getting Things Done)** - Best for: Productivity enthusiasts, task managers
+- Next Actions organized by context (@work, @home, @calls, etc.)
+- Waiting For tracking
+- Someday/Maybe lists
+- Weekly review process
+- **Perfect if**: You love David Allen's methodology and want comprehensive task management
+
+#### 📁 **PARA (Projects, Areas, Resources, Archive)** - Best for: Knowledge workers, organizers
+- Clear separation of Projects (time-bound) vs Areas (ongoing)
+- Resource library for references
+- Archive for completed items
+- Goal-oriented structure
+- **Perfect if**: You want to organize everything by actionability (Tiago Forte's method)
+
+#### 🔘 **Bullet Journal** - Best for: Visual thinkers, habit trackers
+- Rapid logging with tasks, events, notes
+- Monthly logs with calendar view
+- Future log for long-term planning
+- Custom collections for tracking anything
+- **Perfect if**: You love Ryder Carroll's analog system and want a digital version
+
+#### 🔗 **Zettelkasten** - Best for: Researchers, writers, learners
+- Atomic notes (one idea per note)
+- Permanent notes with unique IDs
+- Index/structure notes to organize topics
+- Emphasis on linking and connections
+- **Perfect if**: You're building a knowledge base or writing long-form content (Niklas Luhmann's method)
+
+### Framework Examples
+
+**GTD Daily Note:**
+```markdown
+## 📥 Inbox
+- Capture everything on your mind
+
+## ⚡ Next Actions
+### @work
+- [ ] Review quarterly goals
+### @calls
+- [ ] Schedule dentist appointment
+
+## ⏳ Waiting For
+| Item | Who | Date |
+|------|-----|------|
+| Budget approval | Sarah | 2025-01-15 |
+```
+
+**PARA Project:**
+```markdown
+# Project: Launch Newsletter
+
+**Status**: Active
+**Deadline**: End of Q1
+**Related Area**: Marketing
+
+## Next Actions
+- [ ] Draft first 3 issues
+- [ ] Set up email service
+```
+
+**Bullet Journal Daily:**
+```markdown
+# January 15, 2025
+
+## Daily Log
+- [ ] Team meeting at 10am
+○ Launched new feature
+─ Great feedback from users
+* Important deadline tomorrow
+```
+
+**Zettelkasten Note:**
+```markdown
+# 202501151430 - Spaced Repetition Learning
+
+The spacing effect shows that information is better retained when study sessions are spaced out over time.
+
+## Related Notes
+- [[202501141200 - Memory consolidation]]
+- [[202501101500 - Active recall techniques]]
+
+## Sources
+- "Make It Stick" by Brown et al.
 ```
 
 ---
