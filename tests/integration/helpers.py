@@ -43,7 +43,7 @@ def assert_ide_config_installed(journal_path: Path, ide: str) -> None:
     ide_checks = {
         "cursor": journal_path / ".cursor" / "rules",
         "windsurf": journal_path / ".windsurf" / "rules",
-        "claude-code": journal_path / "SYSTEM-PROTECTION.md",  # Claude Code uses this file
+        "claude-code": journal_path / "CLAUDE.md",  # Claude Code uses this file
         "copilot": journal_path / ".github" / "instructions",
     }
 

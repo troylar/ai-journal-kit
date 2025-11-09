@@ -80,7 +80,7 @@ def add_ide(
     if ide == "all" or ide == "windsurf":
         success_msg += "• Windsurf: .windsurf/rules/*.md\n"
     if ide == "all" or ide == "claude-code":
-        success_msg += "• Claude Code: SYSTEM-PROTECTION.md\n"
+        success_msg += "• Claude Code: CLAUDE.md, SYSTEM-PROTECTION.md\n"
     if ide == "all" or ide == "copilot":
         success_msg += "• GitHub Copilot: .github/instructions/*.md\n"
 

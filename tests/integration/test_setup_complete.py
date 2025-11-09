@@ -121,9 +121,9 @@ def test_setup_installs_claude_config(temp_journal_dir, isolated_config):
     # Verify Claude Code config installed
     assert_ide_config_installed(temp_journal_dir, "claude-code")
 
-    # Check SYSTEM-PROTECTION.md file exists
-    protection_file = temp_journal_dir / "SYSTEM-PROTECTION.md"
-    assert protection_file.exists()
+    # Check CLAUDE.md file exists
+    claude_file = temp_journal_dir / "CLAUDE.md"
+    assert claude_file.exists()
 
 
 @pytest.mark.integration
