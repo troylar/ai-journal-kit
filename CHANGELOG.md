@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.13] - 2025-11-09
+
+### Added
+- **New `add-ide` command**: Add IDE configurations to existing journal without recreating
+  - Install Cursor, Windsurf, Claude Code, or GitHub Copilot configs to existing journal
+  - Use `ai-journal-kit add-ide <ide>` or interactive prompt
+  - Idempotent - safe to run multiple times
+  - Preserves all journal content and settings
+  - Supports adding individual IDEs or all at once with `add-ide all`
+
+### Changed
+- Enhanced IDE configuration flexibility
+- Users can now mix and match multiple IDE configurations in one journal
+
 ## [1.0.12] - 2025-11-09
 
 ### Fixed
