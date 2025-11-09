@@ -144,7 +144,8 @@ def test_migrate_legacy_config():
 
     multi_config = migrate_legacy_config(legacy_data)
 
-    assert isinstance(multi_config, MultiJournalConfig)
+    # Check type name instead of isinstance for Python 3.10 compatibility
+    assert type(multi_config).__name__ == "MultiJournalConfig"
     assert len(multi_config.journals) == 1
     assert "default" in multi_config.journals
     assert multi_config.active_journal == "default"
