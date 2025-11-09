@@ -1,5 +1,7 @@
 """Unit tests for manifest module."""
 
+from pathlib import Path
+
 import pytest
 
 from ai_journal_kit.core.manifest import (
@@ -591,3 +593,106 @@ def test_manifest_compute_hash_large_file(tmp_path):
 
     assert file_hash != ""
     assert len(file_hash) == 64  # SHA256 hex digest is 64 characters
+
+
+@pytest.mark.unit
+def test_manifest_add_file_non_relative_path(tmp_path):
+    """Test add_file with absolute path that cannot be made relative (lines 99-100)."""
+    manifest = Manifest()
+
+    # Create file in a completely different directory
+    other_dir = tmp_path / "other"
+    other_dir.mkdir()
+    other_file = other_dir / "file.txt"
+    other_file.write_text("content")
+
+    # Try to make it relative to a different directory
+    journal_dir = tmp_path / "journal"
+    journal_dir.mkdir()
+
+    # This should trigger the ValueError exception and keep absolute path
+    manifest.add_file(other_file, source="test", relative_to=journal_dir)
+
+    # File should be tracked with absolute path (since it couldn't be made relative)
+    assert str(other_file) in manifest.files
+
+
+@pytest.mark.unit
+def test_manifest_is_customized_non_relative_path(tmp_path):
+    """Test is_customized with absolute path that cannot be made relative (lines 128-129)."""
+    manifest = Manifest()
+
+    # Create file in a different directory
+    other_dir = tmp_path / "other"
+    other_dir.mkdir()
+    other_file = other_dir / "file.txt"
+    other_file.write_text("original")
+
+    journal_dir = tmp_path / "journal"
+    journal_dir.mkdir()
+
+    # Add file with absolute path
+    manifest.add_file(other_file, source="test", relative_to=journal_dir)
+
+    # Modify file
+    other_file.write_text("modified")
+
+    # Check if customized - should handle ValueError and still work
+    result = manifest.is_customized(other_file, relative_to=journal_dir)
+
+    # Should detect customization despite path not being relative
+    assert result is True
+
+
+@pytest.mark.unit
+def test_manifest_mark_customized_non_relative_path(tmp_path):
+    """Test mark_customized with absolute path that cannot be made relative (lines 159-162)."""
+    manifest = Manifest()
+
+    # Create file in a different directory
+    other_dir = tmp_path / "other"
+    other_dir.mkdir()
+    other_file = other_dir / "file.txt"
+    other_file.write_text("content")
+
+    journal_dir = tmp_path / "journal"
+    journal_dir.mkdir()
+
+    # Add file
+    manifest.add_file(other_file, source="test", relative_to=journal_dir)
+
+    # Mark as customized - should handle ValueError
+    manifest.mark_customized(other_file, relative_to=journal_dir)
+
+    # Check that it was marked
+    entry = manifest.files[str(other_file)]
+    assert entry.customized is True
+
+
+@pytest.mark.unit
+def test_manifest_update_hash_non_relative_path(tmp_path):
+    """Test update_hash with absolute path that cannot be made relative (lines 176-179)."""
+    manifest = Manifest()
+
+    # Create file in a different directory
+    other_dir = tmp_path / "other"
+    other_dir.mkdir()
+    other_file = other_dir / "file.txt"
+    other_file.write_text("original")
+
+    journal_dir = tmp_path / "journal"
+    journal_dir.mkdir()
+
+    # Add file
+    manifest.add_file(other_file, source="test", relative_to=journal_dir)
+    old_hash = manifest.files[str(other_file)].hash
+
+    # Modify file
+    other_file.write_text("modified")
+
+    # Update hash - should handle ValueError
+    manifest.update_hash(other_file, relative_to=journal_dir)
+
+    # Hash should be updated
+    new_hash = manifest.files[str(other_file)].hash
+    assert new_hash != old_hash

@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2025-11-09
+
 ### Added
 - **Framework-Specific Templates**: Choose your preferred journaling methodology during setup
   - **GTD® (Getting Things Done®)**: Next actions, waiting for lists, someday/maybe, context-based organization
@@ -90,7 +92,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - 9 integration tests for `use` and `list` commands
   - 8 integration tests for multi-journal setup workflow
   - Tests cover: journal creation, switching, env var override, duplicate detection, legacy migration
-- Test coverage maintained at 98%
+- **81 additional tests added** bringing total to **458 tests**
+  - 9 unit tests for config persistence (roundtrip, corruption handling, datetime serialization)
+  - 5 integration tests for end-to-end config persistence validation
+  - 24 tests for UI utilities (prompts, IDE selection, framework selection)
+  - 10 tests for add-ide command
+  - 7 tests for list-journals command
+  - 5 tests for use-journal command
+  - 8 tests for customize-template command
+  - 11 tests for switch-framework command
+  - 4 tests for manifest edge cases (non-relative paths)
+- **Test coverage improved from 90% to 98%**
+  - Perfect 100% coverage on: add_ide.py, list_journals.py, use_journal.py, customize_template.py, ui.py
+  - 97% coverage on config.py and manifest.py
+
+### Fixed
+- **CRITICAL: Config persistence bug**: Fixed config file disappearing on macOS
+  - Config now correctly uses platformdirs for macOS: `~/Library/Application Support/ai-journal-kit/`
+  - Added 9 unit tests + 5 integration tests to prevent regression
+  - Tested config persistence across multiple commands and load/save cycles
+  - Fixed path expansion for `~` in journal locations
+- **Claude Code CLAUDE.md support**: Fixed missing CLAUDE.md file in Claude Code IDE configuration
+  - Claude Code now properly installs CLAUDE.md with AI coaching instructions
+  - Updated status command to check for CLAUDE.md instead of old SYSTEM-PROTECTION.md check
+  - Updated doctor command for correct file validation
+  - All IDE checks now validate correct files
+- **System file protection**: Added "DO NOT EDIT" warnings to all 19 IDE configuration files
+  - Clear HTML comment warnings at top of all system-managed files
+  - Warns users that files will be overwritten during updates
+  - Directs users to `.ai-instructions/` for customizations
+  - Prevents accidental loss of system functionality
+
+### Security
+- Enhanced file protection warnings prevent users from breaking their installation by editing system files
 
 ## [1.0.13] - 2025-11-09
 
