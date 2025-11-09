@@ -231,23 +231,20 @@ def test_update_check_only_mode(temp_journal_dir, isolated_config):
 @pytest.mark.integration
 def test_update_with_network_error_handling(temp_journal_dir, isolated_config):
     """Test update handles network errors gracefully."""
+    from unittest.mock import patch
+
     # Create journal
     create_journal_fixture(path=temp_journal_dir, ide="cursor", config_dir=isolated_config)
 
-    # Mock will be applied at runtime if network unavailable
-    # This tests the actual error handling path
-    runner = CliRunner()
-    result = runner.invoke(app, ["update"])
+    # Mock network failure - get_latest_version returns None
+    with patch("ai_journal_kit.cli.update.get_latest_version", return_value=None):
+        runner = CliRunner()
+        result = runner.invoke(app, ["update"])
 
-    # Should handle gracefully - either succeed, show up to date, or note unavailability
-    # Exit code 0 is fine, we're testing it doesn't crash
-    output_lower = result.output.lower()
-    # Should complete without crashing
-    assert (
-        "error" not in output_lower
-        or "unable to check" in output_lower
-        or "up to date" in output_lower
-    )
+        # Should handle gracefully - exit successfully with message about dev mode
+        assert result.exit_code == 0
+        output_lower = result.output.lower()
+        assert "unable to check" in output_lower or "development mode" in output_lower
 
 
 @pytest.mark.integration
