@@ -72,7 +72,7 @@ uvx ai-journal-kit setup
 
 That's it! The AI will guide you through setup interactively, including:
 - **Choose your journal location** (local or cloud folder)
-- **Pick a journaling framework** (GTD, PARA, Bullet Journal, Zettelkasten, or flexible default)
+- **Pick a journaling framework** (GTD®, PARA™, Bullet Journal®, Zettelkasten, or flexible default)
 - **Select your AI editor** (Cursor, Windsurf, Claude Code, GitHub Copilot)
 
 ### 2️⃣ Open Your Journal
@@ -299,16 +299,16 @@ Your actual journal content **never changes**:
 #### Example Workflow
 
 ```bash
-# 1. Start with GTD
+# 1. Start with GTD®
 ai-journal-kit setup --framework gtd
 
 # 2. Journal for a few months, customize templates
 # ... edit waiting-for-template.md with your own style ...
 
-# 3. Want to try PARA? Switch safely!
+# 3. Want to try PARA™? Switch safely!
 ai-journal-kit switch-framework para
-# ✅ Your GTD templates (including customizations) are backed up
-# ✅ PARA templates are installed
+# ✅ Your GTD® templates (including customizations) are backed up
+# ✅ PARA™ templates are installed
 # ✅ All your journal notes are untouched
 
 # 4. Changed your mind? Go back!
@@ -318,7 +318,7 @@ ai-journal-kit switch-framework para
 #### When to Switch
 
 You might want to switch frameworks if:
-- 📈 **Your workflow evolved** - Started simple with Default, now ready for GTD
+- 📈 **Your workflow evolved** - Started simple with Default, now ready for GTD®
 - 🔄 **Testing methodologies** - Trying different systems to find your fit
 - 🎯 **Life changes** - New job/role needs different organization (e.g., researcher → Zettelkasten)
 - 🧪 **Experimenting** - Want to try a methodology you've been reading about
@@ -380,7 +380,7 @@ AI_JOURNAL=research ai-journal-kit doctor
 
 - **🏢 Work/Personal Split**: Keep professional projects separate from personal journaling
 - **🔬 Research Projects**: Separate journal for each major research topic with Zettelkasten
-- **🎯 Different Frameworks**: Use GTD for work, Bullet Journal for personal life
+- **🎯 Different Frameworks**: Use GTD® for work, Bullet Journal® for personal life
 - **👥 Team Collaboration**: Separate journal for each team or project
 - **🧪 Testing**: Try new frameworks without affecting your main journal
 
@@ -388,7 +388,7 @@ AI_JOURNAL=research ai-journal-kit doctor
 
 Each journal is completely independent:
 - ✅ **Own location** - Different folder on disk
-- ✅ **Own framework** - GTD, PARA, or any other methodology
+- ✅ **Own framework** - GTD®, PARA™, or any other methodology
 - ✅ **Own IDE** - Can use different editors
 - ✅ **Own templates** - Customizations don't affect other journals
 - ✅ **Own content** - Notes never mix between journals
@@ -670,8 +670,8 @@ A: Yes! Everything stays on your computer. No cloud, no tracking, no data collec
 **Q: Do I need an AI editor?**  
 A: No! Works with any markdown editor. AI features are optional but recommended.
 
-**Q: Can I use my own journaling system?**  
-A: Absolutely! Not opinionated. Use GTD, PARA, Bullet Journal, or your own method.
+**Q: Can I use my own journaling system?**
+A: Absolutely! Not opinionated. Use GTD®, PARA™, Bullet Journal®, or your own method.
 
 **Q: Will updates break my journal?**  
 A: Never. Updates only touch system files, never your content or customizations.
