@@ -99,7 +99,7 @@ def doctor(
 
         elif issue_type == "missing_ide_configs":
             try:
-                copy_ide_configs(config.ide, config.journal_location)
+                copy_ide_configs(config.ide, config.journal_location, framework=config.framework)
                 console.print(f"  [green]✓[/green] Installed {config.ide} configurations")
                 fixed_count += 1
             except Exception as e:
@@ -139,7 +139,7 @@ def _check_ide_configs(config) -> bool:
     elif config.ide == "windsurf":
         return (config.journal_location / ".windsurf" / "rules").exists()
     elif config.ide == "claude-code":
-        return (config.journal_location / "SYSTEM-PROTECTION.md").exists()
+        return (config.journal_location / "CLAUDE.md").exists()
     elif config.ide == "copilot":
         return (config.journal_location / ".github" / "copilot-instructions.md").exists()
     elif config.ide == "all":

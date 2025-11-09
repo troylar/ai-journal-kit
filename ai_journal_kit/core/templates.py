@@ -5,6 +5,38 @@ from importlib.resources import files
 from pathlib import Path
 
 
+def resolve_template(template_name: str, journal_path: Path) -> Path | None:
+    """Resolve template path using priority order.
+
+    Priority:
+    1. .ai-instructions/templates/ (user overrides - highest priority)
+    2. Journal root (current framework templates)
+    3. Package default (fallback)
+
+    Args:
+        template_name: Template filename (e.g., 'daily-template.md')
+        journal_path: Journal root directory
+
+    Returns:
+        Path to template file, or None if not found
+    """
+    # Highest priority: user overrides in .ai-instructions/templates/
+    user_template = journal_path / ".ai-instructions" / "templates" / template_name
+    if user_template.exists():
+        return user_template
+
+    # Medium priority: journal root (current framework templates)
+    journal_template = journal_path / template_name
+    if journal_template.exists():
+        return journal_template
+
+    # Lowest priority: package default
+    try:
+        return get_template(template_name)
+    except (FileNotFoundError, ValueError):
+        return None
+
+
 def get_template(name: str) -> Path:
     """Get path to a specific template resource.
 
@@ -29,12 +61,13 @@ def copy_template(template_name: str, destination: Path):
     shutil.copy2(source, destination)
 
 
-def copy_ide_configs(ide: str, destination: Path):
+def copy_ide_configs(ide: str, destination: Path, framework: str = "default"):
     """Copy IDE-specific configs to journal location.
 
     Args:
         ide: IDE name (cursor, windsurf, claude-code, copilot, all)
         destination: Journal root directory
+        framework: Framework name to replace {framework} placeholders (default: "default")
     """
     ide_configs_base = files("ai_journal_kit.templates").joinpath("ide-configs")
 
@@ -53,7 +86,10 @@ def copy_ide_configs(ide: str, destination: Path):
                 dest_dir = destination / ".cursor" / "rules"
                 dest_dir.mkdir(parents=True, exist_ok=True)
                 for mdc_file in source_rules.glob("*.mdc"):
-                    shutil.copy2(mdc_file, dest_dir / mdc_file.name)
+                    # Read, replace placeholders, write
+                    content = mdc_file.read_text(encoding="utf-8")
+                    content = content.replace("{framework}", framework)
+                    (dest_dir / mdc_file.name).write_text(content, encoding="utf-8")
 
         elif ide_name == "windsurf":
             source_rules = ide_source / ".windsurf" / "rules"
@@ -61,13 +97,19 @@ def copy_ide_configs(ide: str, destination: Path):
                 dest_dir = destination / ".windsurf" / "rules"
                 dest_dir.mkdir(parents=True, exist_ok=True)
                 for md_file in source_rules.glob("*.md"):
-                    shutil.copy2(md_file, dest_dir / md_file.name)
+                    # Read, replace placeholders, write
+                    content = md_file.read_text(encoding="utf-8")
+                    content = content.replace("{framework}", framework)
+                    (dest_dir / md_file.name).write_text(content, encoding="utf-8")
 
         elif ide_name == "claude-code":
             # Copy all .md files from claude-code template to journal root
             for md_file in ide_source.glob("*.md"):
                 dest_file = destination / md_file.name
-                shutil.copy2(md_file, dest_file)
+                # Read, replace placeholders, write
+                content = md_file.read_text(encoding="utf-8")
+                content = content.replace("{framework}", framework)
+                dest_file.write_text(content, encoding="utf-8")
 
         elif ide_name == "copilot":
             github_dir = ide_source / ".github"
@@ -80,8 +122,20 @@ def copy_ide_configs(ide: str, destination: Path):
                 if old_copilot_file.exists():
                     old_copilot_file.unlink()
 
-                # Copy all files from .github (including instructions folder)
-                shutil.copytree(github_dir, dest_github, dirs_exist_ok=True)
+                # Copy all files from .github, replacing {framework} placeholders
+                for item in github_dir.rglob("*"):
+                    if item.is_file():
+                        rel_path = item.relative_to(github_dir)
+                        dest_file = dest_github / rel_path
+                        dest_file.parent.mkdir(parents=True, exist_ok=True)
+
+                        # Replace placeholders in markdown files
+                        if item.suffix in [".md", ".instructions.md"]:
+                            content = item.read_text(encoding="utf-8")
+                            content = content.replace("{framework}", framework)
+                            dest_file.write_text(content, encoding="utf-8")
+                        else:
+                            shutil.copy2(item, dest_file)
 
 
 def list_available_templates() -> list[str]:

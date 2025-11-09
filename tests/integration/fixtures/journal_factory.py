@@ -53,7 +53,11 @@ class JournalFixture:
 
 
 def create_journal_fixture(
-    path: Path, ide: str = "cursor", has_content: bool = False, config_dir: Path = None
+    path: Path,
+    ide: str = "cursor",
+    has_content: bool = False,
+    config_dir: Path = None,
+    framework: str = "default",
 ) -> JournalFixture:
     """
     Factory for creating configured journal installations.
@@ -63,18 +67,19 @@ def create_journal_fixture(
         ide: IDE to configure (cursor, windsurf, claude-code, copilot, all)
         has_content: Whether to add sample daily notes
         config_dir: Optional config directory path for config file
+        framework: Journaling framework (default, gtd, para, bullet-journal, zettelkasten)
 
     Returns:
         JournalFixture: Configured journal for testing
     """
-    # Create journal structure
-    create_structure(path)
+    # Create journal structure with framework
+    create_structure(path, framework=framework)
 
     # Install IDE configs
-    copy_ide_configs(ide, path)
+    copy_ide_configs(ide, path, framework=framework)
 
     # Create config file
-    config = Config(journal_location=path, ide=ide, version="1.0.0")
+    config = Config(journal_location=path, ide=ide, framework=framework, version="1.0.0")
 
     if config_dir:
         # save_config() uses get_config_path() internally which reads AI_JOURNAL_CONFIG_DIR

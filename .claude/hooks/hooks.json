@@ -1,0 +1,16 @@
+{
+  "hooks": [
+    {
+      "name": "pre-commit-safety",
+      "trigger": "before_tool_call",
+      "tool_patterns": ["Bash(git commit*)"],
+      "script": ".claude/hooks/pre-commit-check.sh"
+    },
+    {
+      "name": "template-validation",
+      "trigger": "after_tool_call",
+      "tool_patterns": ["Edit(*templates*.md)", "Write(*templates*.md)"],
+      "script": ".claude/hooks/template-validator.sh"
+    }
+  ]
+}

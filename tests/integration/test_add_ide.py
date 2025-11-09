@@ -70,8 +70,8 @@ def test_add_ide_claude_code_to_existing_journal(temp_journal_dir, isolated_conf
     assert "claude code" in result.output.lower()
 
     # Verify Claude Code config was added
-    system_protection = temp_journal_dir / "SYSTEM-PROTECTION.md"
-    assert system_protection.exists()
+    claude_file = temp_journal_dir / "CLAUDE.md"
+    assert claude_file.exists()
 
 
 @pytest.mark.integration
@@ -110,7 +110,7 @@ def test_add_ide_all_to_existing_journal(temp_journal_dir, isolated_config):
     # Verify all IDE configs were added
     assert (temp_journal_dir / ".cursor" / "rules").exists()
     assert (temp_journal_dir / ".windsurf" / "rules").exists()
-    assert (temp_journal_dir / "SYSTEM-PROTECTION.md").exists()
+    assert (temp_journal_dir / "CLAUDE.md").exists()
     assert (temp_journal_dir / ".github" / "instructions").exists()
 
 

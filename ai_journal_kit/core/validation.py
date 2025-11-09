@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Literal
 
 IDE_CHOICES = Literal["cursor", "windsurf", "claude-code", "copilot", "all"]
+FRAMEWORK_CHOICES = Literal["default", "gtd", "para", "bullet-journal", "zettelkasten"]
 
 
 def validate_path(path: str | Path) -> Path:
@@ -53,6 +54,29 @@ def validate_ide(ide: str) -> str:
         raise ValueError(f"Invalid IDE: {ide}. Must be one of: {', '.join(valid_ides)}")
 
     return ide_lower
+
+
+def validate_framework(framework: str) -> str:
+    """Validate framework choice.
+
+    Args:
+        framework: Framework name to validate
+
+    Returns:
+        Validated framework name
+
+    Raises:
+        ValueError: If framework is not supported
+    """
+    valid_frameworks = ["default", "gtd", "para", "bullet-journal", "zettelkasten"]
+    framework_lower = framework.lower()
+
+    if framework_lower not in valid_frameworks:
+        raise ValueError(
+            f"Invalid framework: {framework}. Must be one of: {', '.join(valid_frameworks)}"
+        )
+
+    return framework_lower
 
 
 def path_is_writable(path: Path) -> bool:
