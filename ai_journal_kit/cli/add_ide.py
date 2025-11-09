@@ -39,7 +39,7 @@ def add_ide(
     # Validate IDE selection
     try:
         ide = validate_ide(ide)
-    except ValueError as e:
+    except ValueError:
         show_error(
             f"Invalid IDE: {ide}",
             "Choose from: cursor, windsurf, claude-code, copilot, all",
