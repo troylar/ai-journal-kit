@@ -177,6 +177,14 @@ ai-journal-kit setup
 # Interactive setup wizard
 ai-journal-kit setup
 
+# Add IDE configurations to existing journal
+ai-journal-kit add-ide cursor        # Add Cursor config
+ai-journal-kit add-ide windsurf      # Add Windsurf config
+ai-journal-kit add-ide claude-code   # Add Claude Code config
+ai-journal-kit add-ide copilot       # Add GitHub Copilot config
+ai-journal-kit add-ide all           # Add all IDE configs
+ai-journal-kit add-ide               # Interactive prompt
+
 # Check journal health
 ai-journal-kit status
 
@@ -263,6 +271,15 @@ journal/
     ├── copilot-instructions.md
     └── instructions/
         └── daily-notes.instructions.md
+```
+
+**✨ Mix & Match**: You can add multiple IDE configurations to the same journal! Start with one and add others later:
+```bash
+# Started with Cursor? Add Windsurf later!
+ai-journal-kit add-ide windsurf
+
+# Or add all IDE configs at once
+ai-journal-kit add-ide all
 ```
 
 ---
