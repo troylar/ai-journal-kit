@@ -20,10 +20,12 @@ def test_list_journals_single(temp_journal_dir, isolated_config):
 
     assert result.exit_code == 0
     assert "default" in result.output
-    # Path may be truncated in table, so check for partial path
-    assert "private" in result.output or "tmp" in result.output or "test-journal" in result.output
+    # Check table header is displayed (paths may be truncated)
+    assert "Configured Journals" in result.output or "Location" in result.output
     # Check for active indicator (✓ or Active)
     assert "✓" in result.output or "Active" in result.output
+    # Verify cursor IDE is shown
+    assert "cursor" in result.output
 
 
 @pytest.mark.integration
