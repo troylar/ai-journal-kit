@@ -11,6 +11,7 @@ from ai_journal_kit.core.templates import (
     copy_template,
     get_template,
     list_available_templates,
+    resolve_template,
 )
 
 
@@ -144,3 +145,97 @@ def test_copy_ide_configs_copilot_with_old_structure(temp_journal_dir):
     # New instructions folder should exist
     instructions_folder = temp_journal_dir / ".github" / "instructions"
     assert instructions_folder.exists()
+
+
+@pytest.mark.unit
+def test_resolve_template_user_override(temp_journal_dir):
+    """Test resolve_template prioritizes user override in .ai-instructions/templates/."""
+    # Create user override
+    user_templates = temp_journal_dir / ".ai-instructions" / "templates"
+    user_templates.mkdir(parents=True)
+    user_template = user_templates / "daily-template.md"
+    user_template.write_text("# My custom daily template")
+
+    # Create journal template
+    journal_template = temp_journal_dir / "daily-template.md"
+    journal_template.write_text("# Journal daily template")
+
+    # Should return user override (highest priority)
+    result = resolve_template("daily-template.md", temp_journal_dir)
+
+    assert result == user_template
+    assert result.read_text() == "# My custom daily template"
+
+
+@pytest.mark.unit
+def test_resolve_template_journal_root(temp_journal_dir):
+    """Test resolve_template uses journal root if no user override."""
+    # Create journal template only
+    journal_template = temp_journal_dir / "daily-template.md"
+    journal_template.write_text("# Journal daily template")
+
+    # Should return journal template (medium priority)
+    result = resolve_template("daily-template.md", temp_journal_dir)
+
+    assert result == journal_template
+    assert result.read_text() == "# Journal daily template"
+
+
+@pytest.mark.unit
+def test_resolve_template_package_default(temp_journal_dir):
+    """Test resolve_template falls back to package default."""
+    # No user override, no journal template
+    # Should fall back to package default (lowest priority)
+    result = resolve_template("daily-template.md", temp_journal_dir)
+
+    # Should get package default
+    assert result is not None
+    assert result.exists()
+    assert result.is_file()
+
+
+@pytest.mark.unit
+def test_resolve_template_not_found(temp_journal_dir):
+    """Test resolve_template returns path even if template doesn't exist (get_template doesn't check)."""
+    # Request a template that doesn't exist anywhere
+    # get_template() just constructs a path, doesn't check existence
+    result = resolve_template("nonexistent-template.md", temp_journal_dir)
+
+    # Will get a path to package templates (even if file doesn't exist)
+    assert result is not None
+    assert "nonexistent-template.md" in str(result)
+
+
+@pytest.mark.unit
+def test_resolve_template_priority_order(temp_journal_dir):
+    """Test resolve_template follows correct priority order."""
+    # Create all three versions
+    user_templates = temp_journal_dir / ".ai-instructions" / "templates"
+    user_templates.mkdir(parents=True)
+    user_template = user_templates / "test.md"
+    user_template.write_text("USER")
+
+    journal_template = temp_journal_dir / "test.md"
+    journal_template.write_text("JOURNAL")
+
+    # Should always pick user override first
+    result = resolve_template("test.md", temp_journal_dir)
+    assert result == user_template
+    assert result.read_text() == "USER"
+
+    # Remove user override
+    user_template.unlink()
+
+    # Should pick journal next
+    result = resolve_template("test.md", temp_journal_dir)
+    assert result == journal_template
+    assert result.read_text() == "JOURNAL"
+
+    # Remove journal
+    journal_template.unlink()
+
+    # Should try package default (get_template just constructs path)
+    result = resolve_template("test.md", temp_journal_dir)
+    # Will get a package path (even if file doesn't actually exist there)
+    assert result is not None
+    assert "test.md" in str(result)
