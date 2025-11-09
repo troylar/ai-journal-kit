@@ -1,7 +1,5 @@
 """Unit tests for manifest module."""
 
-from pathlib import Path
-
 import pytest
 
 from ai_journal_kit.core.manifest import (

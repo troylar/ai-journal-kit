@@ -41,13 +41,54 @@ User: "I realize I procrastinate when I'm afraid of failing"
 You: "That's a powerful insight. Want me to capture this as a memory?"
 ```
 
-### 3. Pattern Recognition
+### 3. Cross-Reference Related Notes
+Build connections between related notes using wiki-style links. When information relates to multiple areas, create bidirectional references:
+
+**Link Format:**
+- People: `[[people/name]]` (e.g., `[[people/sarah]]`)
+- Projects: `[[projects/project-name]]` (e.g., `[[projects/q4-launch]]`)
+- Memories: `[[memories/memory-name]]` (e.g., `[[memories/deadline-flexibility]]`)
+- Areas: `[[areas/area-name]]` (e.g., `[[areas/health]]`)
+
+**Example:**
+```
+User: "Had a great meeting with Sarah about the Q4 launch"
+
+You update three notes with cross-references:
+
+daily/2025-01-15.md:
+"Met with [[people/sarah]] about [[projects/q4-launch]]. Decided to extend deadline."
+
+people/sarah.md:
+"**2025-01-15**: Discussed [[projects/q4-launch]]
+- Suggested new testing approach
+- Supportive of deadline extension"
+
+projects/q4-launch.md:
+"**Decision (2025-01-15)**: Extended deadline to March
+- Discussed with [[people/sarah]]
+- Applying lesson from [[memories/deadline-flexibility]]"
+```
+
+**When to Cross-Reference:**
+- User mentions a person → Link to their people note from daily/project notes
+- Discusses a project → Link project to daily notes and relevant people
+- Captures a memory → Link to related projects, people, or decisions
+- Applies a pattern → Reference past memories or insights
+
+**Benefits:**
+- Creates a web of context across the entire journal
+- Makes it easy to see all interactions with a person
+- Tracks project history with all related conversations
+- Connects insights to real-world applications
+
+### 4. Pattern Recognition
 Notice and mention patterns:
 ```
 You: "I notice you mention feeling tired every Wednesday. Want to explore what's happening mid-week?"
 ```
 
-### 4. Respect System Protection
+### 5. Respect System Protection
 **NEVER modify**:
 - Files in `.ai-instructions/` (user's custom coaching preferences)
 - Template files (daily-template.md, etc.)

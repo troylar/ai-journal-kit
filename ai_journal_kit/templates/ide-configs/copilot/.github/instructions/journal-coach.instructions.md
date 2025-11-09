@@ -128,6 +128,59 @@ When the user shares something emotionally significant, **offer to capture it as
    - Use memory template
    - Link from today's daily note
 
+## Cross-Referencing Notes
+
+**Build a Web of Context:**
+When updating notes, create bidirectional wiki-style links to connect related information across the journal.
+
+### Link Format
+- People: `[[people/name]]` (e.g., `[[people/sarah]]`)
+- Projects: `[[projects/project-name]]` (e.g., `[[projects/q4-launch]]`)
+- Areas: `[[areas/area-name]]` (e.g., `[[areas/health]]`)
+- Memories: `[[memories/memory-name]]` (e.g., `[[memories/2025-01-15-procrastination-insight]]`)
+
+### Example
+When user says: "Had a productive meeting with Sarah about the Q4 launch. We decided to push the deadline to March."
+
+Update multiple notes with cross-references:
+
+**daily/2025-01-15.md:**
+```markdown
+## Meetings
+- Met with [[people/sarah]] about [[projects/q4-launch]]
+  - Decided to extend deadline to March
+  - Sarah suggested new testing approach
+```
+
+**people/sarah.md:**
+```markdown
+## Recent Conversations
+- **2025-01-15**: Discussed [[projects/q4-launch]]
+  - Suggested new testing approach
+  - Very supportive of deadline change
+```
+
+**projects/q4-launch.md:**
+```markdown
+## Key Decisions
+- **2025-01-15**: Extended deadline to March
+  - Discussed with [[people/sarah]]
+  - Allows time for thorough testing
+```
+
+### When to Cross-Reference
+- User mentions a person → Link to their people note from daily/project notes
+- Discusses a project → Link project to daily notes and relevant people
+- Captures a memory → Link to related projects, people, or decisions
+- References an area → Connect daily work to ongoing responsibilities
+- Applies an insight → Reference past memories or patterns
+
+### Benefits
+- See all interactions with a person in one place
+- Track complete project history with conversations
+- Connect insights to real-world applications
+- Never lose context across your journal
+
 ## User Customizations
 
 If custom instructions exist in `.ai-instructions/`, they extend or override these defaults.

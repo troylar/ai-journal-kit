@@ -41,7 +41,10 @@ def test_customize_template_normalizes_name_add_md(temp_journal_dir):
 
     with patch("ai_journal_kit.cli.customize_template.load_config", return_value=mock_config):
         with patch("ai_journal_kit.cli.customize_template.ensure_manifest_exists"):
-            with patch("ai_journal_kit.cli.customize_template.resolve_template", return_value=source_template):
+            with patch(
+                "ai_journal_kit.cli.customize_template.resolve_template",
+                return_value=source_template,
+            ):
                 with patch("ai_journal_kit.cli.customize_template.show_success"):
                     with patch("ai_journal_kit.cli.customize_template.console"):
                         customize_template("daily-template")  # No .md
@@ -64,7 +67,10 @@ def test_customize_template_normalizes_name_add_template(temp_journal_dir):
 
     with patch("ai_journal_kit.cli.customize_template.load_config", return_value=mock_config):
         with patch("ai_journal_kit.cli.customize_template.ensure_manifest_exists"):
-            with patch("ai_journal_kit.cli.customize_template.resolve_template", return_value=source_template):
+            with patch(
+                "ai_journal_kit.cli.customize_template.resolve_template",
+                return_value=source_template,
+            ):
                 with patch("ai_journal_kit.cli.customize_template.show_success"):
                     with patch("ai_journal_kit.cli.customize_template.console"):
                         customize_template("daily.md")  # No -template
@@ -108,7 +114,10 @@ def test_customize_template_already_customized(temp_journal_dir):
 
     with patch("ai_journal_kit.cli.customize_template.load_config", return_value=mock_config):
         with patch("ai_journal_kit.cli.customize_template.ensure_manifest_exists"):
-            with patch("ai_journal_kit.cli.customize_template.resolve_template", return_value=source_template):
+            with patch(
+                "ai_journal_kit.cli.customize_template.resolve_template",
+                return_value=source_template,
+            ):
                 with patch("ai_journal_kit.cli.customize_template.console"):
                     with pytest.raises(typer.Exit) as exc_info:
                         customize_template("daily-template.md")
@@ -131,7 +140,10 @@ def test_customize_template_successful_copy(temp_journal_dir):
 
     with patch("ai_journal_kit.cli.customize_template.load_config", return_value=mock_config):
         with patch("ai_journal_kit.cli.customize_template.ensure_manifest_exists"):
-            with patch("ai_journal_kit.cli.customize_template.resolve_template", return_value=source_template):
+            with patch(
+                "ai_journal_kit.cli.customize_template.resolve_template",
+                return_value=source_template,
+            ):
                 with patch("ai_journal_kit.cli.customize_template.show_success"):
                     with patch("ai_journal_kit.cli.customize_template.console"):
                         customize_template("daily-template.md")
@@ -158,7 +170,10 @@ def test_customize_template_creates_directory(temp_journal_dir):
 
     with patch("ai_journal_kit.cli.customize_template.load_config", return_value=mock_config):
         with patch("ai_journal_kit.cli.customize_template.ensure_manifest_exists"):
-            with patch("ai_journal_kit.cli.customize_template.resolve_template", return_value=source_template):
+            with patch(
+                "ai_journal_kit.cli.customize_template.resolve_template",
+                return_value=source_template,
+            ):
                 with patch("ai_journal_kit.cli.customize_template.show_success"):
                     with patch("ai_journal_kit.cli.customize_template.console"):
                         customize_template("project-template.md")

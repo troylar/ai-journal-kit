@@ -9,6 +9,52 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.1] - 2025-11-09
+
+### Fixed
+- **CRITICAL: Framework placeholder replacement bug**: Fixed {framework} placeholder not being replaced in IDE configuration files
+  - IDE config files (CLAUDE.md, Cursor rules, Windsurf rules, Copilot instructions) now show actual framework name instead of literal `{framework}` text
+  - Applied to all IDEs: Cursor, Windsurf, Claude Code, and GitHub Copilot
+  - Updated `copy_ide_configs()` to accept framework parameter and perform placeholder replacement
+  - Updated all 5 callers (setup, update, doctor, add-ide, journal_factory) to pass framework parameter
+- **Version tracking bug**: Fixed hardcoded version "1.0.0" in journal profiles and manifests
+  - Journal profiles now store actual package version (e.g., "1.1.1") instead of hardcoded "1.0.0"
+  - Manifest files now use actual package version
+  - Updated setup.py and migration.py to use `__version__` instead of hardcoded strings
+
+### Added
+- **Enhanced setup command for existing journals**: Better messaging and confirmation when running setup on existing journal
+  - New `_detect_existing_journal()` function detects all existing content:
+    - Journal folders (daily, projects, people, etc.)
+    - IDE configurations (all 4 supported IDEs)
+    - Template files
+    - User customizations (.ai-instructions/)
+  - New `_handle_existing_journal()` function provides clear messaging:
+    - Shows what content was detected
+    - Explains what will happen if user proceeds
+    - Offers to keep existing IDE configuration or choose new one
+    - Provides helpful guidance if user cancels
+  - Setup now shows "update" instead of "create" message when reinstalling
+  - Clear confirmation prompts: "Proceed with re-installation at this location?"
+  - Better --no-confirm mode handling with appropriate warnings
+
+### Technical
+- **33 new tests added** (458 → 491 total tests)
+  - 23 new unit tests in `test_cli_setup.py`:
+    - 16 tests for `_detect_existing_journal()` covering all detection scenarios
+    - 7 tests for `_handle_existing_journal()` covering messaging and user flows
+  - 10 new integration tests in `test_setup_complete.py`:
+    - Existing journal detection and warning
+    - IDE choice offering and handling
+    - Framework placeholder replacement verification
+    - Actual version storage verification
+    - Reinstall message clarity
+    - Multiple IDE config detection
+    - Customization preservation messaging
+    - All frameworks placeholder replacement
+- All 491 tests passing on macOS, Linux, and Windows
+- 100% code formatting and linting compliance
+
 ## [1.1.0] - 2025-11-09
 
 ### Added

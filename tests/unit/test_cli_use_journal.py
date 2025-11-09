@@ -35,7 +35,9 @@ def test_use_journal_not_found():
     mock_multi_config.has_journal.return_value = False
     mock_multi_config.journals = {"work": MagicMock(), "personal": MagicMock()}
 
-    with patch("ai_journal_kit.cli.use_journal.load_multi_journal_config", return_value=mock_multi_config):
+    with patch(
+        "ai_journal_kit.cli.use_journal.load_multi_journal_config", return_value=mock_multi_config
+    ):
         with patch("ai_journal_kit.cli.use_journal.show_error") as mock_error:
             with pytest.raises(typer.Exit) as exc_info:
                 use_journal("nonexistent")
@@ -59,7 +61,9 @@ def test_use_journal_success():
     mock_multi_config.has_journal.return_value = True
     mock_multi_config.journals = {"work": mock_profile}
 
-    with patch("ai_journal_kit.cli.use_journal.load_multi_journal_config", return_value=mock_multi_config):
+    with patch(
+        "ai_journal_kit.cli.use_journal.load_multi_journal_config", return_value=mock_multi_config
+    ):
         with patch("ai_journal_kit.cli.use_journal.save_multi_journal_config") as mock_save:
             with patch("ai_journal_kit.cli.use_journal.show_success") as mock_success:
                 with patch("ai_journal_kit.cli.use_journal.console"):
@@ -83,7 +87,9 @@ def test_use_journal_displays_info():
     mock_multi_config.has_journal.return_value = True
     mock_multi_config.journals = {"personal": mock_profile}
 
-    with patch("ai_journal_kit.cli.use_journal.load_multi_journal_config", return_value=mock_multi_config):
+    with patch(
+        "ai_journal_kit.cli.use_journal.load_multi_journal_config", return_value=mock_multi_config
+    ):
         with patch("ai_journal_kit.cli.use_journal.save_multi_journal_config"):
             with patch("ai_journal_kit.cli.use_journal.show_success"):
                 with patch("ai_journal_kit.cli.use_journal.console"):
@@ -110,7 +116,9 @@ def test_use_journal_multiple_available():
     mock_multi_config.has_journal.return_value = True
     mock_multi_config.journals = {"work": mock_profile1, "personal": mock_profile2}
 
-    with patch("ai_journal_kit.cli.use_journal.load_multi_journal_config", return_value=mock_multi_config):
+    with patch(
+        "ai_journal_kit.cli.use_journal.load_multi_journal_config", return_value=mock_multi_config
+    ):
         with patch("ai_journal_kit.cli.use_journal.save_multi_journal_config"):
             with patch("ai_journal_kit.cli.use_journal.show_success"):
                 with patch("ai_journal_kit.cli.use_journal.console"):

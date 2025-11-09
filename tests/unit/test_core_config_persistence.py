@@ -7,7 +7,6 @@ especially focusing on the macOS platform directory issue.
 
 from datetime import datetime
 from pathlib import Path
-from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -157,6 +156,7 @@ def test_save_config_handles_datetime_serialization(tmp_path, monkeypatch):
 
     # Verify datetimes are ISO format strings in JSON
     import json
+
     data = json.loads(config_path.read_text())
 
     assert data["journals"]["test"]["created_at"] == "2025-01-01T12:30:45"
@@ -171,6 +171,7 @@ def test_load_config_parses_datetime_strings(tmp_path, monkeypatch):
 
     # Create JSON with datetime strings
     import json
+
     data = {
         "active_journal": "test",
         "journals": {
@@ -250,6 +251,7 @@ def test_config_path_expansion(tmp_path, monkeypatch):
 
     # Create profile with ~ in path
     import json
+
     data = {
         "active_journal": "test",
         "journals": {

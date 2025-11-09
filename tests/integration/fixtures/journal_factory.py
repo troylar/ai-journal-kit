@@ -76,7 +76,7 @@ def create_journal_fixture(
     create_structure(path, framework=framework)
 
     # Install IDE configs
-    copy_ide_configs(ide, path)
+    copy_ide_configs(ide, path, framework=framework)
 
     # Create config file
     config = Config(journal_location=path, ide=ide, framework=framework, version="1.0.0")

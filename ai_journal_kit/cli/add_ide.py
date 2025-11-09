@@ -64,7 +64,7 @@ def add_ide(
 
     # Install IDE configs
     try:
-        copy_ide_configs(ide, config.journal_location)
+        copy_ide_configs(ide, config.journal_location, framework=config.framework)
     except Exception as e:
         show_error("Failed to install IDE configuration", str(e))
         raise typer.Exit(1)

@@ -1,5 +1,6 @@
 """Migration utilities for upgrading existing journals to new versions."""
 
+from ai_journal_kit import __version__
 from ai_journal_kit.core.config import load_config
 from ai_journal_kit.core.manifest import Manifest
 
@@ -29,7 +30,7 @@ def migrate_to_manifest_system() -> bool:
         return False  # Journal doesn't exist
 
     # Create manifest for existing journal
-    manifest = Manifest(version="1.0.0", framework=config.framework)
+    manifest = Manifest(version=__version__, framework=config.framework)
 
     # Track all existing templates
     for template_file in journal_path.glob("*-template.md"):

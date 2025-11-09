@@ -99,7 +99,7 @@ def doctor(
 
         elif issue_type == "missing_ide_configs":
             try:
-                copy_ide_configs(config.ide, config.journal_location)
+                copy_ide_configs(config.ide, config.journal_location, framework=config.framework)
                 console.print(f"  [green]✓[/green] Installed {config.ide} configurations")
                 fixed_count += 1
             except Exception as e:

@@ -35,7 +35,9 @@ def test_list_journals_empty_journals_dict():
     mock_multi_config = MagicMock()
     mock_multi_config.journals = {}
 
-    with patch("ai_journal_kit.cli.list_journals.load_multi_journal_config", return_value=mock_multi_config):
+    with patch(
+        "ai_journal_kit.cli.list_journals.load_multi_journal_config", return_value=mock_multi_config
+    ):
         with patch("ai_journal_kit.cli.list_journals.show_error") as mock_error:
             with pytest.raises(typer.Exit) as exc_info:
                 list_journals()
@@ -61,8 +63,12 @@ def test_list_journals_table_output():
     mock_multi_config = MagicMock()
     mock_multi_config.journals = {"default": mock_profile}
 
-    with patch("ai_journal_kit.cli.list_journals.load_multi_journal_config", return_value=mock_multi_config):
-        with patch("ai_journal_kit.cli.list_journals.get_active_journal_name", return_value="default"):
+    with patch(
+        "ai_journal_kit.cli.list_journals.load_multi_journal_config", return_value=mock_multi_config
+    ):
+        with patch(
+            "ai_journal_kit.cli.list_journals.get_active_journal_name", return_value="default"
+        ):
             with patch("ai_journal_kit.cli.list_journals.console"):
                 list_journals(json_output=False)
 
@@ -84,8 +90,12 @@ def test_list_journals_json_output(capsys):
     mock_multi_config = MagicMock()
     mock_multi_config.journals = {"default": mock_profile}
 
-    with patch("ai_journal_kit.cli.list_journals.load_multi_journal_config", return_value=mock_multi_config):
-        with patch("ai_journal_kit.cli.list_journals.get_active_journal_name", return_value="default"):
+    with patch(
+        "ai_journal_kit.cli.list_journals.load_multi_journal_config", return_value=mock_multi_config
+    ):
+        with patch(
+            "ai_journal_kit.cli.list_journals.get_active_journal_name", return_value="default"
+        ):
             list_journals(json_output=True)
 
     captured = capsys.readouterr()
@@ -118,7 +128,9 @@ def test_list_journals_multiple_journals():
     mock_multi_config = MagicMock()
     mock_multi_config.journals = {"work": mock_profile1, "personal": mock_profile2}
 
-    with patch("ai_journal_kit.cli.list_journals.load_multi_journal_config", return_value=mock_multi_config):
+    with patch(
+        "ai_journal_kit.cli.list_journals.load_multi_journal_config", return_value=mock_multi_config
+    ):
         with patch("ai_journal_kit.cli.list_journals.get_active_journal_name", return_value="work"):
             with patch("ai_journal_kit.cli.list_journals.console"):
                 list_journals(json_output=False)
@@ -149,7 +161,9 @@ def test_list_journals_inactive_journal():
     mock_multi_config = MagicMock()
     mock_multi_config.journals = {"work": mock_profile1, "personal": mock_profile2}
 
-    with patch("ai_journal_kit.cli.list_journals.load_multi_journal_config", return_value=mock_multi_config):
+    with patch(
+        "ai_journal_kit.cli.list_journals.load_multi_journal_config", return_value=mock_multi_config
+    ):
         with patch("ai_journal_kit.cli.list_journals.get_active_journal_name", return_value="work"):
             with patch("ai_journal_kit.cli.list_journals.console"):
                 list_journals(json_output=False)

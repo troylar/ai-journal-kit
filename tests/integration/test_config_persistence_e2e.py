@@ -19,13 +19,7 @@ def test_setup_creates_persistent_config(temp_journal_dir, isolated_config):
 
     # Run setup
     result = runner.invoke(
-        app,
-        [
-            "setup",
-            "--location", str(temp_journal_dir),
-            "--ide", "cursor",
-            "--no-confirm"
-        ]
+        app, ["setup", "--location", str(temp_journal_dir), "--ide", "cursor", "--no-confirm"]
     )
 
     assert result.exit_code == 0, f"Setup failed: {result.output}"
@@ -50,13 +44,7 @@ def test_config_survives_multiple_commands(temp_journal_dir, isolated_config):
 
     # Setup journal
     result1 = runner.invoke(
-        app,
-        [
-            "setup",
-            "--location", str(temp_journal_dir),
-            "--ide", "cursor",
-            "--no-confirm"
-        ]
+        app, ["setup", "--location", str(temp_journal_dir), "--ide", "cursor", "--no-confirm"]
     )
     assert result1.exit_code == 0
 
@@ -90,13 +78,7 @@ def test_config_location_is_platform_specific(temp_journal_dir, isolated_config)
 
     # Run setup
     result = runner.invoke(
-        app,
-        [
-            "setup",
-            "--location", str(temp_journal_dir),
-            "--ide", "cursor",
-            "--no-confirm"
-        ]
+        app, ["setup", "--location", str(temp_journal_dir), "--ide", "cursor", "--no-confirm"]
     )
     assert result.exit_code == 0
 
@@ -120,13 +102,7 @@ def test_multiple_setup_with_different_names(tmp_path, isolated_config):
 
     # Create first journal (default name)
     result1 = runner.invoke(
-        app,
-        [
-            "setup",
-            "--location", str(journal1),
-            "--ide", "cursor",
-            "--no-confirm"
-        ]
+        app, ["setup", "--location", str(journal1), "--ide", "cursor", "--no-confirm"]
     )
     assert result1.exit_code == 0
 
@@ -140,11 +116,14 @@ def test_multiple_setup_with_different_names(tmp_path, isolated_config):
         app,
         [
             "setup",
-            "--location", str(journal2),
-            "--name", "work",
-            "--ide", "windsurf",
-            "--no-confirm"
-        ]
+            "--location",
+            str(journal2),
+            "--name",
+            "work",
+            "--ide",
+            "windsurf",
+            "--no-confirm",
+        ],
     )
     assert result2.exit_code == 0
 
@@ -166,7 +145,19 @@ def test_use_journal_persists_active_journal(tmp_path, isolated_config):
 
     # Create two journals
     runner.invoke(app, ["setup", "--location", str(journal1), "--ide", "cursor", "--no-confirm"])
-    runner.invoke(app, ["setup", "--location", str(journal2), "--name", "work", "--ide", "windsurf", "--no-confirm"])
+    runner.invoke(
+        app,
+        [
+            "setup",
+            "--location",
+            str(journal2),
+            "--name",
+            "work",
+            "--ide",
+            "windsurf",
+            "--no-confirm",
+        ],
+    )
 
     # Switch to work journal
     result = runner.invoke(app, ["use", "work"])

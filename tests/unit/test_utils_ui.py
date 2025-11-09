@@ -9,7 +9,6 @@ Tests Rich UI helpers including:
 - Windows UTF-8 handling
 """
 
-import sys
 from io import StringIO
 from unittest.mock import MagicMock, patch
 
@@ -208,14 +207,15 @@ def test_show_panel():
 @pytest.mark.unit
 def test_show_error_no_suggestion(capsys):
     """Test show_error displays error message."""
-    from ai_journal_kit.utils import ui
     from rich.console import Console
+
+    from ai_journal_kit.utils import ui
 
     # Create a test console that writes to string buffer
     string_buffer = StringIO()
     test_error_console = Console(file=string_buffer, stderr=True, force_terminal=True)
 
-    with patch.object(ui, 'error_console', test_error_console):
+    with patch.object(ui, "error_console", test_error_console):
         show_error("Something went wrong")
 
     output = string_buffer.getvalue()
@@ -226,13 +226,14 @@ def test_show_error_no_suggestion(capsys):
 @pytest.mark.unit
 def test_show_error_with_suggestion(capsys):
     """Test show_error displays error with suggestion."""
-    from ai_journal_kit.utils import ui
     from rich.console import Console
+
+    from ai_journal_kit.utils import ui
 
     string_buffer = StringIO()
     test_error_console = Console(file=string_buffer, stderr=True, force_terminal=True)
 
-    with patch.object(ui, 'error_console', test_error_console):
+    with patch.object(ui, "error_console", test_error_console):
         show_error("Something went wrong", "Try this instead")
 
     output = string_buffer.getvalue()
@@ -244,13 +245,14 @@ def test_show_error_with_suggestion(capsys):
 @pytest.mark.unit
 def test_show_success():
     """Test show_success displays success message."""
-    from ai_journal_kit.utils import ui
     from rich.console import Console
+
+    from ai_journal_kit.utils import ui
 
     string_buffer = StringIO()
     test_console = Console(file=string_buffer, force_terminal=True)
 
-    with patch.object(ui, 'console', test_console):
+    with patch.object(ui, "console", test_console):
         show_success("Operation completed")
 
     output = string_buffer.getvalue()
@@ -278,7 +280,9 @@ def test_windows_utf8_reconfigure():
         with patch("sys.stderr", mock_stderr):
             # Reload the module to trigger Windows-specific code
             import importlib
+
             import ai_journal_kit.utils.ui
+
             importlib.reload(ai_journal_kit.utils.ui)
 
     # Should have called reconfigure on Windows
@@ -299,7 +303,9 @@ def test_non_windows_no_reconfigure():
         with patch("sys.stderr", mock_stderr):
             # Reload the module
             import importlib
+
             import ai_journal_kit.utils.ui
+
             importlib.reload(ai_journal_kit.utils.ui)
 
     # Should not crash on non-Windows
@@ -309,7 +315,7 @@ def test_non_windows_no_reconfigure():
 @pytest.mark.unit
 def test_console_initialized():
     """Test console and error_console are initialized."""
-    from ai_journal_kit.utils.ui import console, error_console
+    from ai_journal_kit.utils.ui import error_console
 
     assert console is not None
     assert error_console is not None

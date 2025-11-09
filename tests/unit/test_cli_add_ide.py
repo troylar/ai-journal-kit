@@ -53,7 +53,9 @@ def test_add_ide_invalid_ide():
     mock_config.journal_location = Path("/fake/journal")
 
     with patch("ai_journal_kit.cli.add_ide.load_config", return_value=mock_config):
-        with patch("ai_journal_kit.cli.add_ide.validate_ide", side_effect=ValueError("Invalid IDE")):
+        with patch(
+            "ai_journal_kit.cli.add_ide.validate_ide", side_effect=ValueError("Invalid IDE")
+        ):
             with patch("ai_journal_kit.cli.add_ide.show_error"):
                 with pytest.raises(typer.Exit) as exc_info:
                     add_ide("invalid-ide")
@@ -69,7 +71,9 @@ def test_add_ide_copy_exception(temp_journal_dir):
 
     with patch("ai_journal_kit.cli.add_ide.load_config", return_value=mock_config):
         with patch("ai_journal_kit.cli.add_ide.validate_ide", return_value="cursor"):
-            with patch("ai_journal_kit.cli.add_ide.copy_ide_configs", side_effect=Exception("Copy failed")):
+            with patch(
+                "ai_journal_kit.cli.add_ide.copy_ide_configs", side_effect=Exception("Copy failed")
+            ):
                 with patch("ai_journal_kit.cli.add_ide.console"):
                     with patch("ai_journal_kit.cli.add_ide.show_error") as mock_error:
                         with pytest.raises(typer.Exit) as exc_info:

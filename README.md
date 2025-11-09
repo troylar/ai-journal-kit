@@ -29,7 +29,7 @@
 [Why AI Journal Kit?](#-why-ai-journal-kit) • [Quick Start](#-quick-start-60-seconds) • [Installation](#-installation)
 
 **Core Features**
-[Journaling Frameworks](#-journaling-frameworks) • [Multi-Journal Support](#-multiple-journals) • [CLI Commands](#%EF%B8%8F-cli-commands) • [Customization](#%EF%B8%8F-customization)
+[File Referencing](#-powerful-file-referencing) • [Journaling Frameworks](#-journaling-frameworks) • [Multi-Journal Support](#-multiple-journals) • [CLI Commands](#%EF%B8%8F-cli-commands) • [Customization](#%EF%B8%8F-customization) • [Obsidian Integration](#-obsidian-powerful-visualization--manual-editing)
 
 **Learning More**
 [How It Works](#-how-it-works) • [Examples & Use Cases](#-examples--use-cases) • [FAQ](#-faq) • [Documentation](#-documentation)
@@ -50,6 +50,7 @@ Separate work from personal. Manage multiple independent journals with different
 ### 🤖 **AI-Powered Intelligence**
 Your personal AI coach proactively:
 - ✅ Updates your notes as you talk
+- ✅ Links and references across people, projects, and memories
 - ✅ Captures insights and breakthroughs
 - ✅ Recognizes patterns you might miss
 - ✅ Provides accountability without judgment
@@ -58,6 +59,7 @@ Your personal AI coach proactively:
 ### 🛠️ **Works Everywhere**
 Built for **YOUR** favorite tools:
 - **Cursor** • **Windsurf** • **Claude Code** • **GitHub Copilot**
+- **Obsidian** for powerful visualization and graph views
 - Or any markdown editor!
 
 ---
@@ -100,9 +102,10 @@ The AI will introduce itself and guide you through customization!
 Talk naturally with your AI coach. No rigid commands or syntax.
 
 ```
-You: "I'm feeling overwhelmed with this project"
+You: "I'm feeling overwhelmed with the Q4 launch project"
 AI: "Let's break it down. What's the biggest blocker right now?"
-     [Automatically creates project note and captures your thoughts]
+     [Automatically creates/updates projects/q4-launch.md
+      and links it to today's daily note]
 ```
 
 ### 🧠 **Automatic Memory Capture**
@@ -128,6 +131,57 @@ No manual note-taking! The AI updates your notes automatically:
 - **Project notes** - Status updates, blockers, decisions
 - **People notes** - Conversations, action items, context
 - **Memories** - Breakthroughs, insights, patterns
+
+### 🔗 **Powerful File Referencing**
+Connect the dots across your entire journal by referencing other notes. The AI helps you build a web of context:
+
+```
+You: "I had a great conversation with Sarah about the Q4 launch"
+
+AI: "Nice! I'll update today's daily note and Sarah's people note.
+     Should I link this to your 'Q4 Product Launch' project?"
+
+     [Creates connections between daily/2025-01-15.md,
+      people/sarah.md, and projects/q4-launch.md]
+```
+
+#### Why This Matters
+
+**Cross-Reference Everything:**
+- Mention a person → AI updates their people note and links conversations
+- Discuss a project → AI connects it to related daily notes and decisions
+- Capture a memory → AI links it to relevant projects and people
+- Spot a pattern → AI references past memories and insights
+
+**Example Connections:**
+```markdown
+# Daily Note (2025-01-15)
+## Meetings
+- Met with [[people/sarah]] about [[projects/q4-launch]]
+  - Decided to move deadline to March (see [[memories/deadline-flexibility]])
+  - Sarah suggested new approach to testing
+
+# Sarah's People Note
+## Recent Conversations
+- **2025-01-15**: Q4 Launch Discussion
+  - Suggested testing approach (linked in [[projects/q4-launch]])
+  - Very supportive of deadline change
+
+# Q4 Launch Project
+## Key Decisions
+- **2025-01-15**: Extended deadline to March
+  - Discussed with [[people/sarah]]
+  - Applied lesson from [[memories/deadline-flexibility]]
+```
+
+**Benefits:**
+- 📊 **See the full picture** - All context about a person, project, or topic in one place
+- 🧠 **Never lose context** - Conversations, decisions, and insights are interconnected
+- 🔍 **Find information fast** - Click through references instead of searching
+- 💡 **Discover patterns** - See how people, projects, and ideas relate over time
+- 🎯 **Make better decisions** - Access all relevant history when making choices
+
+The AI helps you maintain these connections automatically—just talk naturally and it handles the references!
 
 ---
 
@@ -525,6 +579,120 @@ journal/people-template.md
 ```
 
 On setup, the AI uses **YOUR** templates automatically!
+
+---
+
+## 📊 Obsidian: Powerful Visualization & Manual Editing
+
+While AI editors (Cursor, Windsurf, Claude Code) handle the conversational journaling and automatic updates, **Obsidian** is the perfect companion for visualizing connections and manual editing.
+
+### Why Obsidian?
+
+**See Your Entire Knowledge Graph:**
+- 🌐 **Graph View** - Visualize all connections between people, projects, and memories
+- 🔗 **Backlinks** - See every note that references a specific person or project
+- 🔍 **Search Everything** - Instantly find any mention across your entire journal
+- 📊 **Canvas View** - Create visual maps of projects, ideas, and relationships
+- 📱 **Mobile App** - Review and edit your journal on the go
+
+### The Perfect Workflow
+
+#### Option 1: AI for Writing, Obsidian for Viewing
+```
+Morning: Use AI editor (Cursor/Windsurf/Claude Code)
+→ "Let's start the day"
+→ AI creates today's note, captures your thoughts
+→ AI automatically cross-references people, projects, memories
+
+Anytime: Open Obsidian to visualize
+→ See graph of all your connections
+→ Review backlinks for a specific person
+→ Browse daily notes in calendar view
+→ Add manual thoughts/notes if desired
+```
+
+#### Option 2: Hybrid Approach
+```
+Conversational Journaling: Use AI editor
+→ Natural conversation, automatic updates
+→ AI creates cross-references
+
+Deep Thinking: Use Obsidian
+→ Manually refine notes
+→ Add additional context
+→ Create canvas boards for planning
+→ Explore connections in graph view
+```
+
+### Setup Obsidian with Your Journal
+
+**1. Install Obsidian:**
+- Download from [obsidian.md](https://obsidian.md)
+- It's free for personal use
+
+**2. Open Your Journal as a Vault:**
+```bash
+1. Launch Obsidian
+2. Click "Open folder as vault"
+3. Select your journal folder (e.g., ~/journal)
+```
+
+**3. Enjoy the Magic:**
+- Wiki-style links (`[[people/sarah]]`) automatically work
+- Graph view shows all connections
+- Backlinks panel shows related notes
+- All cross-references created by the AI are instantly navigable
+
+### Recommended Obsidian Plugins
+
+**Core Plugins** (built-in, enable in Settings):
+- 📅 **Daily Notes** - Quick access to today's note
+- 🔗 **Backlinks** - See what links to current note
+- 🌐 **Graph View** - Visualize your knowledge network
+- 🔍 **Quick Switcher** - Jump to any note instantly
+
+**Community Plugins** (optional):
+- 📆 **Calendar** - Visual calendar of daily notes
+- 🎨 **Dataview** - Query and display journal data
+- 🌲 **Excalidraw** - Draw diagrams and mind maps
+- 📊 **Tracker** - Visualize habits and patterns over time
+
+### Example: Viewing Cross-References
+
+When the AI creates connections like:
+```markdown
+Met with [[people/sarah]] about [[projects/q4-launch]]
+```
+
+**In Obsidian:**
+- Click `[[people/sarah]]` → Opens Sarah's note with full conversation history
+- View Sarah's **backlinks** → See every daily note and project that mentions her
+- Open **graph view** → See Sarah's connections to all projects, people, and topics
+- Use **canvas** → Create a visual project board linking Sarah, Q4 launch, and related decisions
+
+### Best of Both Worlds
+
+| Feature | AI Editor (Cursor, etc.) | Obsidian |
+|---------|-------------------------|----------|
+| **Conversational input** | ✅ Natural dialogue | ❌ Manual typing |
+| **Auto-updates** | ✅ Proactive | ❌ Manual |
+| **Cross-referencing** | ✅ Automatic | ✅ Manual/navigation |
+| **Graph visualization** | ❌ Limited | ✅ Excellent |
+| **Backlinks** | ❌ None | ✅ Automatic |
+| **Mobile editing** | ❌ Desktop only | ✅ iOS & Android |
+| **Canvas/visual boards** | ❌ None | ✅ Built-in |
+| **Search & queries** | Basic | ✅ Advanced (Dataview) |
+
+### Tips for Using Both
+
+1. **Morning routine**: Use AI editor for daily check-in and conversational reflection
+2. **Throughout the day**: Quick notes via AI or Obsidian mobile
+3. **Evening review**: Open Obsidian to visualize the day's connections
+4. **Weekly review**: Use Obsidian's graph and backlinks to spot patterns
+5. **Planning**: Use Obsidian canvas to create visual project boards
+6. **Deep work**: Use Obsidian for focused, manual refinement of ideas
+
+**The AI creates the structure, Obsidian helps you see the big picture!**
 
 ---
 

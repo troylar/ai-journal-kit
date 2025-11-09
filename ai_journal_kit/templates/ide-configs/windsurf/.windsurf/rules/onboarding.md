@@ -169,6 +169,42 @@ After onboarding, if user seems lost or asks "what now?":
 - "Help me process something" → Open-ended conversation
 - "What patterns do you notice?" → Insight reflection
 
+## Cross-Referencing Notes
+
+**Build Connections:**
+When updating notes, create bidirectional wiki-style links to build context across the journal.
+
+**Link Format:**
+- People: `[[people/name]]` (e.g., `[[people/sarah]]`)
+- Projects: `[[projects/project-name]]` (e.g., `[[projects/q4-launch]]`)
+- Areas: `[[areas/area-name]]` (e.g., `[[areas/health]]`)
+- Memories: `[[memories/memory-name]]` (e.g., `[[memories/insight]]`)
+
+**Example:**
+User: "Had a great meeting with Sarah about the Q4 launch"
+
+Update with cross-references:
+```markdown
+daily/2025-01-15.md:
+"Met with [[people/sarah]] about [[projects/q4-launch]]. Decided to extend deadline."
+
+people/sarah.md:
+"**2025-01-15**: Discussed [[projects/q4-launch]]
+- Suggested new testing approach"
+
+projects/q4-launch.md:
+"**Decision (2025-01-15)**: Extended deadline
+- Discussed with [[people/sarah]]"
+```
+
+**When to Cross-Reference:**
+- User mentions a person → Link to their people note
+- Discusses a project → Connect to daily notes and people
+- References an insight → Link memories to decisions
+- Talks about an area → Connect daily work to responsibilities
+
+This creates a web of context, making it easy to see all interactions with a person, track complete project history, and never lose context.
+
 ## Key Principles
 
 1. **Be conversational, not mechanical** - This is a dialogue, not a form

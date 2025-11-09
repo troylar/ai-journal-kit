@@ -70,8 +70,9 @@ def test_switch_framework_invalid_framework(temp_journal_dir):
 @pytest.mark.unit
 def test_show_interactive_checklist_no_customizations(capsys):
     """Test show_interactive_checklist with no customizations."""
-    from rich.console import Console
     from io import StringIO
+
+    from rich.console import Console
 
     # Create a console that writes to string buffer
     string_buffer = StringIO()
@@ -79,9 +80,7 @@ def test_show_interactive_checklist_no_customizations(capsys):
 
     with patch("ai_journal_kit.cli.switch_framework.console", test_console):
         show_interactive_checklist(
-            framework="gtd",
-            framework_name="GTD (Getting Things Done)",
-            customized_count=0
+            framework="gtd", framework_name="GTD (Getting Things Done)", customized_count=0
         )
 
     output = string_buffer.getvalue()
@@ -93,18 +92,15 @@ def test_show_interactive_checklist_no_customizations(capsys):
 @pytest.mark.unit
 def test_show_interactive_checklist_with_customizations(capsys):
     """Test show_interactive_checklist with customizations."""
-    from rich.console import Console
     from io import StringIO
+
+    from rich.console import Console
 
     string_buffer = StringIO()
     test_console = Console(file=string_buffer, force_terminal=True)
 
     with patch("ai_journal_kit.cli.switch_framework.console", test_console):
-        show_interactive_checklist(
-            framework="para",
-            framework_name="PARA",
-            customized_count=3
-        )
+        show_interactive_checklist(framework="para", framework_name="PARA", customized_count=3)
 
     output = string_buffer.getvalue()
     assert "3 customized" in output.lower()

@@ -299,7 +299,7 @@ def update(
             f"[cyan]Refreshing {config.ide} configurations...", total=1
         )
         try:
-            copy_ide_configs(config.ide, config.journal_location)
+            copy_ide_configs(config.ide, config.journal_location, framework=config.framework)
             progress.update(
                 task_configs,
                 completed=1,
