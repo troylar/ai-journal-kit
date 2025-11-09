@@ -4,10 +4,9 @@ import shutil
 from datetime import datetime
 from pathlib import Path
 
-from rich.console import Console
 from rich.table import Table
 
-console = Console()
+from ai_journal_kit.utils.ui import console
 
 
 def backup_template(template_path: Path) -> Path:
@@ -39,7 +38,7 @@ def get_template_changes(journal_path: Path) -> dict[str, dict]:
     Returns:
         Dict mapping template names to change info
     """
-    from ai_journal_kit.core.templates import get_template_path
+    from ai_journal_kit.core.templates import get_template
 
     templates = [
         "daily-template.md",
@@ -56,7 +55,7 @@ def get_template_changes(journal_path: Path) -> dict[str, dict]:
             continue
 
         try:
-            package_template = get_template_path(template_name)
+            package_template = get_template(template_name)
             if not package_template.exists():
                 continue
 

@@ -92,10 +92,36 @@ def test_can_create_symlinks_on_windows_with_winapi():
         from importlib import reload
 
         from ai_journal_kit.utils import platform as platform_module
+
         reload(platform_module)
 
         result = platform_module.can_create_symlinks()
         assert isinstance(result, bool)
+
+
+@pytest.mark.unit
+@patch("sys.platform", "win32")
+def test_can_create_symlinks_on_windows_without_winapi():
+    """Test Windows symlink detection when _winapi is not available (lines 50-51)."""
+    # Simulate ImportError when trying to import _winapi
+    import builtins
+
+    real_import = builtins.__import__
+
+    def mock_import(name, *args, **kwargs):
+        if name == "_winapi":
+            raise ImportError("No module named '_winapi'")
+        return real_import(name, *args, **kwargs)
+
+    with patch.object(builtins, "__import__", side_effect=mock_import):
+        from importlib import reload
+
+        from ai_journal_kit.utils import platform as platform_module
+
+        reload(platform_module)
+
+        result = platform_module.can_create_symlinks()
+        assert result is False
 
 
 @pytest.mark.unit
@@ -118,6 +144,7 @@ def test_is_macos_detection():
     from importlib import reload
 
     from ai_journal_kit.utils import platform as platform_module
+
     reload(platform_module)
 
     assert platform_module.is_macos() is True
@@ -131,6 +158,7 @@ def test_is_linux_detection():
     from importlib import reload
 
     from ai_journal_kit.utils import platform as platform_module
+
     reload(platform_module)
 
     assert platform_module.is_linux() is True
@@ -144,6 +172,7 @@ def test_is_windows_detection():
     from importlib import reload
 
     from ai_journal_kit.utils import platform as platform_module
+
     reload(platform_module)
 
     assert platform_module.is_windows() is True
@@ -158,9 +187,9 @@ def test_get_platform_name_unknown_system(mock_system):
     from importlib import reload
 
     from ai_journal_kit.utils import platform as platform_module
+
     reload(platform_module)
 
     name = platform_module.get_platform_name()
     assert name == "UnknownOS"
     mock_system.assert_called_once()
-

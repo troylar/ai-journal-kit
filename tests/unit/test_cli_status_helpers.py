@@ -167,4 +167,3 @@ def test_print_check_failed():
     output = console.file.getvalue()
     assert "✗" in output
     assert "Test check" in output
-

@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ai-journal-kit"
-version = "1.0.10"
+version = "1.0.11"
 description = "AI-powered journaling system with beautiful CLI for setup, customization, and updates"
 authors = [{ name = "Troy Larson", email = "troy@calvinware.com" }]
 readme = "README.md"
@@ -38,6 +38,7 @@ dev = [
     "pytest>=7.4.0",
     "pytest-cov>=4.1.0",
     "pytest-xdist>=3.5.0",
+    "pytest-bdd>=7.0.0",
     "bandit>=1.7.0",
     "invoke>=2.2.0",
     "ruff>=0.1.0",

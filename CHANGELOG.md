@@ -7,6 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.11] - 2025-11-09
+
+### Fixed
+- **Template updater bug**: Fixed incorrect import that prevented template update functionality from working
+  - Changed `get_template_path` to `get_template` in template_updater.py
+  - Template comparison and updates now work correctly
+- **Claude Code IDE detection**: Fixed doctor command to check for correct file
+  - Now correctly checks for `SYSTEM-PROTECTION.md` instead of `CLAUDE.md`
+  - Matches actual Claude Code template structure
+- **Claude Code template installation**: Fixed template copying to match actual structure
+  - Copies markdown files to journal root directory as intended
+- **Pydantic v2 compatibility**: Eliminated deprecation warnings
+  - Migrated from class-based `Config` to `ConfigDict` pattern
+  - No functional changes, internal modernization only
+
+### Changed
+- **Improved automation support**: `--no-confirm` flag now auto-creates parent directories
+  - Applies to both `setup` and `move` commands
+  - Better support for scripted/automated installations
+- **Massively improved test coverage**: Increased from 75% to 99% coverage
+  - Added 116 new tests (181 → 297 total tests)
+  - Comprehensive unit tests for all core modules
+  - Integration tests for all CLI commands
+  - End-to-end workflow testing
+  - All 264 tests passing on Ubuntu, macOS, and Windows
+
+### Developer Experience
+- **Enhanced type safety**: Improved validation.py type checking
+- **Test infrastructure**: Added isolated test fixtures and helpers
+- **CI improvements**: Better GitHub Actions workflow for cross-platform testing
+
 ## [1.0.10] - 2025-11-07
 
 ### Fixed
