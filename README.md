@@ -1,7 +1,7 @@
 # 📝✨ AI Journal Kit
 
 > **Your Personal AI Coach for Journaling, Growth & Clarity**
-> 100% Private • Built-in Frameworks (GTD, PARA, Bullet Journal, Zettelkasten) • Fully Customizable
+> 🔐 100% Private • 🎨 5 Built-in Frameworks • 📚 Multi-Journal Support • 🤖 AI-Powered • 🛠️ Works Everywhere
 
 <div align="center">
 
@@ -30,8 +30,11 @@
 ### 🔐 **100% Private**
 Your journal stays on **YOUR** computer. No cloud sync required. No data collection. No privacy compromises.
 
-### 🎨 **Fully Customizable**
-Adapt to **YOUR** workflow. Use any journaling method: GTD, PARA, Bullet Journal, Zettelkasten, or create your own.
+### 🎨 **5 Built-in Frameworks**
+Choose **YOUR** methodology: GTD, PARA, Bullet Journal, Zettelkasten, or flexible Default. Switch anytime!
+
+### 📚 **Multi-Journal Support**
+Separate work from personal. Manage multiple independent journals with different frameworks and settings.
 
 ### 🤖 **AI-Powered Intelligence**
 Your personal AI coach proactively:
