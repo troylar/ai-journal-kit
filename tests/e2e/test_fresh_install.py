@@ -5,13 +5,14 @@ These tests execute the actual CLI command via subprocess to test
 the complete user experience of installing ai-journal-kit.
 """
 
-import pytest
 import subprocess
 import sys
-from pathlib import Path
+
+import pytest
+
 from tests.integration.helpers import (
-    assert_journal_structure_valid,
     assert_ide_config_installed,
+    assert_journal_structure_valid,
 )
 
 
@@ -31,15 +32,15 @@ def test_e2e_fresh_install_cursor(temp_journal_dir, isolated_env):
         text=True,
         env=isolated_env
     )
-    
+
     # Verify success
     assert result.returncode == 0, f"Setup failed: {result.stderr}"
     assert "success" in result.stdout.lower() or "complete" in result.stdout.lower()
-    
+
     # Verify journal structure created
     assert temp_journal_dir.exists()
     assert_journal_structure_valid(temp_journal_dir)
-    
+
     # Verify Cursor config installed
     assert_ide_config_installed(temp_journal_dir, "cursor")
 
@@ -59,12 +60,12 @@ def test_e2e_fresh_install_all_ides(temp_journal_dir, isolated_env):
         text=True,
         env=isolated_env
     )
-    
+
     assert result.returncode == 0, f"Setup failed: {result.stderr}"
-    
+
     # Verify all IDE configs installed
     assert_ide_config_installed(temp_journal_dir, "all")
-    
+
     # Verify specific IDE directories exist
     assert (temp_journal_dir / ".cursor" / "rules").exists()
     assert (temp_journal_dir / ".windsurf" / "rules").exists()
@@ -77,7 +78,7 @@ def test_e2e_setup_with_cloud_path(tmp_path, isolated_env):
     """Test setup with cloud-style path (simulating Dropbox/Google Drive)."""
     # Simulate cloud sync folder structure
     cloud_path = tmp_path / "Dropbox" / "Documents" / "Journal"
-    
+
     result = subprocess.run(
         [
             sys.executable, "-m", "ai_journal_kit",
@@ -90,9 +91,9 @@ def test_e2e_setup_with_cloud_path(tmp_path, isolated_env):
         text=True,
         env=isolated_env
     )
-    
+
     assert result.returncode == 0, f"Setup failed: {result.stderr}"
-    
+
     # Verify journal created at cloud path
     assert cloud_path.exists()
     assert_journal_structure_valid(cloud_path)

@@ -6,8 +6,8 @@ via subprocess to test the complete user experience.
 """
 
 import os
+
 import pytest
-from pathlib import Path
 
 
 @pytest.fixture
@@ -23,16 +23,16 @@ def isolated_env(tmp_path):
     """
     config_dir = tmp_path / "config"
     config_dir.mkdir()
-    
+
     env = os.environ.copy()
     env["AI_JOURNAL_CONFIG_DIR"] = str(config_dir)
-    
+
     # Ensure Python path includes current project
     if "PYTHONPATH" in env:
         env["PYTHONPATH"] = f"{os.getcwd()}:{env['PYTHONPATH']}"
     else:
         env["PYTHONPATH"] = os.getcwd()
-    
+
     return env
 
 

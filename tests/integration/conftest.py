@@ -6,9 +6,8 @@ with real file I/O in isolated temporary directories.
 """
 
 import os
+
 import pytest
-from pathlib import Path
-from ai_journal_kit.core.config import get_config_path
 
 
 @pytest.fixture
@@ -45,12 +44,13 @@ def isolated_config(tmp_path, monkeypatch):
     config_dir = tmp_path / "config"
     config_dir.mkdir()
     monkeypatch.setenv("AI_JOURNAL_CONFIG_DIR", str(config_dir))
-    
+
     # Force reload of config module to pick up environment variable
     from importlib import reload
+
     from ai_journal_kit.core import config as config_module
     reload(config_module)
-    
+
     return config_dir
 
 
@@ -68,10 +68,10 @@ def isolated_env(tmp_path, monkeypatch):
     """
     config_dir = tmp_path / "config"
     config_dir.mkdir()
-    
+
     env = os.environ.copy()
     env["AI_JOURNAL_CONFIG_DIR"] = str(config_dir)
-    
+
     return env
 
 
@@ -83,9 +83,10 @@ def reset_config_after_test():
     This prevents config state from leaking between tests.
     """
     yield
-    
+
     # Reload config module to reset any cached state
     from importlib import reload
+
     from ai_journal_kit.core import config as config_module
     reload(config_module)
 

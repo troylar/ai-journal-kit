@@ -4,14 +4,15 @@ Smoke tests for integration test infrastructure.
 These tests verify that the test infrastructure itself works correctly.
 """
 
+
 import pytest
-from pathlib import Path
-from tests.integration.fixtures.journal_factory import create_journal_fixture
+
 from tests.integration.fixtures.config_factory import create_config_fixture
+from tests.integration.fixtures.journal_factory import create_journal_fixture
 from tests.integration.helpers import (
-    assert_journal_structure_valid,
-    assert_ide_config_installed,
     assert_config_valid,
+    assert_ide_config_installed,
+    assert_journal_structure_valid,
 )
 
 
@@ -28,7 +29,7 @@ def test_isolated_config_fixture(isolated_config):
     """Test that isolated_config fixture isolates config location."""
     assert isolated_config.exists()
     assert isolated_config.is_dir()
-    
+
     # Verify environment variable is set
     import os
     assert "AI_JOURNAL_CONFIG_DIR" in os.environ
@@ -44,14 +45,14 @@ def test_journal_factory_creates_structure(temp_journal_dir, isolated_config):
         has_content=False,
         config_dir=isolated_config
     )
-    
+
     # Verify journal created
     assert journal.path.exists()
     assert journal.ide == "cursor"
-    
+
     # Verify structure
     assert_journal_structure_valid(journal.path)
-    
+
     # Verify IDE config
     assert_ide_config_installed(journal.path, "cursor")
 
@@ -64,7 +65,7 @@ def test_journal_factory_with_content(temp_journal_dir):
         ide="cursor",
         has_content=True
     )
-    
+
     # Verify content was created
     assert journal.daily_notes_count == 3
     assert (journal.daily_dir / "2025-01-01.md").exists()
@@ -81,11 +82,11 @@ def test_config_factory_creates_config(temp_journal_dir, isolated_config):
         version="1.0.0",
         config_dir=isolated_config
     )
-    
+
     # Verify config created
     assert config.journal_location == temp_journal_dir
     assert config.ide == "windsurf"
-    
+
     # Verify config file saved
     config_file = isolated_config / "config.json"
     assert_config_valid(config_file, expected_journal=temp_journal_dir, expected_ide="windsurf")
@@ -97,7 +98,7 @@ def test_assert_journal_structure_valid_detects_missing_folders(temp_journal_dir
     # Create incomplete journal (missing folders)
     temp_journal_dir.mkdir(exist_ok=True)
     (temp_journal_dir / "daily").mkdir()
-    
+
     # Should fail because other folders are missing
     with pytest.raises(AssertionError, match="Required folder missing"):
         assert_journal_structure_valid(temp_journal_dir)
@@ -107,7 +108,7 @@ def test_assert_journal_structure_valid_detects_missing_folders(temp_journal_dir
 def test_assert_ide_config_installed_detects_missing_config(temp_journal_dir):
     """Test that assert_ide_config_installed detects missing IDE configs."""
     temp_journal_dir.mkdir(exist_ok=True)
-    
+
     # Should fail because cursor config is not installed
     with pytest.raises(AssertionError, match="cursor config not installed"):
         assert_ide_config_installed(temp_journal_dir, "cursor")
@@ -117,13 +118,13 @@ def test_assert_ide_config_installed_detects_missing_config(temp_journal_dir):
 def test_helpers_module_imports():
     """Test that all helper functions are importable."""
     from tests.integration.helpers import (
-        assert_journal_structure_valid,
-        assert_ide_config_installed,
         assert_config_valid,
+        assert_ide_config_installed,
+        assert_journal_structure_valid,
         assert_template_exists,
         count_markdown_files,
     )
-    
+
     # All imports successful
     assert callable(assert_journal_structure_valid)
     assert callable(assert_ide_config_installed)

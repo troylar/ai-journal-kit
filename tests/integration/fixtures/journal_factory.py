@@ -5,11 +5,12 @@ Provides a factory function to create journals with specific configurations
 for testing purposes.
 """
 
-from pathlib import Path
 from dataclasses import dataclass
+from pathlib import Path
+
+from ai_journal_kit.core.config import Config, save_config
 from ai_journal_kit.core.journal import create_structure
 from ai_journal_kit.core.templates import copy_ide_configs
-from ai_journal_kit.core.config import Config, save_config
 
 
 @dataclass
@@ -27,17 +28,17 @@ class JournalFixture:
     ide: str
     config_path: Path
     daily_notes_count: int = 0
-    
+
     @property
     def daily_dir(self) -> Path:
         """Get daily notes directory."""
         return self.path / "daily"
-    
+
     @property
     def projects_dir(self) -> Path:
         """Get projects directory."""
         return self.path / "projects"
-    
+
     @property
     def ide_config_dir(self) -> Path:
         """Get IDE config directory."""
@@ -70,24 +71,24 @@ def create_journal_fixture(
     """
     # Create journal structure
     create_structure(path)
-    
+
     # Install IDE configs
     copy_ide_configs(ide, path)
-    
+
     # Create config file
     config = Config(
         journal_location=path,
         ide=ide,
         version="1.0.0"
     )
-    
+
     if config_dir:
         # save_config() uses get_config_path() internally which reads AI_JOURNAL_CONFIG_DIR
         save_config(config)
         config_path = config_dir / "config.json"
     else:
         config_path = None
-    
+
     # Optionally add sample content
     daily_notes_count = 0
     if has_content:
@@ -96,7 +97,7 @@ def create_journal_fixture(
             note_file = daily_dir / f"2025-01-{i:02d}.md"
             note_file.write_text(f"# Daily Note {i}\n\nSample content for testing.")
             daily_notes_count += 1
-    
+
     return JournalFixture(
         path=path,
         ide=ide,

@@ -5,6 +5,7 @@ Provides utilities for creating and manipulating Config objects for testing.
 """
 
 from pathlib import Path
+
 from ai_journal_kit.core.config import Config, save_config
 
 
@@ -31,11 +32,11 @@ def create_config_fixture(
         ide=ide,
         version=version
     )
-    
+
     if config_dir:
         # save_config() uses get_config_path() internally which reads AI_JOURNAL_CONFIG_DIR
         save_config(config)
-    
+
     return config
 
 

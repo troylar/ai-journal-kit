@@ -10,13 +10,14 @@ Tests status command diagnostics including:
 - Verbose mode
 """
 
+import json
+
 import pytest
 from typer.testing import CliRunner
-from pathlib import Path
-import json
+
 from ai_journal_kit.cli.app import app
-from tests.integration.fixtures.journal_factory import create_journal_fixture
 from tests.integration.fixtures.config_factory import create_corrupted_config
+from tests.integration.fixtures.journal_factory import create_journal_fixture
 
 
 @pytest.mark.integration
@@ -28,14 +29,14 @@ def test_status_healthy_journal(temp_journal_dir, isolated_config):
         ide="cursor",
         config_dir=isolated_config
     )
-    
+
     # Run status
     runner = CliRunner()
     result = runner.invoke(app, ["status"])
-    
+
     # Should succeed
     assert result.exit_code == 0
-    
+
     # Should show positive health indicators
     output_lower = result.output.lower()
     assert "cursor" in output_lower or "ide" in output_lower
@@ -52,18 +53,18 @@ def test_status_missing_folders(temp_journal_dir, isolated_config):
         ide="cursor",
         config_dir=isolated_config
     )
-    
+
     # Delete a required folder
     import shutil
     shutil.rmtree(temp_journal_dir / "daily")
-    
+
     # Run status
     runner = CliRunner()
     result = runner.invoke(app, ["status"])
-    
+
     # Should detect issue
     assert result.exit_code == 0  # Status itself succeeds
-    
+
     # Should mention missing folder
     assert "daily" in result.output.lower() or "missing" in result.output.lower()
 
@@ -77,20 +78,20 @@ def test_status_missing_ide_configs(temp_journal_dir, isolated_config):
         ide="cursor",
         config_dir=isolated_config
     )
-    
+
     # Delete IDE config
     import shutil
     cursor_rules = temp_journal_dir / ".cursor"
     if cursor_rules.exists():
         shutil.rmtree(cursor_rules)
-    
+
     # Run status
     runner = CliRunner()
     result = runner.invoke(app, ["status"])
-    
+
     # Should detect missing config
     assert result.exit_code == 0
-    
+
     # Should mention IDE config issue
     output_lower = result.output.lower()
     assert "cursor" in output_lower or "config" in output_lower or "missing" in output_lower
@@ -101,11 +102,11 @@ def test_status_corrupted_config(isolated_config):
     """Test status detects corrupted configuration file."""
     # Create corrupted config
     create_corrupted_config(isolated_config)
-    
+
     # Run status
     runner = CliRunner()
     result = runner.invoke(app, ["status"])
-    
+
     # Should handle gracefully
     # May exit with error or show config issue
     assert "config" in result.output.lower() or "error" in result.output.lower()
@@ -120,11 +121,11 @@ def test_status_json_output(temp_journal_dir, isolated_config):
         ide="cursor",
         config_dir=isolated_config
     )
-    
+
     # Run status with JSON output
     runner = CliRunner()
     result = runner.invoke(app, ["status", "--json"])
-    
+
     # Should succeed
     if result.exit_code == 0:
         # Try to parse as JSON
@@ -147,14 +148,14 @@ def test_status_verbose_mode(temp_journal_dir, isolated_config):
         has_content=True,
         config_dir=isolated_config
     )
-    
+
     # Run status with verbose
     runner = CliRunner()
     result = runner.invoke(app, ["status", "--verbose"])
-    
+
     # Should succeed
     assert result.exit_code == 0
-    
+
     # Verbose output should be longer than normal
     result_normal = runner.invoke(app, ["status"])
     # Can't reliably compare lengths, but should succeed

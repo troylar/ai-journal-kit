@@ -6,6 +6,7 @@ and configuration files.
 """
 
 from pathlib import Path
+
 from ai_journal_kit.core.journal import REQUIRED_FOLDERS
 
 
@@ -21,7 +22,7 @@ def assert_journal_structure_valid(journal_path: Path) -> None:
     """
     assert journal_path.exists(), f"Journal path does not exist: {journal_path}"
     assert journal_path.is_dir(), f"Journal path is not a directory: {journal_path}"
-    
+
     for folder in REQUIRED_FOLDERS:
         folder_path = journal_path / folder
         assert folder_path.exists(), f"Required folder missing: {folder}"
@@ -45,7 +46,7 @@ def assert_ide_config_installed(journal_path: Path, ide: str) -> None:
         "claude-code": journal_path / "SYSTEM-PROTECTION.md",  # Claude Code uses this file
         "copilot": journal_path / ".github" / "instructions",
     }
-    
+
     if ide == "all":
         # Check all IDEs are installed
         for ide_name, check_path in ide_checks.items():
@@ -70,25 +71,25 @@ def assert_config_valid(config_path: Path, expected_journal: Path = None, expect
         AssertionError: If config is invalid or doesn't match expected values
     """
     assert config_path.exists(), f"Config file does not exist: {config_path}"
-    
+
     # Try to load config
     import json
     try:
-        with open(config_path, "r") as f:
+        with open(config_path) as f:
             config_data = json.load(f)
     except json.JSONDecodeError as e:
         raise AssertionError(f"Config file contains invalid JSON: {e}")
-    
+
     # Validate required fields
     assert "journal_location" in config_data, "Config missing 'journal_location' field"
     assert "ide" in config_data, "Config missing 'ide' field"
-    
+
     # Check expected values if provided
     if expected_journal:
         config_journal = Path(config_data["journal_location"])
         assert config_journal == expected_journal, \
             f"Config journal location mismatch: {config_journal} != {expected_journal}"
-    
+
     if expected_ide:
         assert config_data["ide"] == expected_ide, \
             f"Config IDE mismatch: {config_data['ide']} != {expected_ide}"
@@ -122,6 +123,6 @@ def count_markdown_files(directory: Path) -> int:
     """
     if not directory.exists():
         return 0
-    
+
     return len(list(directory.glob("*.md")))
 
