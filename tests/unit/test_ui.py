@@ -200,9 +200,7 @@ def test_show_table_handles_empty_rows():
     console = Console(file=StringIO())
 
     with patch("ai_journal_kit.utils.ui.console", console):
-        show_table(
-            title="Empty Table", columns=[("Column", "white")], rows=[]
-        )
+        show_table(title="Empty Table", columns=[("Column", "white")], rows=[])
 
     output = console.file.getvalue()
     # Title may be split across lines in table formatting
@@ -299,4 +297,3 @@ def test_show_markdown_handles_empty_string():
     # Should not raise an error
     output = console.file.getvalue()
     assert isinstance(output, str)
-

@@ -49,6 +49,7 @@ def isolated_config(tmp_path, monkeypatch):
     from importlib import reload
 
     from ai_journal_kit.core import config as config_module
+
     reload(config_module)
 
     return config_dir
@@ -88,5 +89,5 @@ def reset_config_after_test():
     from importlib import reload
 
     from ai_journal_kit.core import config as config_module
-    reload(config_module)
 
+    reload(config_module)

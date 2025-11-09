@@ -24,11 +24,7 @@ from tests.integration.fixtures.journal_factory import create_journal_fixture
 def test_status_healthy_journal(temp_journal_dir, isolated_config):
     """Test status shows all health checks passing for healthy journal."""
     # Create healthy journal
-    create_journal_fixture(
-        path=temp_journal_dir,
-        ide="cursor",
-        config_dir=isolated_config
-    )
+    create_journal_fixture(path=temp_journal_dir, ide="cursor", config_dir=isolated_config)
 
     # Run status
     runner = CliRunner()
@@ -48,14 +44,11 @@ def test_status_healthy_journal(temp_journal_dir, isolated_config):
 def test_status_missing_folders(temp_journal_dir, isolated_config):
     """Test status detects missing required folders."""
     # Create journal
-    create_journal_fixture(
-        path=temp_journal_dir,
-        ide="cursor",
-        config_dir=isolated_config
-    )
+    create_journal_fixture(path=temp_journal_dir, ide="cursor", config_dir=isolated_config)
 
     # Delete a required folder
     import shutil
+
     shutil.rmtree(temp_journal_dir / "daily")
 
     # Run status
@@ -73,14 +66,11 @@ def test_status_missing_folders(temp_journal_dir, isolated_config):
 def test_status_missing_ide_configs(temp_journal_dir, isolated_config):
     """Test status detects missing IDE configuration."""
     # Create journal
-    create_journal_fixture(
-        path=temp_journal_dir,
-        ide="cursor",
-        config_dir=isolated_config
-    )
+    create_journal_fixture(path=temp_journal_dir, ide="cursor", config_dir=isolated_config)
 
     # Delete IDE config
     import shutil
+
     cursor_rules = temp_journal_dir / ".cursor"
     if cursor_rules.exists():
         shutil.rmtree(cursor_rules)
@@ -116,11 +106,7 @@ def test_status_corrupted_config(isolated_config):
 def test_status_json_output(temp_journal_dir, isolated_config):
     """Test status JSON output format."""
     # Create journal
-    create_journal_fixture(
-        path=temp_journal_dir,
-        ide="cursor",
-        config_dir=isolated_config
-    )
+    create_journal_fixture(path=temp_journal_dir, ide="cursor", config_dir=isolated_config)
 
     # Run status with JSON output
     runner = CliRunner()
@@ -143,10 +129,7 @@ def test_status_verbose_mode(temp_journal_dir, isolated_config):
     """Test status verbose mode shows detailed information."""
     # Create journal
     create_journal_fixture(
-        path=temp_journal_dir,
-        ide="cursor",
-        has_content=True,
-        config_dir=isolated_config
+        path=temp_journal_dir, ide="cursor", has_content=True, config_dir=isolated_config
     )
 
     # Run status with verbose
@@ -175,12 +158,10 @@ def test_status_json_output_no_config(isolated_config):
 
     # Should output JSON with not_setup status
     import json
+
     try:
         data = json.loads(result.output)
         assert data.get("status") == "not_setup"
     except json.JSONDecodeError:
         # If JSON parsing fails, at least check output contains relevant info
         assert "not_setup" in result.output or "not set up" in result.output.lower()
-
-
-

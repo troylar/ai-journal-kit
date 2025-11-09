@@ -10,7 +10,6 @@ Tests journal relocation including:
 - Cancellation handling
 """
 
-
 import pytest
 from typer.testing import CliRunner
 
@@ -28,10 +27,7 @@ def test_move_relocates_all_files(temp_journal_dir, isolated_config, tmp_path):
     """Test move relocates all journal files to new location."""
     # Create journal
     create_journal_fixture(
-        path=temp_journal_dir,
-        ide="cursor",
-        has_content=True,
-        config_dir=isolated_config
+        path=temp_journal_dir, ide="cursor", has_content=True, config_dir=isolated_config
     )
 
     # New location
@@ -39,11 +35,14 @@ def test_move_relocates_all_files(temp_journal_dir, isolated_config, tmp_path):
 
     # Run move
     runner = CliRunner()
-    result = runner.invoke(app, [
-        "move",
-        str(new_location),  # Positional argument, not --new-location
-        "--no-confirm"
-    ])
+    result = runner.invoke(
+        app,
+        [
+            "move",
+            str(new_location),  # Positional argument, not --new-location
+            "--no-confirm",
+        ],
+    )
 
     # Should succeed
     assert result.exit_code == 0
@@ -60,22 +59,21 @@ def test_move_relocates_all_files(temp_journal_dir, isolated_config, tmp_path):
 def test_move_updates_config(temp_journal_dir, isolated_config, tmp_path):
     """Test move updates config file with new location."""
     # Create journal
-    create_journal_fixture(
-        path=temp_journal_dir,
-        ide="cursor",
-        config_dir=isolated_config
-    )
+    create_journal_fixture(path=temp_journal_dir, ide="cursor", config_dir=isolated_config)
 
     # New location
     new_location = tmp_path / "relocated-journal"
 
     # Run move
     runner = CliRunner()
-    result = runner.invoke(app, [
-        "move",
-        str(new_location),  # Positional argument, not --new-location
-        "--no-confirm"
-    ])
+    result = runner.invoke(
+        app,
+        [
+            "move",
+            str(new_location),  # Positional argument, not --new-location
+            "--no-confirm",
+        ],
+    )
 
     # Should succeed
     assert result.exit_code == 0
@@ -89,22 +87,21 @@ def test_move_updates_config(temp_journal_dir, isolated_config, tmp_path):
 def test_move_preserves_ide_configs(temp_journal_dir, isolated_config, tmp_path):
     """Test move preserves IDE configurations at new location."""
     # Create journal with Windsurf
-    create_journal_fixture(
-        path=temp_journal_dir,
-        ide="windsurf",
-        config_dir=isolated_config
-    )
+    create_journal_fixture(path=temp_journal_dir, ide="windsurf", config_dir=isolated_config)
 
     # New location
     new_location = tmp_path / "moved-journal"
 
     # Run move
     runner = CliRunner()
-    result = runner.invoke(app, [
-        "move",
-        str(new_location),  # Positional argument, not --new-location
-        "--no-confirm"
-    ])
+    result = runner.invoke(
+        app,
+        [
+            "move",
+            str(new_location),  # Positional argument, not --new-location
+            "--no-confirm",
+        ],
+    )
 
     # Should succeed
     assert result.exit_code == 0
@@ -117,11 +114,7 @@ def test_move_preserves_ide_configs(temp_journal_dir, isolated_config, tmp_path)
 def test_move_updates_symlinks(temp_journal_dir, isolated_config, tmp_path):
     """Test move updates symlink targets."""
     # Create journal
-    create_journal_fixture(
-        path=temp_journal_dir,
-        ide="cursor",
-        config_dir=isolated_config
-    )
+    create_journal_fixture(path=temp_journal_dir, ide="cursor", config_dir=isolated_config)
 
     # Create a symlink (if supported on platform)
     try:
@@ -136,11 +129,14 @@ def test_move_updates_symlinks(temp_journal_dir, isolated_config, tmp_path):
 
     # Run move
     runner = CliRunner()
-    result = runner.invoke(app, [
-        "move",
-        str(new_location),  # Positional argument, not --new-location
-        "--no-confirm"
-    ])
+    result = runner.invoke(
+        app,
+        [
+            "move",
+            str(new_location),  # Positional argument, not --new-location
+            "--no-confirm",
+        ],
+    )
 
     # Should succeed or handle symlinks appropriately
     assert result.exit_code == 0
@@ -151,22 +147,21 @@ def test_move_updates_symlinks(temp_journal_dir, isolated_config, tmp_path):
 def test_move_dry_run_mode(temp_journal_dir, isolated_config, tmp_path):
     """Test move dry-run shows actions without making changes."""
     # Create journal
-    create_journal_fixture(
-        path=temp_journal_dir,
-        ide="cursor",
-        config_dir=isolated_config
-    )
+    create_journal_fixture(path=temp_journal_dir, ide="cursor", config_dir=isolated_config)
 
     # New location
     new_location = tmp_path / "would-be-here"
 
     # Run move with dry-run
     runner = CliRunner()
-    result = runner.invoke(app, [
-        "move",
-        str(new_location),  # Positional argument
-        "--dry-run"
-    ])
+    result = runner.invoke(
+        app,
+        [
+            "move",
+            str(new_location),  # Positional argument
+            "--dry-run",
+        ],
+    )
 
     # Should succeed
     assert result.exit_code == 0
@@ -185,21 +180,21 @@ def test_move_dry_run_mode(temp_journal_dir, isolated_config, tmp_path):
 def test_move_handles_cancellation(temp_journal_dir, isolated_config, tmp_path):
     """Test move handles user cancellation gracefully."""
     # Create journal
-    create_journal_fixture(
-        path=temp_journal_dir,
-        ide="cursor",
-        config_dir=isolated_config
-    )
+    create_journal_fixture(path=temp_journal_dir, ide="cursor", config_dir=isolated_config)
 
     # New location
     new_location = tmp_path / "cancelled-move"
 
     # Run move without --no-confirm and cancel
     runner = CliRunner()
-    result = runner.invoke(app, [
-        "move",
-        str(new_location)  # Positional argument
-    ], input="n\n")
+    result = runner.invoke(
+        app,
+        [
+            "move",
+            str(new_location),  # Positional argument
+        ],
+        input="n\n",
+    )
 
     # Should handle cancellation
     assert result.exit_code != 0 or "cancel" in result.output.lower()
@@ -214,10 +209,7 @@ def test_move_to_cloud_drive(temp_journal_dir, isolated_config, tmp_path):
     """Test move to cloud drive path (simulated)."""
     # Create journal
     create_journal_fixture(
-        path=temp_journal_dir,
-        ide="cursor",
-        has_content=True,
-        config_dir=isolated_config
+        path=temp_journal_dir, ide="cursor", has_content=True, config_dir=isolated_config
     )
 
     # Simulate cloud drive path
@@ -225,11 +217,14 @@ def test_move_to_cloud_drive(temp_journal_dir, isolated_config, tmp_path):
 
     # Run move
     runner = CliRunner()
-    result = runner.invoke(app, [
-        "move",
-        str(cloud_path),  # Positional argument
-        "--no-confirm"
-    ])
+    result = runner.invoke(
+        app,
+        [
+            "move",
+            str(cloud_path),  # Positional argument
+            "--no-confirm",
+        ],
+    )
 
     # Should succeed
     assert result.exit_code == 0
@@ -243,19 +238,11 @@ def test_move_to_cloud_drive(temp_journal_dir, isolated_config, tmp_path):
 def test_move_prevents_same_location(temp_journal_dir, isolated_config):
     """Test move prevents moving to same location."""
     # Create journal
-    create_journal_fixture(
-        path=temp_journal_dir,
-        ide="cursor",
-        config_dir=isolated_config
-    )
+    create_journal_fixture(path=temp_journal_dir, ide="cursor", config_dir=isolated_config)
 
     # Try to move to same location
     runner = CliRunner()
-    result = runner.invoke(app, [
-        "move",
-        str(temp_journal_dir),
-        "--no-confirm"
-    ])
+    result = runner.invoke(app, ["move", str(temp_journal_dir), "--no-confirm"])
 
     # Should fail
     assert result.exit_code != 0
@@ -266,11 +253,7 @@ def test_move_prevents_same_location(temp_journal_dir, isolated_config):
 def test_move_handles_existing_destination(temp_journal_dir, isolated_config, tmp_path):
     """Test move handles destination that already has files."""
     # Create journal
-    create_journal_fixture(
-        path=temp_journal_dir,
-        ide="cursor",
-        config_dir=isolated_config
-    )
+    create_journal_fixture(path=temp_journal_dir, ide="cursor", config_dir=isolated_config)
 
     # Create destination with existing file
     new_location = tmp_path / "existing-journal"
@@ -279,11 +262,9 @@ def test_move_handles_existing_destination(temp_journal_dir, isolated_config, tm
 
     # Try to move
     runner = CliRunner()
-    result = runner.invoke(app, [
-        "move",
-        str(new_location),
-        "--no-confirm"
-    ], input="1\n")  # Choose cancel
+    result = runner.invoke(
+        app, ["move", str(new_location), "--no-confirm"], input="1\n"
+    )  # Choose cancel
 
     # Should handle gracefully
     assert result.exit_code != 0 or "cancel" in result.output.lower()
@@ -293,19 +274,11 @@ def test_move_handles_existing_destination(temp_journal_dir, isolated_config, tm
 def test_move_validates_path(temp_journal_dir, isolated_config):
     """Test move validates destination path."""
     # Create journal
-    create_journal_fixture(
-        path=temp_journal_dir,
-        ide="cursor",
-        config_dir=isolated_config
-    )
+    create_journal_fixture(path=temp_journal_dir, ide="cursor", config_dir=isolated_config)
 
     # Try invalid path
     runner = CliRunner()
-    result = runner.invoke(app, [
-        "move",
-        "/invalid/\0/path",
-        "--no-confirm"
-    ])
+    result = runner.invoke(app, ["move", "/invalid/\0/path", "--no-confirm"])
 
     # Should fail validation
     assert result.exit_code != 0
@@ -315,21 +288,13 @@ def test_move_validates_path(temp_journal_dir, isolated_config):
 def test_move_creates_nested_parents(temp_journal_dir, isolated_config, tmp_path):
     """Test move creates nested parent directories."""
     # Create journal
-    create_journal_fixture(
-        path=temp_journal_dir,
-        ide="cursor",
-        config_dir=isolated_config
-    )
+    create_journal_fixture(path=temp_journal_dir, ide="cursor", config_dir=isolated_config)
 
     # Move to deeply nested path
     new_location = tmp_path / "level1" / "level2" / "level3" / "journal"
 
     runner = CliRunner()
-    result = runner.invoke(app, [
-        "move",
-        str(new_location),
-        "--no-confirm"
-    ])
+    result = runner.invoke(app, ["move", str(new_location), "--no-confirm"])
 
     # Should create all parents and succeed
     assert result.exit_code == 0
@@ -341,21 +306,12 @@ def test_move_creates_nested_parents(temp_journal_dir, isolated_config, tmp_path
 def test_move_verbose_output(temp_journal_dir, isolated_config, tmp_path):
     """Test move with verbose flag shows detailed output."""
     # Create journal
-    create_journal_fixture(
-        path=temp_journal_dir,
-        ide="cursor",
-        config_dir=isolated_config
-    )
+    create_journal_fixture(path=temp_journal_dir, ide="cursor", config_dir=isolated_config)
 
     new_location = tmp_path / "verbose-journal"
 
     runner = CliRunner()
-    result = runner.invoke(app, [
-        "move",
-        str(new_location),
-        "--no-confirm",
-        "--verbose"
-    ])
+    result = runner.invoke(app, ["move", str(new_location), "--no-confirm", "--verbose"])
 
     # Should show verbose output
     if result.exit_code == 0:
@@ -369,20 +325,13 @@ def test_move_verbose_output(temp_journal_dir, isolated_config, tmp_path):
 def test_move_with_confirmation_prompt(temp_journal_dir, isolated_config, tmp_path):
     """Test move prompts for confirmation when no --no-confirm flag (covers lines 36-37, 43-50)."""
     # Create journal
-    create_journal_fixture(
-        path=temp_journal_dir,
-        ide="cursor",
-        config_dir=isolated_config
-    )
+    create_journal_fixture(path=temp_journal_dir, ide="cursor", config_dir=isolated_config)
 
     new_location = tmp_path / "prompted-journal"
 
     runner = CliRunner()
     # No --no-confirm flag, should prompt
-    result = runner.invoke(app, [
-        "move",
-        str(new_location)
-    ], input="y\n")  # Confirm the move
+    result = runner.invoke(app, ["move", str(new_location)], input="y\n")  # Confirm the move
 
     # Should either succeed or show prompt
     output_lower = result.output.lower()
@@ -394,23 +343,21 @@ def test_move_with_confirmation_prompt(temp_journal_dir, isolated_config, tmp_pa
 def test_move_cancellation_via_prompt(temp_journal_dir, isolated_config, tmp_path):
     """Test move can be cancelled via prompt (covers lines 54-55)."""
     # Create journal
-    create_journal_fixture(
-        path=temp_journal_dir,
-        ide="cursor",
-        config_dir=isolated_config
-    )
+    create_journal_fixture(path=temp_journal_dir, ide="cursor", config_dir=isolated_config)
 
     new_location = tmp_path / "cancelled-journal"
 
     runner = CliRunner()
-    result = runner.invoke(app, [
-        "move",
-        str(new_location)
-    ], input="n\n")  # Decline the move
+    result = runner.invoke(app, ["move", str(new_location)], input="n\n")  # Decline the move
 
     # Should cancel or ask for confirmation
     output_lower = result.output.lower()
-    assert result.exit_code != 0 or "cancel" in output_lower or "abort" in output_lower or "confirm" in output_lower
+    assert (
+        result.exit_code != 0
+        or "cancel" in output_lower
+        or "abort" in output_lower
+        or "confirm" in output_lower
+    )
 
 
 @pytest.mark.integration
@@ -418,22 +365,15 @@ def test_move_handles_nonexistent_source(isolated_config, tmp_path):
     """Test move handles case where source journal doesn't exist (covers lines 69, 74-80)."""
     # Create config but don't create journal
     from ai_journal_kit.core.config import Config, save_config
+
     nonexistent_journal = tmp_path / "nonexistent"
-    config = Config(
-        journal_location=nonexistent_journal,
-        ide="cursor",
-        use_symlink=False
-    )
+    config = Config(journal_location=nonexistent_journal, ide="cursor", use_symlink=False)
     save_config(config)
 
     new_location = tmp_path / "new-location"
 
     runner = CliRunner()
-    result = runner.invoke(app, [
-        "move",
-        str(new_location),
-        "--no-confirm"
-    ])
+    result = runner.invoke(app, ["move", str(new_location), "--no-confirm"])
 
     # Should handle gracefully
     assert result.exit_code != 0
@@ -454,11 +394,7 @@ def test_move_no_config_error(tmp_path):
         os.remove(config_file)
 
     runner = CliRunner()
-    result = runner.invoke(app, [
-        "move",
-        str(tmp_path / "new-location"),
-        "--no-confirm"
-    ])
+    result = runner.invoke(app, ["move", str(tmp_path / "new-location"), "--no-confirm"])
 
     # Should fail with no config error
     assert result.exit_code != 0
@@ -468,19 +404,19 @@ def test_move_no_config_error(tmp_path):
 @pytest.mark.integration
 def test_move_interactive_location_prompt(temp_journal_dir, isolated_config, tmp_path):
     """Test move with interactive location prompt (lines 54-55)."""
-    create_journal_fixture(
-        path=temp_journal_dir,
-        ide="cursor",
-        config_dir=isolated_config
-    )
+    create_journal_fixture(path=temp_journal_dir, ide="cursor", config_dir=isolated_config)
 
     new_location = tmp_path / "interactive-new"
 
     runner = CliRunner()
-    result = runner.invoke(app, [
-        "move"
-        # No location argument - should prompt
-    ], input=f"{new_location}\ny\n")  # Provide location and confirm
+    result = runner.invoke(
+        app,
+        [
+            "move"
+            # No location argument - should prompt
+        ],
+        input=f"{new_location}\ny\n",
+    )  # Provide location and confirm
 
     # Should complete or at least prompt
     assert result.exit_code in [0, 1]
@@ -489,20 +425,12 @@ def test_move_interactive_location_prompt(temp_journal_dir, isolated_config, tmp
 @pytest.mark.integration
 def test_move_parent_creation_dry_run(temp_journal_dir, isolated_config, tmp_path):
     """Test move dry-run shows parent creation message (line 69)."""
-    create_journal_fixture(
-        path=temp_journal_dir,
-        ide="cursor",
-        config_dir=isolated_config
-    )
+    create_journal_fixture(path=temp_journal_dir, ide="cursor", config_dir=isolated_config)
 
     new_location = tmp_path / "nonexistent_parent" / "journal"
 
     runner = CliRunner()
-    result = runner.invoke(app, [
-        "move",
-        str(new_location),
-        "--dry-run"
-    ])
+    result = runner.invoke(app, ["move", str(new_location), "--dry-run"])
 
     # Should show dry-run parent creation message
     assert "dry run" in result.output.lower() or "would create" in result.output.lower()
@@ -511,19 +439,12 @@ def test_move_parent_creation_dry_run(temp_journal_dir, isolated_config, tmp_pat
 @pytest.mark.integration
 def test_move_parent_creation_declined(temp_journal_dir, isolated_config, tmp_path):
     """Test move when user declines parent creation (lines 74-80)."""
-    create_journal_fixture(
-        path=temp_journal_dir,
-        ide="cursor",
-        config_dir=isolated_config
-    )
+    create_journal_fixture(path=temp_journal_dir, ide="cursor", config_dir=isolated_config)
 
     new_location = tmp_path / "new_parent" / "journal"
 
     runner = CliRunner()
-    result = runner.invoke(app, [
-        "move",
-        str(new_location)
-    ], input="n\n")  # Decline parent creation
+    result = runner.invoke(app, ["move", str(new_location)], input="n\n")  # Decline parent creation
 
     # Should cancel
     assert result.exit_code != 0
@@ -533,19 +454,14 @@ def test_move_parent_creation_declined(temp_journal_dir, isolated_config, tmp_pa
 @pytest.mark.integration
 def test_move_parent_creation_accepted(temp_journal_dir, isolated_config, tmp_path):
     """Test move when user accepts parent creation (lines 74-80)."""
-    create_journal_fixture(
-        path=temp_journal_dir,
-        ide="cursor",
-        config_dir=isolated_config
-    )
+    create_journal_fixture(path=temp_journal_dir, ide="cursor", config_dir=isolated_config)
 
     new_location = tmp_path / "new_parent" / "journal"
 
     runner = CliRunner()
-    result = runner.invoke(app, [
-        "move",
-        str(new_location)
-    ], input="y\ny\n")  # Accept parent creation, confirm move
+    result = runner.invoke(
+        app, ["move", str(new_location)], input="y\ny\n"
+    )  # Accept parent creation, confirm move
 
     # Should succeed or at least create parent
     assert result.exit_code == 0 or new_location.parent.exists()
@@ -554,11 +470,7 @@ def test_move_parent_creation_accepted(temp_journal_dir, isolated_config, tmp_pa
 @pytest.mark.integration
 def test_move_dry_run_with_existing_files(temp_journal_dir, isolated_config, tmp_path):
     """Test move dry-run with existing destination files (line 97)."""
-    create_journal_fixture(
-        path=temp_journal_dir,
-        ide="cursor",
-        config_dir=isolated_config
-    )
+    create_journal_fixture(path=temp_journal_dir, ide="cursor", config_dir=isolated_config)
 
     # Create destination with existing files
     new_location = tmp_path / "existing"
@@ -566,11 +478,7 @@ def test_move_dry_run_with_existing_files(temp_journal_dir, isolated_config, tmp
     (new_location / "existing.txt").write_text("existing content")
 
     runner = CliRunner()
-    result = runner.invoke(app, [
-        "move",
-        str(new_location),
-        "--dry-run"
-    ])
+    result = runner.invoke(app, ["move", str(new_location), "--dry-run"])
 
     # Should show dry-run message for action prompt
     assert "dry run" in result.output.lower()
@@ -579,11 +487,7 @@ def test_move_dry_run_with_existing_files(temp_journal_dir, isolated_config, tmp
 @pytest.mark.integration
 def test_move_replace_existing_files_accepted(temp_journal_dir, isolated_config, tmp_path):
     """Test move with replace option when user confirms (lines 103-108)."""
-    create_journal_fixture(
-        path=temp_journal_dir,
-        ide="cursor",
-        config_dir=isolated_config
-    )
+    create_journal_fixture(path=temp_journal_dir, ide="cursor", config_dir=isolated_config)
 
     # Create destination with existing files
     new_location = tmp_path / "existing"
@@ -591,10 +495,9 @@ def test_move_replace_existing_files_accepted(temp_journal_dir, isolated_config,
     (new_location / "existing.txt").write_text("existing content")
 
     runner = CliRunner()
-    result = runner.invoke(app, [
-        "move",
-        str(new_location)
-    ], input="3\ny\ny\n")  # Choose 3 (replace), confirm deletion, confirm move
+    result = runner.invoke(
+        app, ["move", str(new_location)], input="3\ny\ny\n"
+    )  # Choose 3 (replace), confirm deletion, confirm move
 
     # Should complete
     assert result.exit_code in [0, 1]
@@ -603,11 +506,7 @@ def test_move_replace_existing_files_accepted(temp_journal_dir, isolated_config,
 @pytest.mark.integration
 def test_move_replace_existing_files_declined(temp_journal_dir, isolated_config, tmp_path):
     """Test move with replace option when user declines confirmation (lines 103-108)."""
-    create_journal_fixture(
-        path=temp_journal_dir,
-        ide="cursor",
-        config_dir=isolated_config
-    )
+    create_journal_fixture(path=temp_journal_dir, ide="cursor", config_dir=isolated_config)
 
     # Create destination with existing files
     new_location = tmp_path / "existing"
@@ -615,10 +514,9 @@ def test_move_replace_existing_files_declined(temp_journal_dir, isolated_config,
     (new_location / "existing.txt").write_text("existing content")
 
     runner = CliRunner()
-    result = runner.invoke(app, [
-        "move",
-        str(new_location)
-    ], input="3\nn\n")  # Choose 3 (replace), decline deletion
+    result = runner.invoke(
+        app, ["move", str(new_location)], input="3\nn\n"
+    )  # Choose 3 (replace), decline deletion
 
     # Should cancel with exit code 0 (as per typer.Exit(0) on line 108)
     assert result.exit_code == 0
@@ -629,6 +527,7 @@ def test_move_replace_existing_files_declined(temp_journal_dir, isolated_config,
 def test_move_updates_symlink_when_configured(temp_journal_dir, isolated_config, tmp_path):
     """Test move updates symlink when configured (lines 147-149)."""
     import sys
+
     if sys.platform == "win32":
         pytest.skip("Symlink test - Unix only")
 
@@ -647,18 +546,14 @@ def test_move_updates_symlink_when_configured(temp_journal_dir, isolated_config,
         journal_location=temp_journal_dir,
         ide="cursor",
         use_symlink=True,
-        symlink_source=symlink_path
+        symlink_source=symlink_path,
     )
     save_config(config)
 
     new_location = tmp_path / "new_journal"
 
     runner = CliRunner()
-    result = runner.invoke(app, [
-        "move",
-        str(new_location),
-        "--no-confirm"
-    ])
+    result = runner.invoke(app, ["move", str(new_location), "--no-confirm"])
 
     # Should update symlink
     assert result.exit_code == 0
@@ -669,24 +564,17 @@ def test_move_handles_exception_during_move(temp_journal_dir, isolated_config, t
     """Test move handles exceptions gracefully (lines 159-161)."""
     from unittest.mock import patch
 
-    create_journal_fixture(
-        path=temp_journal_dir,
-        ide="cursor",
-        config_dir=isolated_config
-    )
+    create_journal_fixture(path=temp_journal_dir, ide="cursor", config_dir=isolated_config)
 
     new_location = tmp_path / "new"
 
     # Mock shutil.copytree to raise exception
-    with patch('ai_journal_kit.cli.move.shutil.copytree', side_effect=PermissionError("Mock error")):
+    with patch(
+        "ai_journal_kit.cli.move.shutil.copytree", side_effect=PermissionError("Mock error")
+    ):
         runner = CliRunner()
-        result = runner.invoke(app, [
-            "move",
-            str(new_location),
-            "--no-confirm"
-        ])
+        result = runner.invoke(app, ["move", str(new_location), "--no-confirm"])
 
         # Should handle error
         assert result.exit_code != 0
         assert "failed" in result.output.lower() or "error" in result.output.lower()
-

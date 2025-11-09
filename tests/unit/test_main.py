@@ -23,12 +23,12 @@ def test_main_as_module():
     with patch("ai_journal_kit.cli.app.app") as mock_app:
         # Read the __main__.py file and execute it with __name__ == "__main__"
         import pathlib
+
         main_file = pathlib.Path(__file__).parent.parent.parent / "ai_journal_kit" / "__main__.py"
-        code = compile(main_file.read_text(), str(main_file), 'exec')
+        code = compile(main_file.read_text(), str(main_file), "exec")
 
         # Execute with __name__ set to "__main__" to trigger the if block
-        exec(code, {'__name__': '__main__'})
+        exec(code, {"__name__": "__main__"})
 
         # The main() function should have been called
         mock_app.assert_called_once()
-

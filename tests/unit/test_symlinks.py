@@ -64,7 +64,7 @@ def test_create_symlink_unix_handles_permission_error(temp_journal_dir):
     target.mkdir()
     link = temp_journal_dir / "link"
 
-    with patch('os.symlink', side_effect=PermissionError("No permission")):
+    with patch("os.symlink", side_effect=PermissionError("No permission")):
         result = _create_symlink_unix(target, link)
         assert result is False
 
@@ -76,7 +76,7 @@ def test_create_symlink_unix_handles_os_error(temp_journal_dir):
     target.mkdir()
     link = temp_journal_dir / "link"
 
-    with patch('os.symlink', side_effect=OSError("OS error")):
+    with patch("os.symlink", side_effect=OSError("OS error")):
         result = _create_symlink_unix(target, link)
         assert result is False
 
@@ -90,7 +90,7 @@ def test_create_junction_windows_success(temp_journal_dir):
 
     # Mock _winapi for testing
     mock_winapi = MagicMock()
-    with patch.dict('sys.modules', {'_winapi': mock_winapi}):
+    with patch.dict("sys.modules", {"_winapi": mock_winapi}):
         result = _create_junction_windows(target, link)
 
         assert result is True
@@ -106,7 +106,7 @@ def test_create_junction_windows_replaces_existing_dir(temp_journal_dir):
     link.mkdir()  # Create directory that will be replaced
 
     mock_winapi = MagicMock()
-    with patch.dict('sys.modules', {'_winapi': mock_winapi}):
+    with patch.dict("sys.modules", {"_winapi": mock_winapi}):
         result = _create_junction_windows(target, link)
 
         assert result is True
@@ -121,7 +121,7 @@ def test_create_junction_windows_replaces_existing_file(temp_journal_dir):
     link.write_text("existing file")
 
     mock_winapi = MagicMock()
-    with patch.dict('sys.modules', {'_winapi': mock_winapi}):
+    with patch.dict("sys.modules", {"_winapi": mock_winapi}):
         result = _create_junction_windows(target, link)
 
         assert result is True
@@ -137,7 +137,7 @@ def test_create_junction_windows_handles_os_error(temp_journal_dir):
     mock_winapi = MagicMock()
     mock_winapi.CreateJunction.side_effect = OSError("OS error")
 
-    with patch.dict('sys.modules', {'_winapi': mock_winapi}):
+    with patch.dict("sys.modules", {"_winapi": mock_winapi}):
         result = _create_junction_windows(target, link)
         assert result is False
 
@@ -152,7 +152,7 @@ def test_create_junction_windows_handles_permission_error(temp_journal_dir):
     mock_winapi = MagicMock()
     mock_winapi.CreateJunction.side_effect = PermissionError("No permission")
 
-    with patch.dict('sys.modules', {'_winapi': mock_winapi}):
+    with patch.dict("sys.modules", {"_winapi": mock_winapi}):
         result = _create_junction_windows(target, link)
         assert result is False
 
@@ -180,8 +180,8 @@ def test_create_link_windows_platform(temp_journal_dir):
     link = temp_journal_dir / "link"
 
     mock_winapi = MagicMock()
-    with patch('sys.platform', 'win32'):
-        with patch.dict('sys.modules', {'_winapi': mock_winapi}):
+    with patch("sys.platform", "win32"):
+        with patch.dict("sys.modules", {"_winapi": mock_winapi}):
             result = create_link(target, link)
 
             assert result is True
@@ -235,7 +235,7 @@ def test_is_broken_handles_permission_error(temp_journal_dir):
     """Test is_broken handles permission errors gracefully."""
     link = temp_journal_dir / "link"
 
-    with patch.object(Path, 'is_symlink', side_effect=PermissionError("No permission")):
+    with patch.object(Path, "is_symlink", side_effect=PermissionError("No permission")):
         result = is_broken(link)
         assert result is True
 
@@ -248,7 +248,7 @@ def test_is_broken_windows_broken_junction(temp_journal_dir):
     # We need to mock both the link and its parent
     # link.exists() returns False, link.is_symlink() returns False
     # link.parent.exists() returns True
-    with patch('sys.platform', 'win32'):
+    with patch("sys.platform", "win32"):
         # Create a mock for the link that returns False for exists and is_symlink
         mock_link = MagicMock(spec=Path)
         mock_link.exists.return_value = False
@@ -315,7 +315,7 @@ def test_get_link_target_handles_os_error(temp_journal_dir):
     """Test get_link_target handles OS errors gracefully."""
     link = temp_journal_dir / "link"
 
-    with patch.object(Path, 'is_symlink', side_effect=OSError("OS error")):
+    with patch.object(Path, "is_symlink", side_effect=OSError("OS error")):
         result = get_link_target(link)
         assert result is None
 
@@ -325,7 +325,7 @@ def test_get_link_target_handles_attribute_error(temp_journal_dir):
     """Test get_link_target handles attribute errors gracefully."""
     link = temp_journal_dir / "link"
 
-    with patch.object(Path, 'readlink', side_effect=AttributeError("No readlink")):
-        with patch.object(Path, 'is_symlink', return_value=True):
+    with patch.object(Path, "readlink", side_effect=AttributeError("No readlink")):
+        with patch.object(Path, "is_symlink", return_value=True):
             result = get_link_target(link)
             assert result is None

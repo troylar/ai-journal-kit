@@ -144,4 +144,3 @@ def test_copy_ide_configs_copilot_with_old_structure(temp_journal_dir):
     # New instructions folder should exist
     instructions_folder = temp_journal_dir / ".github" / "instructions"
     assert instructions_folder.exists()
-

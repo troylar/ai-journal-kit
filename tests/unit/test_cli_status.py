@@ -217,4 +217,3 @@ def test_get_config_path_without_env_override(tmp_path):
         if old_value:
             os.environ["AI_JOURNAL_CONFIG_DIR"] = old_value
         reload(config_module)
-

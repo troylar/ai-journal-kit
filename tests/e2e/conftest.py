@@ -49,4 +49,3 @@ def temp_journal_dir(tmp_path):
     """
     journal_dir = tmp_path / "test-journal"
     return journal_dir  # Don't create yet - let command create it
-

@@ -24,6 +24,7 @@ class JournalFixture:
         config_path: Path to config file
         daily_notes_count: Number of daily notes created
     """
+
     path: Path
     ide: str
     config_path: Path
@@ -52,10 +53,7 @@ class JournalFixture:
 
 
 def create_journal_fixture(
-    path: Path,
-    ide: str = "cursor",
-    has_content: bool = False,
-    config_dir: Path = None
+    path: Path, ide: str = "cursor", has_content: bool = False, config_dir: Path = None
 ) -> JournalFixture:
     """
     Factory for creating configured journal installations.
@@ -76,11 +74,7 @@ def create_journal_fixture(
     copy_ide_configs(ide, path)
 
     # Create config file
-    config = Config(
-        journal_location=path,
-        ide=ide,
-        version="1.0.0"
-    )
+    config = Config(journal_location=path, ide=ide, version="1.0.0")
 
     if config_dir:
         # save_config() uses get_config_path() internally which reads AI_JOURNAL_CONFIG_DIR
@@ -99,9 +93,5 @@ def create_journal_fixture(
             daily_notes_count += 1
 
     return JournalFixture(
-        path=path,
-        ide=ide,
-        config_path=config_path,
-        daily_notes_count=daily_notes_count
+        path=path, ide=ide, config_path=config_path, daily_notes_count=daily_notes_count
     )
-

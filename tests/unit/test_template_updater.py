@@ -72,7 +72,7 @@ def test_get_template_changes_detects_differences(temp_journal_dir):
     user_template.write_text("# Old Daily Template")
 
     # Mock get_template to return package template
-    with patch('ai_journal_kit.core.templates.get_template') as mock_get:
+    with patch("ai_journal_kit.core.templates.get_template") as mock_get:
         # Create a mock package template with different content
         package_template = temp_journal_dir / "package-daily-template.md"
         package_template.write_text("# New Daily Template with updates")
@@ -95,7 +95,7 @@ def test_get_template_changes_returns_empty_for_identical(temp_journal_dir):
     user_template = temp_journal_dir / "daily-template.md"
     user_template.write_text(content)
 
-    with patch('ai_journal_kit.core.templates.get_template') as mock_get:
+    with patch("ai_journal_kit.core.templates.get_template") as mock_get:
         # Package template has same content
         package_template = temp_journal_dir / "package-daily.md"
         package_template.write_text(content)
@@ -112,7 +112,7 @@ def test_get_template_changes_skips_missing_user_templates(temp_journal_dir):
     """Test that get_template_changes skips templates that don't exist in user journal."""
     # Don't create any user templates
 
-    with patch('ai_journal_kit.core.templates.get_template'):
+    with patch("ai_journal_kit.core.templates.get_template"):
         changes = get_template_changes(temp_journal_dir)
 
         # Should return empty since no user templates exist
@@ -125,7 +125,7 @@ def test_get_template_changes_handles_exceptions(temp_journal_dir):
     user_template = temp_journal_dir / "daily-template.md"
     user_template.write_text("content")
 
-    with patch('ai_journal_kit.core.templates.get_template') as mock_get:
+    with patch("ai_journal_kit.core.templates.get_template") as mock_get:
         # Make get_template raise an exception
         mock_get.side_effect = Exception("Test error")
 
@@ -140,7 +140,7 @@ def test_get_template_changes_skips_nonexistent_package_template(temp_journal_di
     user_template = temp_journal_dir / "daily-template.md"
     user_template.write_text("# User template")
 
-    with patch('ai_journal_kit.core.templates.get_template') as mock_get:
+    with patch("ai_journal_kit.core.templates.get_template") as mock_get:
         # Return a path that doesn't exist
         nonexistent_path = temp_journal_dir / "nonexistent-package-template.md"
         mock_get.return_value = nonexistent_path
@@ -180,7 +180,7 @@ def test_show_template_changes_shows_up_to_date_message(capsys):
 @pytest.mark.unit
 def test_update_templates_returns_empty_for_no_changes(temp_journal_dir):
     """Test that update_templates returns empty list when no changes."""
-    with patch('ai_journal_kit.core.template_updater.get_template_changes') as mock_changes:
+    with patch("ai_journal_kit.core.template_updater.get_template_changes") as mock_changes:
         mock_changes.return_value = {}
 
         updated = update_templates(temp_journal_dir, backup=True)
@@ -206,8 +206,8 @@ def test_update_templates_updates_and_backs_up(temp_journal_dir):
         }
     }
 
-    with patch('ai_journal_kit.core.template_updater.get_template_changes') as mock_get_changes:
-        with patch('ai_journal_kit.core.templates.copy_template') as mock_copy:
+    with patch("ai_journal_kit.core.template_updater.get_template_changes") as mock_get_changes:
+        with patch("ai_journal_kit.core.templates.copy_template") as mock_copy:
             mock_get_changes.return_value = mock_changes
 
             updated = update_templates(temp_journal_dir, backup=True)
@@ -235,9 +235,9 @@ def test_update_templates_without_backup(temp_journal_dir):
         }
     }
 
-    with patch('ai_journal_kit.core.template_updater.get_template_changes') as mock_get_changes:
-        with patch('ai_journal_kit.core.templates.copy_template'):
-            with patch('ai_journal_kit.core.template_updater.backup_template') as mock_backup:
+    with patch("ai_journal_kit.core.template_updater.get_template_changes") as mock_get_changes:
+        with patch("ai_journal_kit.core.templates.copy_template"):
+            with patch("ai_journal_kit.core.template_updater.backup_template") as mock_backup:
                 mock_get_changes.return_value = mock_changes
 
                 updated = update_templates(temp_journal_dir, backup=False)

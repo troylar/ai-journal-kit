@@ -58,7 +58,9 @@ def assert_ide_config_installed(journal_path: Path, ide: str) -> None:
         assert check_path.exists(), f"{ide} config not installed: {check_path}"
 
 
-def assert_config_valid(config_path: Path, expected_journal: Path = None, expected_ide: str = None) -> None:
+def assert_config_valid(
+    config_path: Path, expected_journal: Path = None, expected_ide: str = None
+) -> None:
     """
     Assert that config file exists and contains valid configuration.
 
@@ -74,6 +76,7 @@ def assert_config_valid(config_path: Path, expected_journal: Path = None, expect
 
     # Try to load config
     import json
+
     try:
         with open(config_path) as f:
             config_data = json.load(f)
@@ -87,12 +90,14 @@ def assert_config_valid(config_path: Path, expected_journal: Path = None, expect
     # Check expected values if provided
     if expected_journal:
         config_journal = Path(config_data["journal_location"])
-        assert config_journal == expected_journal, \
+        assert config_journal == expected_journal, (
             f"Config journal location mismatch: {config_journal} != {expected_journal}"
+        )
 
     if expected_ide:
-        assert config_data["ide"] == expected_ide, \
+        assert config_data["ide"] == expected_ide, (
             f"Config IDE mismatch: {config_data['ide']} != {expected_ide}"
+        )
 
 
 def assert_template_exists(journal_path: Path, template_name: str) -> None:
@@ -125,4 +130,3 @@ def count_markdown_files(directory: Path) -> int:
         return 0
 
     return len(list(directory.glob("*.md")))
-

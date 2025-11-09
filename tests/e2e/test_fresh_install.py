@@ -22,15 +22,19 @@ def test_e2e_fresh_install_cursor(temp_journal_dir, isolated_env):
     # Run actual CLI command
     result = subprocess.run(
         [
-            sys.executable, "-m", "ai_journal_kit",
+            sys.executable,
+            "-m",
+            "ai_journal_kit",
             "setup",
-            "--location", str(temp_journal_dir),
-            "--ide", "cursor",
-            "--no-confirm"
+            "--location",
+            str(temp_journal_dir),
+            "--ide",
+            "cursor",
+            "--no-confirm",
         ],
         capture_output=True,
         text=True,
-        env=isolated_env
+        env=isolated_env,
     )
 
     # Verify success
@@ -50,15 +54,19 @@ def test_e2e_fresh_install_all_ides(temp_journal_dir, isolated_env):
     """Test fresh install with all IDE configurations."""
     result = subprocess.run(
         [
-            sys.executable, "-m", "ai_journal_kit",
+            sys.executable,
+            "-m",
+            "ai_journal_kit",
             "setup",
-            "--location", str(temp_journal_dir),
-            "--ide", "all",
-            "--no-confirm"
+            "--location",
+            str(temp_journal_dir),
+            "--ide",
+            "all",
+            "--no-confirm",
         ],
         capture_output=True,
         text=True,
-        env=isolated_env
+        env=isolated_env,
     )
 
     assert result.returncode == 0, f"Setup failed: {result.stderr}"
@@ -81,15 +89,19 @@ def test_e2e_setup_with_cloud_path(tmp_path, isolated_env):
 
     result = subprocess.run(
         [
-            sys.executable, "-m", "ai_journal_kit",
+            sys.executable,
+            "-m",
+            "ai_journal_kit",
             "setup",
-            "--location", str(cloud_path),
-            "--ide", "cursor",
-            "--no-confirm"
+            "--location",
+            str(cloud_path),
+            "--ide",
+            "cursor",
+            "--no-confirm",
         ],
         capture_output=True,
         text=True,
-        env=isolated_env
+        env=isolated_env,
     )
 
     assert result.returncode == 0, f"Setup failed: {result.stderr}"
@@ -97,4 +109,3 @@ def test_e2e_setup_with_cloud_path(tmp_path, isolated_env):
     # Verify journal created at cloud path
     assert cloud_path.exists()
     assert_journal_structure_valid(cloud_path)
-

@@ -19,15 +19,19 @@ def test_e2e_upgrade_preserves_everything(temp_journal_dir, isolated_env):
     # First, create a journal using setup
     result_setup = subprocess.run(
         [
-            sys.executable, "-m", "ai_journal_kit",
+            sys.executable,
+            "-m",
+            "ai_journal_kit",
             "setup",
-            "--location", str(temp_journal_dir),
-            "--ide", "cursor",
-            "--no-confirm"
+            "--location",
+            str(temp_journal_dir),
+            "--ide",
+            "cursor",
+            "--no-confirm",
         ],
         capture_output=True,
         text=True,
-        env=isolated_env
+        env=isolated_env,
     )
     assert result_setup.returncode == 0
 
@@ -37,14 +41,10 @@ def test_e2e_upgrade_preserves_everything(temp_journal_dir, isolated_env):
 
     # Run update
     result_update = subprocess.run(
-        [
-            sys.executable, "-m", "ai_journal_kit",
-            "update",
-            "--no-confirm"
-        ],
+        [sys.executable, "-m", "ai_journal_kit", "update", "--no-confirm"],
         capture_output=True,
         text=True,
-        env=isolated_env
+        env=isolated_env,
     )
 
     # Update should succeed
@@ -64,15 +64,19 @@ def test_e2e_upgrade_multiple_versions(temp_journal_dir, isolated_env):
     # Setup journal
     result_setup = subprocess.run(
         [
-            sys.executable, "-m", "ai_journal_kit",
+            sys.executable,
+            "-m",
+            "ai_journal_kit",
             "setup",
-            "--location", str(temp_journal_dir),
-            "--ide", "windsurf",
-            "--no-confirm"
+            "--location",
+            str(temp_journal_dir),
+            "--ide",
+            "windsurf",
+            "--no-confirm",
         ],
         capture_output=True,
         text=True,
-        env=isolated_env
+        env=isolated_env,
     )
     assert result_setup.returncode == 0
 
@@ -81,7 +85,7 @@ def test_e2e_upgrade_multiple_versions(temp_journal_dir, isolated_env):
         [sys.executable, "-m", "ai_journal_kit", "update", "--no-confirm"],
         capture_output=True,
         text=True,
-        env=isolated_env
+        env=isolated_env,
     )
 
     # Second update (should handle already-updated state)
@@ -89,7 +93,7 @@ def test_e2e_upgrade_multiple_versions(temp_journal_dir, isolated_env):
         [sys.executable, "-m", "ai_journal_kit", "update", "--no-confirm"],
         capture_output=True,
         text=True,
-        env=isolated_env
+        env=isolated_env,
     )
 
     # Both should succeed or indicate up-to-date
@@ -98,6 +102,3 @@ def test_e2e_upgrade_multiple_versions(temp_journal_dir, isolated_env):
 
     # Structure should remain valid after multiple updates
     assert_journal_structure_valid(temp_journal_dir)
-
-
-

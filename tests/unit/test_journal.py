@@ -129,4 +129,3 @@ def test_create_structure_is_idempotent(temp_journal_dir):
 
     # WELCOME.md should exist (not duplicated)
     assert (temp_journal_dir / "WELCOME.md").exists()
-

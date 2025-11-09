@@ -10,10 +10,7 @@ from ai_journal_kit.core.config import Config, save_config
 
 
 def create_config_fixture(
-    journal_location: Path,
-    ide: str = "cursor",
-    version: str = "1.0.0",
-    config_dir: Path = None
+    journal_location: Path, ide: str = "cursor", version: str = "1.0.0", config_dir: Path = None
 ) -> Config:
     """
     Factory for creating Config objects for testing.
@@ -27,11 +24,7 @@ def create_config_fixture(
     Returns:
         Config: Configured Config object
     """
-    config = Config(
-        journal_location=journal_location,
-        ide=ide,
-        version=version
-    )
+    config = Config(journal_location=journal_location, ide=ide, version=version)
 
     if config_dir:
         # save_config() uses get_config_path() internally which reads AI_JOURNAL_CONFIG_DIR
@@ -68,4 +61,3 @@ def create_incomplete_config(config_dir: Path) -> Path:
     config_path = config_dir / "config.json"
     config_path.write_text('{"journal_location": "/tmp/journal"}')  # Missing ide
     return config_path
-

@@ -50,5 +50,3 @@ def test_app_has_all_commands():
     assert "doctor" in output_lower
     assert "update" in output_lower
     assert "move" in output_lower
-
-

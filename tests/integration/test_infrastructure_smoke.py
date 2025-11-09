@@ -4,7 +4,6 @@ Smoke tests for integration test infrastructure.
 These tests verify that the test infrastructure itself works correctly.
 """
 
-
 import pytest
 
 from tests.integration.fixtures.config_factory import create_config_fixture
@@ -32,6 +31,7 @@ def test_isolated_config_fixture(isolated_config):
 
     # Verify environment variable is set
     import os
+
     assert "AI_JOURNAL_CONFIG_DIR" in os.environ
     assert os.environ["AI_JOURNAL_CONFIG_DIR"] == str(isolated_config)
 
@@ -40,10 +40,7 @@ def test_isolated_config_fixture(isolated_config):
 def test_journal_factory_creates_structure(temp_journal_dir, isolated_config):
     """Test that journal_factory creates complete journal structure."""
     journal = create_journal_fixture(
-        path=temp_journal_dir,
-        ide="cursor",
-        has_content=False,
-        config_dir=isolated_config
+        path=temp_journal_dir, ide="cursor", has_content=False, config_dir=isolated_config
     )
 
     # Verify journal created
@@ -60,11 +57,7 @@ def test_journal_factory_creates_structure(temp_journal_dir, isolated_config):
 @pytest.mark.integration
 def test_journal_factory_with_content(temp_journal_dir):
     """Test that journal_factory can create sample content."""
-    journal = create_journal_fixture(
-        path=temp_journal_dir,
-        ide="cursor",
-        has_content=True
-    )
+    journal = create_journal_fixture(path=temp_journal_dir, ide="cursor", has_content=True)
 
     # Verify content was created
     assert journal.daily_notes_count == 3
@@ -80,7 +73,7 @@ def test_config_factory_creates_config(temp_journal_dir, isolated_config):
         journal_location=temp_journal_dir,
         ide="windsurf",
         version="1.0.0",
-        config_dir=isolated_config
+        config_dir=isolated_config,
     )
 
     # Verify config created
@@ -131,6 +124,3 @@ def test_helpers_module_imports():
     assert callable(assert_config_valid)
     assert callable(assert_template_exists)
     assert callable(count_markdown_files)
-
-
-
