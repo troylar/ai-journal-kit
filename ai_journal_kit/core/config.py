@@ -6,11 +6,16 @@ from pathlib import Path
 from typing import Literal
 
 from platformdirs import user_config_dir
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class Config(BaseModel):
     """User's journal configuration."""
+
+    model_config = ConfigDict(
+        # Note: json_encoders is deprecated in v2; we use model_dump_json() instead
+        arbitrary_types_allowed=True
+    )
 
     journal_location: Path
     ide: Literal["cursor", "windsurf", "claude-code", "copilot", "all"]
@@ -27,9 +32,6 @@ class Config(BaseModel):
         if isinstance(v, str):
             return Path(v).expanduser().resolve()
         return Path(v).expanduser().resolve()
-
-    class Config:
-        json_encoders = {Path: str, datetime: lambda v: v.isoformat()}
 
     def model_dump_json(self, **kwargs) -> str:
         """Override to handle Path and datetime serialization."""

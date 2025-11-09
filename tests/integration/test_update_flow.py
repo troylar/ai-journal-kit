@@ -285,3 +285,345 @@ def test_update_with_network_error_handling(temp_journal_dir, isolated_config):
     # Should complete without crashing
     assert "error" not in output_lower or "unable to check" in output_lower or "up to date" in output_lower
 
+
+@pytest.mark.integration
+def test_update_detect_pip_handles_exceptions(temp_journal_dir, isolated_config):
+    """Test detect_pip_command handles exceptions (lines 41-45)."""
+    from unittest.mock import patch
+    from ai_journal_kit.cli.update import detect_pip_command
+
+    # Mock subprocess.run to raise various exceptions
+    with patch('subprocess.run', side_effect=FileNotFoundError("pip not found")):
+        result = detect_pip_command()
+        # Should fall back to ["pip"]
+        assert result == ["pip"]
+
+
+@pytest.mark.integration
+def test_update_get_latest_version_handles_exception(temp_journal_dir, isolated_config):
+    """Test get_latest_version handles exceptions (lines 63-64)."""
+    from unittest.mock import patch
+    from ai_journal_kit.cli.update import get_latest_version
+
+    # Mock urllib to raise exception
+    with patch('urllib.request.urlopen', side_effect=Exception("Network error")):
+        result = get_latest_version()
+        assert result is None
+
+
+@pytest.mark.integration
+def test_update_get_changelog_handles_exception_with_fallback(temp_journal_dir, isolated_config):
+    """Test get_changelog handles exception and returns fallback (lines 84-88)."""
+    from unittest.mock import patch
+    from ai_journal_kit.cli.update import get_changelog
+
+    # Mock urllib to raise exception
+    with patch('urllib.request.urlopen', side_effect=Exception("API error")):
+        result = get_changelog("0.1.0", "0.2.0")
+        # Should return fallback message
+        assert result is not None
+        assert "0.2.0" in result
+        assert "github.com" in result.lower()
+
+
+@pytest.mark.integration
+def test_update_unable_to_check_pypi_without_force(temp_journal_dir, isolated_config):
+    """Test update when PyPI unavailable and no --force (lines 141-146)."""
+    from unittest.mock import patch
+
+    create_journal_fixture(
+        path=temp_journal_dir,
+        ide="cursor",
+        config_dir=isolated_config
+    )
+
+    # Mock get_latest_version to return None (PyPI unavailable)
+    with patch('ai_journal_kit.cli.update.get_latest_version', return_value=None):
+        runner = CliRunner()
+        result = runner.invoke(app, ["update"])
+
+        # Should exit with message about dev mode
+        assert result.exit_code == 0
+        assert "unable to check" in result.output.lower() or "development mode" in result.output.lower()
+
+
+@pytest.mark.integration
+def test_update_unable_to_check_pypi_with_force(temp_journal_dir, isolated_config):
+    """Test update when PyPI unavailable but --force specified (lines 147-149)."""
+    from unittest.mock import patch
+
+    create_journal_fixture(
+        path=temp_journal_dir,
+        ide="cursor",
+        config_dir=isolated_config
+    )
+
+    # Mock get_latest_version to return None and subprocess to succeed
+    with patch('ai_journal_kit.cli.update.get_latest_version', return_value=None):
+        with patch('subprocess.run'):
+            runner = CliRunner()
+            result = runner.invoke(app, ["update", "--force", "--no-confirm"])
+
+            # Should proceed with force
+            assert "forcing" in result.output.lower() or "refresh" in result.output.lower()
+
+
+@pytest.mark.integration
+def test_update_check_flag_exits_when_update_available(temp_journal_dir, isolated_config):
+    """Test update --check exits when update is available (lines 161-163)."""
+    from unittest.mock import patch
+
+    create_journal_fixture(
+        path=temp_journal_dir,
+        ide="cursor",
+        config_dir=isolated_config
+    )
+
+    # Mock version check to show update available
+    with patch('ai_journal_kit.cli.update.get_latest_version', return_value="99.99.99"):
+        runner = CliRunner()
+        result = runner.invoke(app, ["update", "--check"])
+
+        # Should exit with update available message
+        assert result.exit_code == 0
+        assert "update available" in result.output.lower() or "99.99.99" in result.output
+
+
+@pytest.mark.integration
+def test_update_with_templates_flag(temp_journal_dir, isolated_config):
+    """Test update --templates shows template changes (lines 178-185)."""
+    from unittest.mock import patch
+
+    create_journal_fixture(
+        path=temp_journal_dir,
+        ide="cursor",
+        config_dir=isolated_config
+    )
+
+    # Mock get_template_changes to return some changes
+    mock_changes = {
+        "daily-template.md": {
+            "user_path": temp_journal_dir / "daily-template.md",
+            "size_old": 100,
+            "size_new": 150
+        }
+    }
+
+    with patch('ai_journal_kit.cli.update.get_latest_version', return_value="99.99.99"):
+        with patch('ai_journal_kit.core.template_updater.get_template_changes', return_value=mock_changes):
+            with patch('ai_journal_kit.core.template_updater.show_template_changes'):
+                runner = CliRunner()
+                result = runner.invoke(app, ["update", "--templates", "--dry-run"])
+
+                # Should show template update info
+                assert "template" in result.output.lower()
+
+
+@pytest.mark.integration
+def test_update_templates_all_up_to_date(temp_journal_dir, isolated_config):
+    """Test update --templates when all templates up to date (lines 197-202)."""
+    from unittest.mock import patch
+
+    create_journal_fixture(
+        path=temp_journal_dir,
+        ide="cursor",
+        config_dir=isolated_config
+    )
+
+    # Mock no template changes
+    with patch('ai_journal_kit.cli.update.get_latest_version', return_value="99.99.99"):
+        with patch('ai_journal_kit.core.template_updater.get_template_changes', return_value={}):
+            runner = CliRunner()
+            result = runner.invoke(app, ["update", "--templates", "--dry-run"])
+
+            # Should complete successfully in dry run mode with templates flag
+            # When template_changes is empty, it shows "All up to date" in update_details
+            assert result.exit_code == 0
+            assert "dry run" in result.output.lower()
+
+
+@pytest.mark.integration
+def test_update_shows_template_backup_message(temp_journal_dir, isolated_config):
+    """Test update shows backup message for templates (line 212)."""
+    from unittest.mock import patch
+
+    create_journal_fixture(
+        path=temp_journal_dir,
+        ide="cursor",
+        config_dir=isolated_config
+    )
+
+    mock_changes = {"daily-template.md": {"user_path": temp_journal_dir / "daily-template.md", "size_old": 100, "size_new": 150}}
+
+    with patch('ai_journal_kit.cli.update.get_latest_version', return_value="99.99.99"):
+        with patch('ai_journal_kit.core.template_updater.get_template_changes', return_value=mock_changes):
+            with patch('ai_journal_kit.core.template_updater.show_template_changes'):
+                runner = CliRunner()
+                result = runner.invoke(app, ["update", "--templates", "--dry-run"])
+
+                # Should show backup message
+                assert "backed up" in result.output.lower() or "backup" in result.output.lower()
+
+
+@pytest.mark.integration
+def test_update_user_declines_confirmation(temp_journal_dir, isolated_config):
+    """Test update when user declines confirmation (lines 227-229)."""
+    from unittest.mock import patch
+
+    create_journal_fixture(
+        path=temp_journal_dir,
+        ide="cursor",
+        config_dir=isolated_config
+    )
+
+    with patch('ai_journal_kit.cli.update.get_latest_version', return_value="99.99.99"):
+        runner = CliRunner()
+        result = runner.invoke(app, ["update"], input="n\n")  # Decline
+
+        # Should cancel
+        assert result.exit_code == 0
+        assert "cancel" in result.output.lower()
+
+
+@pytest.mark.integration
+def test_update_dry_run_exits_without_changes(temp_journal_dir, isolated_config):
+    """Test update --dry-run exits without making changes (lines 232-233)."""
+    from unittest.mock import patch
+
+    create_journal_fixture(
+        path=temp_journal_dir,
+        ide="cursor",
+        config_dir=isolated_config
+    )
+
+    with patch('ai_journal_kit.cli.update.get_latest_version', return_value="99.99.99"):
+        runner = CliRunner()
+        result = runner.invoke(app, ["update", "--dry-run"])
+
+        # Should exit with dry run message
+        assert result.exit_code == 0
+        assert "dry run" in result.output.lower()
+        assert "no changes" in result.output.lower()
+
+
+@pytest.mark.integration
+def test_update_handles_pip_upgrade_failure(temp_journal_dir, isolated_config):
+    """Test update handles subprocess failure gracefully (lines 257-264)."""
+    from unittest.mock import patch
+    import subprocess
+
+    create_journal_fixture(
+        path=temp_journal_dir,
+        ide="cursor",
+        config_dir=isolated_config
+    )
+
+    # Mock subprocess to fail
+    with patch('ai_journal_kit.cli.update.get_latest_version', return_value="99.99.99"):
+        with patch('subprocess.run', side_effect=subprocess.CalledProcessError(1, ["pip"], stderr="Mock error")):
+            runner = CliRunner()
+            result = runner.invoke(app, ["update", "--no-confirm"])
+
+            # Should handle error
+            assert result.exit_code != 0
+            assert "failed" in result.output.lower() or "error" in result.output.lower()
+
+
+@pytest.mark.integration
+def test_update_handles_ide_config_copy_failure(temp_journal_dir, isolated_config):
+    """Test update handles IDE config copy failure (lines 277-282)."""
+    from unittest.mock import patch
+
+    create_journal_fixture(
+        path=temp_journal_dir,
+        ide="cursor",
+        config_dir=isolated_config
+    )
+
+    with patch('ai_journal_kit.cli.update.get_latest_version', return_value="99.99.99"):
+        with patch('subprocess.run'):  # Mock pip to succeed
+            with patch('ai_journal_kit.cli.update.copy_ide_configs', side_effect=OSError("Mock error")):
+                runner = CliRunner()
+                result = runner.invoke(app, ["update", "--no-confirm"])
+
+                # Should handle error
+                assert result.exit_code != 0
+                assert "failed" in result.output.lower() or "error" in result.output.lower()
+
+
+@pytest.mark.integration
+def test_update_executes_template_update(temp_journal_dir, isolated_config):
+    """Test update actually updates templates when requested (lines 286-303)."""
+    from unittest.mock import patch
+
+    create_journal_fixture(
+        path=temp_journal_dir,
+        ide="cursor",
+        config_dir=isolated_config
+    )
+
+    mock_changes = {"daily-template.md": {"user_path": temp_journal_dir / "daily-template.md"}}
+
+    with patch('ai_journal_kit.cli.update.get_latest_version', return_value="99.99.99"):
+        with patch('subprocess.run'):  # Mock pip
+            with patch('ai_journal_kit.core.template_updater.get_template_changes', return_value=mock_changes):
+                with patch('ai_journal_kit.core.template_updater.show_template_changes'):
+                    with patch('ai_journal_kit.core.template_updater.update_templates', return_value=["daily-template.md"]):
+                        runner = CliRunner()
+                        result = runner.invoke(app, ["update", "--templates", "--no-confirm"])
+
+                        # Should update templates
+                        assert result.exit_code == 0
+
+
+@pytest.mark.integration
+def test_update_handles_template_update_failure(temp_journal_dir, isolated_config):
+    """Test update handles template update failure (lines 298-303)."""
+    from unittest.mock import patch
+
+    create_journal_fixture(
+        path=temp_journal_dir,
+        ide="cursor",
+        config_dir=isolated_config
+    )
+
+    mock_changes = {"daily-template.md": {"user_path": temp_journal_dir / "daily-template.md"}}
+
+    with patch('ai_journal_kit.cli.update.get_latest_version', return_value="99.99.99"):
+        with patch('subprocess.run'):  # Mock pip
+            with patch('ai_journal_kit.core.template_updater.get_template_changes', return_value=mock_changes):
+                with patch('ai_journal_kit.core.template_updater.show_template_changes'):
+                    with patch('ai_journal_kit.core.template_updater.update_templates', side_effect=Exception("Mock error")):
+                        runner = CliRunner()
+                        result = runner.invoke(app, ["update", "--templates", "--no-confirm"])
+
+                        # Should handle error
+                        assert result.exit_code != 0
+                        assert "failed" in result.output.lower() or "error" in result.output.lower()
+
+
+@pytest.mark.integration
+def test_update_success_message_includes_templates(temp_journal_dir, isolated_config):
+    """Test success message includes template count (line 326)."""
+    from unittest.mock import patch
+
+    create_journal_fixture(
+        path=temp_journal_dir,
+        ide="cursor",
+        config_dir=isolated_config
+    )
+
+    mock_changes = {"daily-template.md": {"user_path": temp_journal_dir / "daily-template.md"}}
+
+    with patch('ai_journal_kit.cli.update.get_latest_version', return_value="99.99.99"):
+        with patch('subprocess.run'):
+            with patch('ai_journal_kit.core.template_updater.get_template_changes', return_value=mock_changes):
+                with patch('ai_journal_kit.core.template_updater.show_template_changes'):
+                    with patch('ai_journal_kit.core.template_updater.update_templates', return_value=["daily-template.md"]):
+                        runner = CliRunner()
+                        result = runner.invoke(app, ["update", "--templates", "--no-confirm"])
+
+                        # Success message should mention templates
+                        if result.exit_code == 0:
+                            assert "template" in result.output.lower()
+

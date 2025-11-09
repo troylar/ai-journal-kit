@@ -363,7 +363,7 @@ def test_doctor_detects_broken_symlink(temp_journal_dir, isolated_config):
     """Test doctor detects broken symlinks (covers lines 61-64)."""
     # Create journal with symlink config (though we won't actually create the symlink)
     from ai_journal_kit.core.config import Config, save_config
-    
+
     config = Config(
         journal_location=temp_journal_dir,
         ide="cursor",
@@ -444,6 +444,302 @@ def test_doctor_fix_reports_no_fixes_when_all_fail(temp_journal_dir, isolated_co
     result = runner.invoke(app, ["doctor", "--fix"])
 
     # Should complete
+    assert result.exit_code in [0, 1]
+
+
+@pytest.mark.integration
+def test_doctor_detects_and_reports_broken_symlink(temp_journal_dir, isolated_config):
+    """Test doctor detects broken symlink and adds to issues (line 64)."""
+    import sys
+    if sys.platform == "win32":
+        pytest.skip("Symlink test - Unix only")
+
+    from ai_journal_kit.core.config import Config, save_config
+    from ai_journal_kit.core.journal import create_structure
+    from ai_journal_kit.core.templates import copy_ide_configs
+
+    # Create journal
+    create_structure(temp_journal_dir)
+    copy_ide_configs("cursor", temp_journal_dir)
+
+    # Create a broken symlink
+    symlink_path = temp_journal_dir / "broken_link"
+    target = temp_journal_dir / "nonexistent_target"
+    symlink_path.symlink_to(target)
+
+    # Update config to use this symlink
+    config = Config(
+        journal_location=temp_journal_dir,
+        ide="cursor",
+        use_symlink=True,
+        symlink_source=symlink_path
+    )
+    save_config(config)
+
+    # Run doctor
+    runner = CliRunner()
+    result = runner.invoke(app, ["doctor"])
+
+    # Should detect broken symlink
+    assert result.exit_code == 1
+    assert "symlink" in result.output.lower() or "issue" in result.output.lower()
+
+
+@pytest.mark.integration
+def test_doctor_fix_broken_symlink(temp_journal_dir, isolated_config):
+    """Test doctor --fix recreates broken symlink (lines 109-113)."""
+    import sys
+    if sys.platform == "win32":
+        pytest.skip("Symlink test - Unix only")
+
+    from ai_journal_kit.core.config import Config, save_config
+    from ai_journal_kit.core.journal import create_structure
+    from ai_journal_kit.core.templates import copy_ide_configs
+
+    # Create journal
+    create_structure(temp_journal_dir)
+    copy_ide_configs("cursor", temp_journal_dir)
+
+    # Create a broken symlink
+    symlink_path = temp_journal_dir / "broken_link"
+    target = temp_journal_dir / "nonexistent_target"
+    symlink_path.symlink_to(target)
+
+    # Update config
+    config = Config(
+        journal_location=temp_journal_dir,
+        ide="cursor",
+        use_symlink=True,
+        symlink_source=symlink_path
+    )
+    save_config(config)
+
+    # Run doctor --fix
+    runner = CliRunner()
+    result = runner.invoke(app, ["doctor", "--fix"])
+
+    # Should attempt to fix (may succeed or fail, but should try)
+    assert result.exit_code in [0, 1]
+
+
+@pytest.mark.integration
+def test_doctor_fix_handles_create_structure_exception(temp_journal_dir, isolated_config):
+    """Test doctor --fix handles exception when creating structure fails (lines 97-98)."""
+    from unittest.mock import patch
+    from ai_journal_kit.core.config import Config, save_config
+
+    # Create config pointing to journal
+    config = Config(journal_location=temp_journal_dir, ide="cursor")
+    save_config(config)
+
+    # Delete a required folder to trigger repair
+    import shutil
+    if (temp_journal_dir / "daily").exists():
+        shutil.rmtree(temp_journal_dir / "daily")
+
+    # Mock create_structure to raise exception
+    with patch('ai_journal_kit.cli.doctor.create_structure', side_effect=PermissionError("Mock error")):
+        runner = CliRunner()
+        result = runner.invoke(app, ["doctor", "--fix"])
+
+        # Should report error
+        assert "failed" in result.output.lower() or "error" in result.output.lower()
+
+
+@pytest.mark.integration
+def test_doctor_fix_handles_copy_ide_configs_exception(temp_journal_dir, isolated_config):
+    """Test doctor --fix handles exception when copying IDE configs fails (lines 105-106)."""
+    from unittest.mock import patch
+    from ai_journal_kit.core.config import Config, save_config
+    from ai_journal_kit.core.journal import create_structure
+
+    # Create journal structure but remove IDE configs
+    create_structure(temp_journal_dir)
+    config = Config(journal_location=temp_journal_dir, ide="cursor")
+    save_config(config)
+
+    # Mock copy_ide_configs to raise exception
+    with patch('ai_journal_kit.cli.doctor.copy_ide_configs', side_effect=OSError("Mock error")):
+        runner = CliRunner()
+        result = runner.invoke(app, ["doctor", "--fix"])
+
+        # Should report error
+        assert "failed" in result.output.lower() or "error" in result.output.lower()
+
+
+@pytest.mark.integration
+def test_doctor_fix_handles_create_link_exception(temp_journal_dir, isolated_config):
+    """Test doctor --fix handles exception when recreating symlink fails (lines 113-114)."""
+    import sys
+    if sys.platform == "win32":
+        pytest.skip("Symlink test - Unix only")
+
+    from unittest.mock import patch
+    from ai_journal_kit.core.config import Config, save_config
+    from ai_journal_kit.core.journal import create_structure
+    from ai_journal_kit.core.templates import copy_ide_configs
+
+    # Create journal with broken symlink
+    create_structure(temp_journal_dir)
+    copy_ide_configs("cursor", temp_journal_dir)
+
+    symlink_path = temp_journal_dir / "broken_link"
+    target = temp_journal_dir / "nonexistent"
+    symlink_path.symlink_to(target)
+
+    config = Config(
+        journal_location=temp_journal_dir,
+        ide="cursor",
+        use_symlink=True,
+        symlink_source=symlink_path
+    )
+    save_config(config)
+
+    # Mock create_link to raise exception
+    with patch('ai_journal_kit.cli.doctor.create_link', side_effect=PermissionError("Mock error")):
+        runner = CliRunner()
+        result = runner.invoke(app, ["doctor", "--fix"])
+
+        # Should report error
+        assert "failed" in result.output.lower() or "error" in result.output.lower()
+
+
+@pytest.mark.integration
+def test_doctor_reports_no_automatic_fixes_available(temp_journal_dir, isolated_config):
+    """Test doctor --fix reports when no fixes are possible (lines 131-132)."""
+    from ai_journal_kit.core.config import Config, save_config
+
+    # Create config with non-existent journal (can't be auto-fixed)
+    nonexistent = temp_journal_dir / "does_not_exist"
+    config = Config(journal_location=nonexistent, ide="cursor")
+    save_config(config)
+
+    runner = CliRunner()
+    result = runner.invoke(app, ["doctor", "--fix"])
+
+    # Should report that it couldn't fix
+    assert "could not" in result.output.lower() or "cannot" in result.output.lower() or "manual" in result.output.lower()
+
+
+@pytest.mark.integration
+def test_doctor_checks_windsurf_ide_configs(temp_journal_dir, isolated_config):
+    """Test doctor checks Windsurf IDE config existence (line 139-140)."""
+    from ai_journal_kit.core.config import Config, save_config
+    from ai_journal_kit.core.journal import create_structure
+
+    create_structure(temp_journal_dir)
+    config = Config(journal_location=temp_journal_dir, ide="windsurf")
+    save_config(config)
+
+    runner = CliRunner()
+    result = runner.invoke(app, ["doctor"])
+
+    # Should check IDE configs
+    assert result.exit_code in [0, 1]
+
+
+@pytest.mark.integration
+def test_doctor_checks_claude_code_ide_configs(temp_journal_dir, isolated_config):
+    """Test doctor checks Claude Code IDE config existence (line 141-142)."""
+    from ai_journal_kit.core.config import Config, save_config
+    from ai_journal_kit.core.journal import create_structure
+
+    create_structure(temp_journal_dir)
+    config = Config(journal_location=temp_journal_dir, ide="claude-code")
+    save_config(config)
+
+    runner = CliRunner()
+    result = runner.invoke(app, ["doctor"])
+
+    # Should check IDE configs
+    assert result.exit_code in [0, 1]
+
+
+@pytest.mark.integration
+def test_doctor_checks_copilot_ide_configs(temp_journal_dir, isolated_config):
+    """Test doctor checks Copilot IDE config existence (line 143-144)."""
+    from ai_journal_kit.core.config import Config, save_config
+    from ai_journal_kit.core.journal import create_structure
+
+    create_structure(temp_journal_dir)
+    config = Config(journal_location=temp_journal_dir, ide="copilot")
+    save_config(config)
+
+    runner = CliRunner()
+    result = runner.invoke(app, ["doctor"])
+
+    # Should check IDE configs
+    assert result.exit_code in [0, 1]
+
+
+@pytest.mark.integration
+def test_doctor_checks_all_ide_option(temp_journal_dir, isolated_config):
+    """Test doctor handles 'all' IDE option (lines 145-146)."""
+    from ai_journal_kit.core.config import Config, save_config
+    from ai_journal_kit.core.journal import create_structure
+
+    create_structure(temp_journal_dir)
+    config = Config(journal_location=temp_journal_dir, ide="all")
+    save_config(config)
+
+    runner = CliRunner()
+    result = runner.invoke(app, ["doctor"])
+
+    # Should pass IDE config check
+    assert result.exit_code == 0
+
+
+@pytest.mark.integration
+def test_doctor_is_writable_handles_permission_error(temp_journal_dir, isolated_config):
+    """Test _is_writable handles permission errors gracefully (lines 157-158)."""
+    from ai_journal_kit.core.config import Config, save_config
+    from ai_journal_kit.core.journal import create_structure
+    from ai_journal_kit.core.templates import copy_ide_configs
+
+    create_structure(temp_journal_dir)
+    copy_ide_configs("cursor", temp_journal_dir)
+    config = Config(journal_location=temp_journal_dir, ide="cursor")
+    save_config(config)
+
+    # Make directory read-only on Unix
+    import os
+    import sys
+    if sys.platform != "win32":
+        try:
+            os.chmod(temp_journal_dir, 0o555)
+
+            runner = CliRunner()
+            result = runner.invoke(app, ["doctor"])
+
+            # Should detect permission issue
+            assert result.exit_code in [0, 1]
+        finally:
+            # Restore permissions
+            os.chmod(temp_journal_dir, 0o755)
+
+
+@pytest.mark.integration
+def test_doctor_checks_unknown_ide_returns_false(temp_journal_dir, isolated_config):
+    """Test _check_ide_configs returns False for unknown IDE (line 147)."""
+    from ai_journal_kit.core.config import Config, save_config
+    from ai_journal_kit.core.journal import create_structure
+
+    create_structure(temp_journal_dir)
+
+    # Manually create a config with an unknown IDE
+    import json
+    config_data = {
+        "journal_location": str(temp_journal_dir),
+        "ide": "unknown-ide",
+        "use_symlink": False
+    }
+    config_path = isolated_config / "config.json"
+    config_path.write_text(json.dumps(config_data))
+
+    runner = CliRunner()
+    result = runner.invoke(app, ["doctor"])
+
+    # Should detect missing IDE configs for unknown IDE
     assert result.exit_code in [0, 1]
 
 

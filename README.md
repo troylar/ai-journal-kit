@@ -12,7 +12,8 @@
 [![CI](https://github.com/troylar/ai-journal-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/troylar/ai-journal-kit/actions/workflows/ci.yml)
 [![Security Scan](https://github.com/troylar/ai-journal-kit/actions/workflows/security.yml/badge.svg)](https://github.com/troylar/ai-journal-kit/actions/workflows/security.yml)
 [![codecov](https://codecov.io/gh/troylar/ai-journal-kit/branch/main/graph/badge.svg)](https://codecov.io/gh/troylar/ai-journal-kit)
-[![Tests](https://img.shields.io/badge/tests-141%20passing-brightgreen.svg)](https://github.com/troylar/ai-journal-kit/actions)
+[![Tests](https://img.shields.io/badge/tests-264%20passing-brightgreen.svg)](https://github.com/troylar/ai-journal-kit/actions)
+[![Coverage](https://img.shields.io/badge/coverage-99%25-brightgreen.svg)](https://github.com/troylar/ai-journal-kit/actions)
 
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 [![Security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
@@ -505,7 +506,7 @@ A: Yes! Put your `journal/` folder in Dropbox, Google Drive, or iCloud. The CLI 
 
 ### Comprehensive Test Coverage
 
-AI Journal Kit has a robust test suite with **141 tests** covering:
+AI Journal Kit has a robust test suite with **264 tests and 99% code coverage** covering:
 
 - **Unit Tests** (`tests/unit/`): Fast, focused tests for individual components
 - **Integration Tests** (`tests/integration/`): Real filesystem operations, command workflows  

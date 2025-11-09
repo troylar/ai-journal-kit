@@ -20,16 +20,15 @@ def test_main_module_execution():
 
 def test_main_as_module():
     """Test executing module with python -m (covers line 12)."""
-    import sys
-    from unittest.mock import patch
+    with patch("ai_journal_kit.cli.app.app") as mock_app:
+        # Read the __main__.py file and execute it with __name__ == "__main__"
+        import pathlib
+        main_file = pathlib.Path(__file__).parent.parent.parent / "ai_journal_kit" / "__main__.py"
+        code = compile(main_file.read_text(), str(main_file), 'exec')
 
-    # Simulate running as __main__
-    with patch.object(sys, 'argv', ['ai-journal-kit', '--version']):
-        with patch("ai_journal_kit.cli.app.app") as mock_app:
-            # Import and execute the module code
-            import ai_journal_kit.__main__
+        # Execute with __name__ set to "__main__" to trigger the if block
+        exec(code, {'__name__': '__main__'})
 
-            # The if __name__ == "__main__" block would execute
-            # but we can't easily test it directly, so we verify the module loads
-            assert hasattr(ai_journal_kit.__main__, 'main')
+        # The main() function should have been called
+        mock_app.assert_called_once()
 
