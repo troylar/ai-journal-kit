@@ -5,7 +5,7 @@
 
 <div align="center">
 
-[![PyPI version](https://badge.fury.io/py/ai-journal-kit.svg)](https://pypi.org/project/ai-journal-kit/)
+[![PyPI version](https://img.shields.io/pypi/v/ai-journal-kit.svg)](https://pypi.org/project/ai-journal-kit/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
