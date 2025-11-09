@@ -180,6 +180,7 @@ def test_setup_multiple_journals_all_independent(temp_journal_dir, isolated_conf
 def test_backward_compatibility_old_config_migrates(temp_journal_dir, isolated_config):
     """Test that old single-journal config migrates automatically."""
     import json
+
     from ai_journal_kit.core.config import get_config_path
 
     # Create old-style config

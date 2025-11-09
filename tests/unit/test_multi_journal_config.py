@@ -130,7 +130,6 @@ def test_multi_journal_config_remove_active_switches_to_another():
 
 def test_migrate_legacy_config():
     """Test migrating old single-journal config to multi-journal format."""
-    from datetime import datetime
 
     legacy_data = {
         "journal_location": "/tmp/test-journal",

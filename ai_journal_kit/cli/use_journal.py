@@ -2,7 +2,10 @@
 
 import typer
 
-from ai_journal_kit.core.config import get_active_journal_name, load_multi_journal_config, save_multi_journal_config
+from ai_journal_kit.core.config import (
+    load_multi_journal_config,
+    save_multi_journal_config,
+)
 from ai_journal_kit.utils.ui import console, show_error, show_success
 
 
@@ -40,7 +43,7 @@ def use_journal(
     # Show success
     profile = multi_config.journals[name]
     show_success(f"Switched to journal '{name}'")
-    console.print(f"\n[bold]Active Journal:[/bold]")
+    console.print("\n[bold]Active Journal:[/bold]")
     console.print(f"  Name:      [cyan]{name}[/cyan]")
     console.print(f"  Location:  {profile.location}")
     console.print(f"  Framework: {profile.framework}")

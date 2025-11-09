@@ -159,7 +159,6 @@ def test_use_journal_updates_status(temp_journal_dir, isolated_config):
 @pytest.mark.integration
 def test_env_var_overrides_active_journal(temp_journal_dir, isolated_config, monkeypatch):
     """Test AI_JOURNAL environment variable overrides active journal."""
-    import os
 
     # Create two journals
     journal1 = temp_journal_dir / "journal1"
