@@ -12,16 +12,27 @@
 [![CI](https://github.com/troylar/ai-journal-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/troylar/ai-journal-kit/actions/workflows/ci.yml)
 [![Security Scan](https://github.com/troylar/ai-journal-kit/actions/workflows/security.yml/badge.svg)](https://github.com/troylar/ai-journal-kit/actions/workflows/security.yml)
 [![codecov](https://codecov.io/gh/troylar/ai-journal-kit/branch/main/graph/badge.svg)](https://codecov.io/gh/troylar/ai-journal-kit)
-[![Tests](https://img.shields.io/badge/tests-294%20passing-brightgreen.svg)](https://github.com/troylar/ai-journal-kit/actions)
-[![Coverage](https://img.shields.io/badge/coverage-98%25-brightgreen.svg)](https://github.com/troylar/ai-journal-kit/actions)
+[![Tests](https://img.shields.io/badge/tests-332%20passing-brightgreen.svg)](https://github.com/troylar/ai-journal-kit/actions)
+[![Coverage](https://img.shields.io/badge/coverage-87%25-brightgreen.svg)](https://github.com/troylar/ai-journal-kit/actions)
 
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 [![Security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
 [![Tested on](https://img.shields.io/badge/tested%20on-Ubuntu%20%7C%20macOS%20%7C%20Windows-blue.svg)](https://github.com/troylar/ai-journal-kit/actions)
 
-[Quick Start](#-quick-start-60-seconds) • [Features](#-why-ai-journal-kit) • [Frameworks](#-journaling-frameworks) • [Installation](#-installation) • [Documentation](#-documentation)
-
 </div>
+
+---
+
+## 📑 Table of Contents
+
+**Getting Started**
+[Why AI Journal Kit?](#-why-ai-journal-kit) • [Quick Start](#-quick-start-60-seconds) • [Installation](#-installation)
+
+**Core Features**
+[Journaling Frameworks](#-journaling-frameworks) • [Multi-Journal Support](#-multiple-journals) • [CLI Commands](#%EF%B8%8F-cli-commands) • [Customization](#%EF%B8%8F-customization)
+
+**Learning More**
+[How It Works](#-how-it-works) • [Examples & Use Cases](#-examples--use-cases) • [FAQ](#-faq) • [Documentation](#-documentation)
 
 ---
 
@@ -120,35 +131,6 @@ No manual note-taking! The AI updates your notes automatically:
 
 ---
 
-## 🏗️ Architecture
-
-### Two Separate Layers
-
-#### 🔧 **Core System** (Maintained by project)
-Templates, AI rules, and tools that can be updated:
-```
-ai-journal-kit/
-├── templates/          # Daily, project, people templates
-├── ide-configs/        # AI rules for each editor
-└── cli/               # Setup and update tools
-```
-
-#### 📓 **Your Journal** (100% Yours)
-Your private content that **never changes on update**:
-```
-~/journal/
-├── daily/             # Your daily notes
-├── projects/          # Your projects
-├── people/            # Your relationships
-├── memories/          # Your insights
-├── .ai-instructions/  # Your custom AI behavior
-└── [any structure you want!]
-```
-
-**Updates are safe**: Only the core system updates. Your journal stays untouched!
-
----
-
 ## 🚀 Installation
 
 ### Option 1: Quick Run (Recommended)
@@ -174,253 +156,6 @@ uv tool install ai-journal-kit
 # Run setup
 ai-journal-kit setup
 ```
-
----
-
-## 🎛️ CLI Commands
-
-```bash
-# Interactive setup wizard
-ai-journal-kit setup
-
-# Setup with specific framework
-ai-journal-kit setup --framework gtd              # GTD methodology
-ai-journal-kit setup --framework para             # PARA method
-ai-journal-kit setup --framework bullet-journal   # Bullet Journal
-ai-journal-kit setup --framework zettelkasten     # Zettelkasten
-
-# Create named journal (for multiple journals)
-ai-journal-kit setup --name personal              # Create "personal" journal
-ai-journal-kit setup --name business --framework gtd   # Named journal with framework
-
-# Switch to a different framework (with timestamped backup)
-ai-journal-kit switch-framework para              # Switch to PARA
-ai-journal-kit switch-framework gtd               # Switch to GTD
-ai-journal-kit switch-framework                   # Interactive selection
-
-# Add IDE configurations to existing journal
-ai-journal-kit add-ide cursor        # Add Cursor config
-ai-journal-kit add-ide windsurf      # Add Windsurf config
-ai-journal-kit add-ide claude-code   # Add Claude Code config
-ai-journal-kit add-ide copilot       # Add GitHub Copilot config
-ai-journal-kit add-ide all           # Add all IDE configs
-ai-journal-kit add-ide               # Interactive prompt
-
-# Multi-journal management
-ai-journal-kit list                  # Show all configured journals
-ai-journal-kit use business          # Switch to "business" journal
-AI_JOURNAL=business ai-journal-kit status  # Temporarily use specific journal
-
-# Check journal health
-ai-journal-kit status
-
-# Update to latest version
-ai-journal-kit update
-
-# Update with new templates
-ai-journal-kit update --templates
-
-# Diagnose and fix issues
-ai-journal-kit doctor
-
-# Move journal to new location
-ai-journal-kit move
-```
-
----
-
-## 🌟 Key Features
-
-### 🎨 **Built-in Framework Support**
-Choose your preferred journaling methodology during setup, or use the flexible default:
-
-- **Default** - Flexible structure that adapts to any workflow
-- **GTD** (Getting Things Done) - Next actions, waiting for, someday/maybe lists
-- **PARA** - Projects, Areas, Resources, Archive organization
-- **Bullet Journal** - Rapid logging, monthly logs, collections
-- **Zettelkasten** - Atomic notes, permanent notes, index system
-
-Each framework includes:
-- ✅ **Custom templates** tailored to the methodology
-- ✅ **Optimized folder structure** matching the framework
-- ✅ **Framework-specific workflows** in your templates
-
-**Still flexible!** You can customize any framework or create your own system.
-
-### 🛡️ **AI Protection Built-In**
-The AI **cannot** modify:
-- ✅ Your core system files
-- ✅ Your journal content (unless you ask)
-- ✅ Your configuration
-
-Safety first!
-
-### 🔄 **Transparent Updates**
-When updates change AI behavior:
-- ✅ Clear changelog highlighting changes
-- ✅ Release notes explaining why
-- ✅ You control when to update
-- ✅ Templates update with backup
-
-No surprises!
-
-### 🎭 **Multiple Editor Support**
-
-#### Cursor
-```
-journal/
-└── .cursor/
-    └── rules/
-        ├── journal-coach.mdc
-        ├── daily-notes.mdc
-        └── system-protection.mdc
-```
-
-#### Windsurf
-```
-journal/
-└── .windsurf/
-    └── rules/
-        ├── journal-coach.md
-        └── daily-notes.md
-```
-
-#### Claude Code
-```
-journal/
-├── CLAUDE.md          # Root instructions
-├── daily/
-│   └── CLAUDE.md      # Daily-specific rules
-└── projects/
-    └── CLAUDE.md      # Project-specific rules
-```
-
-#### GitHub Copilot
-```
-journal/
-└── .github/
-    ├── copilot-instructions.md
-    └── instructions/
-        └── daily-notes.instructions.md
-```
-
-**✨ Mix & Match**: You can add multiple IDE configurations to the same journal! Start with one and add others later:
-```bash
-# Started with Cursor? Add Windsurf later!
-ai-journal-kit add-ide windsurf
-
-# Or add all IDE configs at once
-ai-journal-kit add-ide all
-```
-
----
-
-## 🎓 How It Works
-
-### Morning Check-In
-```
-You: "Get the time and let's start the day"
-
-AI: "Good morning! It's 6:30 AM on Friday, Nov 7, 2025.
-
-     How did you sleep? ⭐⭐⭐⭐⭐ (Rate 1-5)"
-
-[Creates today's daily note, captures your energy level, 
- helps you set priorities and emotional outcomes]
-```
-
-### Throughout the Day
-```
-You: "Just finished that proposal! Feeling great."
-
-AI: "Awesome! 🎉 That's a big win."
-
-[Automatically updates your daily note:
- "**2:30 PM** - Completed proposal draft! Feeling accomplished."]
-```
-
-### Evening Reflection
-```
-You: "Update my daily note"
-
-AI: "Let's reflect on today:
-     - What went well?
-     - What challenges came up?
-     - What did you learn?
-     - What's your top priority tomorrow?"
-
-[Captures your reflection in the daily note]
-```
-
----
-
-## 📚 Multiple Journals
-
-### Separate Work from Personal Life
-
-Do you keep separate journals for different areas of your life? AI Journal Kit makes it easy to manage multiple independent journals:
-
-#### Create Multiple Journals
-
-```bash
-# First journal defaults to "default"
-ai-journal-kit setup --location ~/personal-journal --framework bullet-journal
-
-# Create additional journals with unique names
-ai-journal-kit setup --name business --location ~/work-journal --framework gtd
-ai-journal-kit setup --name research --location ~/research --framework zettelkasten
-```
-
-#### Switch Between Journals
-
-```bash
-# View all journals
-ai-journal-kit list
-
-# Output:
-#  Name      Location           Framework    IDE     Status
-#  default   ~/personal-journal bullet-journal cursor  ✓ Active
-#  business  ~/work-journal     gtd           cursor
-#  research  ~/research         zettelkasten  cursor
-
-# Switch to a different journal
-ai-journal-kit use business
-
-# Now all commands operate on the "business" journal
-ai-journal-kit status    # Shows business journal status
-```
-
-#### Temporary Journal Override
-
-Use the `AI_JOURNAL` environment variable to temporarily use a different journal:
-
-```bash
-# Quick check on business journal without switching
-AI_JOURNAL=business ai-journal-kit status
-
-# Run multiple commands on research journal
-AI_JOURNAL=research ai-journal-kit status
-AI_JOURNAL=research ai-journal-kit doctor
-```
-
-#### Use Cases
-
-- **🏢 Work/Personal Split**: Keep professional projects separate from personal journaling
-- **🔬 Research Projects**: Separate journal for each major research topic with Zettelkasten
-- **🎯 Different Frameworks**: Use GTD for work, Bullet Journal for personal life
-- **👥 Team Collaboration**: Separate journal for each team or project
-- **🧪 Testing**: Try new frameworks without affecting your main journal
-
-#### How It Works
-
-Each journal is completely independent:
-- ✅ **Own location** - Different folder on disk
-- ✅ **Own framework** - GTD, PARA, or any other methodology
-- ✅ **Own IDE** - Can use different editors
-- ✅ **Own templates** - Customizations don't affect other journals
-- ✅ **Own content** - Notes never mix between journals
-
-**Configuration is stored centrally** in `~/.config/ai-journal-kit/config.json` (or platform equivalent), tracking all your journals and which one is active.
 
 ---
 
@@ -592,6 +327,167 @@ You might want to switch frameworks if:
 
 ---
 
+## 📚 Multiple Journals
+
+### Separate Work from Personal Life
+
+Do you keep separate journals for different areas of your life? AI Journal Kit makes it easy to manage multiple independent journals:
+
+#### Create Multiple Journals
+
+```bash
+# First journal defaults to "default"
+ai-journal-kit setup --location ~/personal-journal --framework bullet-journal
+
+# Create additional journals with unique names
+ai-journal-kit setup --name business --location ~/work-journal --framework gtd
+ai-journal-kit setup --name research --location ~/research --framework zettelkasten
+```
+
+#### Switch Between Journals
+
+```bash
+# View all journals
+ai-journal-kit list
+
+# Output:
+#  Name      Location           Framework    IDE     Status
+#  default   ~/personal-journal bullet-journal cursor  ✓ Active
+#  business  ~/work-journal     gtd           cursor
+#  research  ~/research         zettelkasten  cursor
+
+# Switch to a different journal
+ai-journal-kit use business
+
+# Now all commands operate on the "business" journal
+ai-journal-kit status    # Shows business journal status
+```
+
+#### Temporary Journal Override
+
+Use the `AI_JOURNAL` environment variable to temporarily use a different journal:
+
+```bash
+# Quick check on business journal without switching
+AI_JOURNAL=business ai-journal-kit status
+
+# Run multiple commands on research journal
+AI_JOURNAL=research ai-journal-kit status
+AI_JOURNAL=research ai-journal-kit doctor
+```
+
+#### Use Cases
+
+- **🏢 Work/Personal Split**: Keep professional projects separate from personal journaling
+- **🔬 Research Projects**: Separate journal for each major research topic with Zettelkasten
+- **🎯 Different Frameworks**: Use GTD for work, Bullet Journal for personal life
+- **👥 Team Collaboration**: Separate journal for each team or project
+- **🧪 Testing**: Try new frameworks without affecting your main journal
+
+#### How It Works
+
+Each journal is completely independent:
+- ✅ **Own location** - Different folder on disk
+- ✅ **Own framework** - GTD, PARA, or any other methodology
+- ✅ **Own IDE** - Can use different editors
+- ✅ **Own templates** - Customizations don't affect other journals
+- ✅ **Own content** - Notes never mix between journals
+
+**Configuration is stored centrally** in `~/.config/ai-journal-kit/config.json` (or platform equivalent), tracking all your journals and which one is active.
+
+---
+
+## 🎛️ CLI Commands
+
+```bash
+# Interactive setup wizard
+ai-journal-kit setup
+
+# Setup with specific framework
+ai-journal-kit setup --framework gtd              # GTD methodology
+ai-journal-kit setup --framework para             # PARA method
+ai-journal-kit setup --framework bullet-journal   # Bullet Journal
+ai-journal-kit setup --framework zettelkasten     # Zettelkasten
+
+# Create named journal (for multiple journals)
+ai-journal-kit setup --name personal              # Create "personal" journal
+ai-journal-kit setup --name business --framework gtd   # Named journal with framework
+
+# Switch to a different framework (with timestamped backup)
+ai-journal-kit switch-framework para              # Switch to PARA
+ai-journal-kit switch-framework gtd               # Switch to GTD
+ai-journal-kit switch-framework                   # Interactive selection
+
+# Add IDE configurations to existing journal
+ai-journal-kit add-ide cursor        # Add Cursor config
+ai-journal-kit add-ide windsurf      # Add Windsurf config
+ai-journal-kit add-ide claude-code   # Add Claude Code config
+ai-journal-kit add-ide copilot       # Add GitHub Copilot config
+ai-journal-kit add-ide all           # Add all IDE configs
+ai-journal-kit add-ide               # Interactive prompt
+
+# Multi-journal management
+ai-journal-kit list                  # Show all configured journals
+ai-journal-kit use business          # Switch to "business" journal
+AI_JOURNAL=business ai-journal-kit status  # Temporarily use specific journal
+
+# Check journal health
+ai-journal-kit status
+
+# Update to latest version
+ai-journal-kit update
+
+# Update with new templates
+ai-journal-kit update --templates
+
+# Diagnose and fix issues
+ai-journal-kit doctor
+
+# Move journal to new location
+ai-journal-kit move
+```
+
+---
+
+## 🎓 How It Works
+
+### Morning Check-In
+```
+You: "Get the time and let's start the day"
+
+AI: "Good morning! It's 6:30 AM on Friday, Nov 7, 2025.
+
+     How did you sleep? ⭐⭐⭐⭐⭐ (Rate 1-5)"
+
+[Creates today's daily note, captures your energy level, 
+ helps you set priorities and emotional outcomes]
+```
+
+### Throughout the Day
+```
+You: "Just finished that proposal! Feeling great."
+
+AI: "Awesome! 🎉 That's a big win."
+
+[Automatically updates your daily note:
+ "**2:30 PM** - Completed proposal draft! Feeling accomplished."]
+```
+
+### Evening Reflection
+```
+You: "Update my daily note"
+
+AI: "Let's reflect on today:
+     - What went well?
+     - What challenges came up?
+     - What did you learn?
+     - What's your top priority tomorrow?"
+
+[Captures your reflection in the daily note]
+```
+
+---
+
 ## 🛠️ Customization
 
 ### Your AI, Your Way
@@ -670,7 +566,9 @@ All templates are in your journal after setup:
 
 ---
 
-## 🤝 Contributing
+## 🤝 Contributing & Community
+
+### How to Contribute
 
 We welcome contributions!
 
@@ -682,13 +580,11 @@ We welcome contributions!
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
----
+### Join the Community
 
-## 💬 Community
-
-- **GitHub Discussions**: Ask questions, share tips
-- **Issues**: Report bugs, request features
-- **Show & Tell**: Share your setup and workflows
+- **GitHub Discussions**: Ask questions, share tips, and connect with other users
+- **Issues**: Report bugs and request features
+- **Show & Tell**: Share your setup, workflows, and customizations
 
 ---
 
@@ -746,11 +642,14 @@ Not opinionated about methodology. Adapts to **YOUR** way of working.
 
 ## 🚦 Roadmap
 
-### ✅ Completed (v1.0)
+### ✅ Completed (v1.0+)
 - Multi-editor support (Cursor, Windsurf, Claude Code, Copilot)
-- Cross-platform CLI with beautiful UI
-- Automatic memory capture
-- Pattern recognition
+- Cross-platform CLI with beautiful UI (Ubuntu, macOS, Windows)
+- 5 built-in journaling frameworks (GTD®, PARA™, Bullet Journal®, Zettelkasten, Default)
+- Multi-journal support (manage multiple independent journals)
+- Framework switching with automatic backups
+- Customization tracking (manifest system protects your changes)
+- Automatic memory capture and pattern recognition
 - Safe updates with transparency
 
 ### 🎯 Planned
@@ -792,7 +691,7 @@ A: Yes! Put your `journal/` folder in Dropbox, Google Drive, or iCloud. The CLI 
 
 ### Comprehensive Test Coverage
 
-AI Journal Kit has a robust test suite with **277 tests and 98% code coverage** covering:
+AI Journal Kit has a robust test suite with **332 tests and 87% code coverage** covering:
 
 - **Unit Tests** (`tests/unit/`): Fast, focused tests for individual components
 - **Integration Tests** (`tests/integration/`): Real filesystem operations, command workflows  
@@ -870,12 +769,18 @@ If AI Journal Kit helps you, consider:
 
 <div align="center">
 
-**Ready to transform your journaling?**
+---
+
+### 🚀 Ready to Start Your Journaling Journey?
+
+**100% Private • 5 Frameworks • Multi-Journal Support • Works with Your Favorite AI Editor**
 
 ```bash
 uvx ai-journal-kit setup
 ```
 
-**Let's go! 📝✨**
+*Set up in 60 seconds. No cloud required. Your data stays yours.*
+
+**[⭐ Star on GitHub](https://github.com/troylar/ai-journal-kit)** • **[📖 Read the Docs](https://github.com/troylar/ai-journal-kit#readme)** • **[💬 Join Discussions](https://github.com/troylar/ai-journal-kit/discussions)**
 
 </div>
