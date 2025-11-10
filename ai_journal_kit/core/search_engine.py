@@ -47,9 +47,7 @@ class SearchEngine:
         try:
             list(journal_path.iterdir())
         except PermissionError as e:
-            raise PermissionError(
-                f"Journal path is not readable: {journal_path}"
-            ) from e
+            raise PermissionError(f"Journal path is not readable: {journal_path}") from e
 
         self.journal_path = journal_path.resolve()
         self.file_scanner = FileScanner(journal_path)
@@ -80,9 +78,7 @@ class SearchEngine:
         # Search each file for matches
         all_results: list[SearchResult] = []
         for file_path in files:
-            file_results = self._search_in_file(
-                file_path, query.search_text, query.case_sensitive
-            )
+            file_results = self._search_in_file(file_path, query.search_text, query.case_sensitive)
             all_results.extend(file_results)
 
             # Apply limit if specified
@@ -235,12 +231,8 @@ class SearchEngine:
                     entry_date=entry_date,
                     line_number=line_idx + 1,  # 1-indexed for display
                     matched_line=line,
-                    context_before=[
-                        ctx_line.rstrip("\n\r") for ctx_line in context_before
-                    ],
-                    context_after=[
-                        ctx_line.rstrip("\n\r") for ctx_line in context_after
-                    ],
+                    context_before=[ctx_line.rstrip("\n\r") for ctx_line in context_before],
+                    context_after=[ctx_line.rstrip("\n\r") for ctx_line in context_after],
                     match_positions=match_positions,
                 )
                 results.append(result)

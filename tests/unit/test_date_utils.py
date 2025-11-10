@@ -118,9 +118,7 @@ class TestExtractDateFromFilename:
 
     def test_extract_from_nested_path(self):
         """Test extracting date from nested path."""
-        result = extract_date_from_filename(
-            Path("/path/to/journal/daily/2024-11-01.md")
-        )
+        result = extract_date_from_filename(Path("/path/to/journal/daily/2024-11-01.md"))
         assert result == date(2024, 11, 1)
 
     def test_invalid_date_returns_none(self):

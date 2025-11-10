@@ -110,7 +110,9 @@ class TestSearchEngineIntegration:
         base_date = date(2024, 1, 1)
         for i in range(100):
             file_date = base_date + timedelta(days=i)
-            content = f"# Daily Entry {i}\n\nSome content here.\nMore text on line {i}.\nFeeling good."
+            content = (
+                f"# Daily Entry {i}\n\nSome content here.\nMore text on line {i}.\nFeeling good."
+            )
             (daily_dir / f"{file_date.isoformat()}.md").write_text(content)
 
         engine = SearchEngine(tmp_path)
@@ -204,9 +206,7 @@ class TestCrossReferenceIntegration:
         """Test cross-reference search combined with type filter."""
         engine = SearchEngine(test_journal_path)
 
-        result_set = engine.search_cross_references(
-            "people/sarah", entry_types=[EntryType.DAILY]
-        )
+        result_set = engine.search_cross_references("people/sarah", entry_types=[EntryType.DAILY])
 
         # Should find only daily entries with the reference
         for result in result_set.results:

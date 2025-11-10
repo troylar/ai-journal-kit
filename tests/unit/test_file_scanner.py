@@ -89,9 +89,7 @@ class TestFileScanner:
     def test_scan_with_date_filter(self, test_journal):
         """Test scanning with date range filter."""
         scanner = FileScanner(test_journal)
-        files = scanner.scan(
-            date_after=date(2024, 11, 5), date_before=date(2024, 11, 10)
-        )
+        files = scanner.scan(date_after=date(2024, 11, 5), date_before=date(2024, 11, 10))
         # Should include 2024-11-05.md and 2024-11-10.md
         assert len(files) >= 2
 

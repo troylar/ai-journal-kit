@@ -198,9 +198,7 @@ def format_search_results(result_set, console: Console) -> None:
         console.print(display_text)
 
 
-def display_search_header(
-    query: SearchQuery, result_count: int, execution_time: float
-) -> None:
+def display_search_header(query: SearchQuery, result_count: int, execution_time: float) -> None:
     """
     Display search header with query and filters.
 

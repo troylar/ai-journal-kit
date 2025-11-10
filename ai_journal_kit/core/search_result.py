@@ -45,9 +45,7 @@ class EntryType(str, Enum):
             return cls(value.lower())
         except ValueError:
             valid_types = ", ".join(t.value for t in cls)
-            raise ValueError(
-                f"Invalid entry type: '{value}'. Valid types: {valid_types}"
-            )
+            raise ValueError(f"Invalid entry type: '{value}'. Valid types: {valid_types}")
 
     def to_folder_name(self) -> str:
         """
@@ -91,13 +89,9 @@ class EntryType(str, Enum):
 class SearchQuery(BaseModel):
     """Search query with filters and validation."""
 
-    search_text: str = Field(
-        ..., min_length=1, description="The text pattern to search for"
-    )
+    search_text: str = Field(..., min_length=1, description="The text pattern to search for")
     date_after: date | None = Field(None, description="Filter results after this date")
-    date_before: date | None = Field(
-        None, description="Filter results before this date"
-    )
+    date_before: date | None = Field(None, description="Filter results before this date")
     entry_types: list[EntryType] = Field(
         default_factory=lambda: list(EntryType), description="Filter by entry types"
     )

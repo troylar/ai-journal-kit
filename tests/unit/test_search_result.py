@@ -135,9 +135,7 @@ class TestSearchQuery:
 
     def test_entry_types_custom(self):
         """Test setting specific entry types."""
-        query = SearchQuery(
-            search_text="test", entry_types=[EntryType.DAILY, EntryType.PROJECT]
-        )
+        query = SearchQuery(search_text="test", entry_types=[EntryType.DAILY, EntryType.PROJECT])
         assert len(query.entry_types) == 2
         assert EntryType.DAILY in query.entry_types
         assert EntryType.PROJECT in query.entry_types

@@ -36,9 +36,7 @@ def test_journal_path(tmp_path):
     (daily_dir / "2024-11-05.md").write_text(
         "# Daily Entry\n\nMet with [[people/sarah]] to discuss project features."
     )
-    (daily_dir / "2024-11-10.md").write_text(
-        "# Daily Entry\n\nFeeling much better about progress."
-    )
+    (daily_dir / "2024-11-10.md").write_text("# Daily Entry\n\nFeeling much better about progress.")
     (projects_dir / "q4-launch.md").write_text(
         "# Q4 Launch\n\nProject to launch new features by Q4."
     )
@@ -211,9 +209,7 @@ class TestSearchEngineContextExtraction:
             "Line 5\n",
         ]
 
-        context_before, context_after = engine._extract_context(
-            lines, 3, context_lines=2
-        )
+        context_before, context_after = engine._extract_context(lines, 3, context_lines=2)
 
         assert context_before == ["Line 1\n", "Line 2\n"]
         assert context_after == ["Line 4\n", "Line 5\n"]
@@ -223,9 +219,7 @@ class TestSearchEngineContextExtraction:
         engine = SearchEngine(test_journal_path)
         lines = ["Matched line\n", "Line 1\n", "Line 2\n"]
 
-        context_before, context_after = engine._extract_context(
-            lines, 0, context_lines=2
-        )
+        context_before, context_after = engine._extract_context(lines, 0, context_lines=2)
 
         assert context_before == []  # No lines before
         assert context_after == ["Line 1\n", "Line 2\n"]
@@ -235,9 +229,7 @@ class TestSearchEngineContextExtraction:
         engine = SearchEngine(test_journal_path)
         lines = ["Line 0\n", "Line 1\n", "Matched line\n"]
 
-        context_before, context_after = engine._extract_context(
-            lines, 2, context_lines=2
-        )
+        context_before, context_after = engine._extract_context(lines, 2, context_lines=2)
 
         assert context_before == ["Line 0\n", "Line 1\n"]
         assert context_after == []  # No lines after
@@ -303,17 +295,12 @@ class TestSearchEngineTypeFilter:
     def test_apply_type_filter_multiple(self, test_journal_path):
         """Test filtering by multiple entry types."""
         engine = SearchEngine(test_journal_path)
-        query = SearchQuery(
-            search_text="to", entry_types=[EntryType.DAILY, EntryType.PROJECT]
-        )
+        query = SearchQuery(search_text="to", entry_types=[EntryType.DAILY, EntryType.PROJECT])
 
         result_set = engine.search(query)
 
         # All results should be either daily or project entries
-        assert all(
-            r.entry_type in [EntryType.DAILY, EntryType.PROJECT]
-            for r in result_set.results
-        )
+        assert all(r.entry_type in [EntryType.DAILY, EntryType.PROJECT] for r in result_set.results)
 
     def test_apply_type_filter_excludes_others(self, test_journal_path):
         """Test type filter excludes non-matching types."""
@@ -408,9 +395,7 @@ class TestSearchEngineScanFiles:
         """Test scanning with date filter."""
         engine = SearchEngine(test_journal_path)
 
-        files = engine.scan_files(
-            date_after=date(2024, 11, 5), date_before=date(2024, 11, 10)
-        )
+        files = engine.scan_files(date_after=date(2024, 11, 5), date_before=date(2024, 11, 10))
 
         # Should include files in date range
         assert len(files) >= 2
