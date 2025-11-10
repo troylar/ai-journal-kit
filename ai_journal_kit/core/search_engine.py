@@ -8,10 +8,8 @@ Issue: #6 - Search & Filter Enhancement
 
 import re
 import time
-from collections import deque
 from datetime import date
 from pathlib import Path
-from typing import List, Optional, Tuple
 
 from ai_journal_kit.core.date_utils import extract_date_from_filename
 from ai_journal_kit.core.file_scanner import FileScanner
@@ -23,7 +21,7 @@ from ai_journal_kit.core.search_result import (
 )
 
 # Wiki-link pattern for cross-reference detection
-WIKILINK_PATTERN = r'\[\[([^\]|]+)(?:\|[^\]]+)?\]\]'
+WIKILINK_PATTERN = r"\[\[([^\]|]+)(?:\|[^\]]+)?\]\]"
 
 
 class SearchEngine:
@@ -49,7 +47,9 @@ class SearchEngine:
         try:
             list(journal_path.iterdir())
         except PermissionError as e:
-            raise PermissionError(f"Journal path is not readable: {journal_path}") from e
+            raise PermissionError(
+                f"Journal path is not readable: {journal_path}"
+            ) from e
 
         self.journal_path = journal_path.resolve()
         self.file_scanner = FileScanner(journal_path)
@@ -78,7 +78,7 @@ class SearchEngine:
         )
 
         # Search each file for matches
-        all_results: List[SearchResult] = []
+        all_results: list[SearchResult] = []
         for file_path in files:
             file_results = self._search_in_file(
                 file_path, query.search_text, query.case_sensitive
@@ -104,10 +104,10 @@ class SearchEngine:
 
     def scan_files(
         self,
-        entry_types: Optional[List[EntryType]] = None,
-        date_after: Optional[date] = None,
-        date_before: Optional[date] = None,
-    ) -> List[Path]:
+        entry_types: list[EntryType] | None = None,
+        date_after: date | None = None,
+        date_before: date | None = None,
+    ) -> list[Path]:
         """
         Scan journal directory for matching files.
 
@@ -133,9 +133,9 @@ class SearchEngine:
     def search_cross_references(
         self,
         reference: str,
-        entry_types: Optional[List[EntryType]] = None,
-        date_after: Optional[date] = None,
-        date_before: Optional[date] = None,
+        entry_types: list[EntryType] | None = None,
+        date_after: date | None = None,
+        date_before: date | None = None,
     ) -> SearchResultSet:
         """
         Find all entries that reference a specific note.
@@ -170,6 +170,9 @@ class SearchEngine:
             entry_types=entry_types or list(EntryType),
             date_after=date_after,
             date_before=date_before,
+            cross_reference=normalized_ref,
+            case_sensitive=False,
+            limit=None,
         )
 
         # Execute search and return results
@@ -177,7 +180,7 @@ class SearchEngine:
 
     def _search_in_file(
         self, file_path: Path, pattern: str, case_sensitive: bool = False
-    ) -> List[SearchResult]:
+    ) -> list[SearchResult]:
         """
         Search for pattern in file and extract context.
 
@@ -189,7 +192,7 @@ class SearchEngine:
         Returns:
             List of SearchResult objects for matches in this file
         """
-        results: List[SearchResult] = []
+        results: list[SearchResult] = []
 
         # Compile regex with escaped pattern for safety
         flags = 0 if case_sensitive else re.IGNORECASE
@@ -200,9 +203,9 @@ class SearchEngine:
 
         # Open file with UTF-8 encoding
         try:
-            with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+            with open(file_path, encoding="utf-8", errors="ignore") as f:
                 lines = f.readlines()
-        except (IOError, OSError):
+        except OSError:
             return results
 
         # Get entry metadata
@@ -232,8 +235,12 @@ class SearchEngine:
                     entry_date=entry_date,
                     line_number=line_idx + 1,  # 1-indexed for display
                     matched_line=line,
-                    context_before=[l.rstrip("\n\r") for l in context_before],
-                    context_after=[l.rstrip("\n\r") for l in context_after],
+                    context_before=[
+                        ctx_line.rstrip("\n\r") for ctx_line in context_before
+                    ],
+                    context_after=[
+                        ctx_line.rstrip("\n\r") for ctx_line in context_after
+                    ],
                     match_positions=match_positions,
                 )
                 results.append(result)
@@ -241,8 +248,8 @@ class SearchEngine:
         return results
 
     def _extract_context(
-        self, lines: List[str], match_line_idx: int, context_lines: int = 2
-    ) -> Tuple[List[str], List[str]]:
+        self, lines: list[str], match_line_idx: int, context_lines: int = 2
+    ) -> tuple[list[str], list[str]]:
         """
         Extract context lines before and after a match.
 
@@ -264,7 +271,7 @@ class SearchEngine:
 
         return (context_before, context_after)
 
-    def _extract_cross_references(self, content: str) -> List[str]:
+    def _extract_cross_references(self, content: str) -> list[str]:
         """
         Extract all wiki-style cross-references from content.
 
@@ -283,7 +290,7 @@ class SearchEngine:
         return references
 
     def _apply_date_filter(
-        self, file_path: Path, date_after: Optional[date], date_before: Optional[date]
+        self, file_path: Path, date_after: date | None, date_before: date | None
     ) -> bool:
         """
         Check if file passes date filters.
@@ -314,7 +321,7 @@ class SearchEngine:
         # All constraints pass
         return True
 
-    def _apply_type_filter(self, file_path: Path, entry_types: List[EntryType]) -> bool:
+    def _apply_type_filter(self, file_path: Path, entry_types: list[EntryType]) -> bool:
         """
         Check if file matches entry type filter.
 

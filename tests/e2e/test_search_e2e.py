@@ -6,15 +6,14 @@ Issue: #6 - Search & Filter Enhancement
 Coverage Target: 100%
 """
 
-import pytest
-import os
 import json
-from datetime import date, datetime
-from pathlib import Path
+import os
+from datetime import datetime
+
+import pytest
 from typer.testing import CliRunner
 
 from ai_journal_kit.cli.app import app
-
 
 runner = CliRunner()
 
@@ -75,9 +74,9 @@ def journal_config(test_journal_path, tmp_path):
                 "version": "1.0.0",
                 "created_at": datetime.now().isoformat(),
                 "last_updated": datetime.now().isoformat(),
-                "use_symlink": False
+                "use_symlink": False,
             }
-        }
+        },
     }
 
     with open(config_file, "w") as f:
@@ -112,7 +111,16 @@ class TestSearchCommandE2E:
         """Test search with all filter options (T028 - US1)."""
         result = runner.invoke(
             app,
-            ["search", "Entry", "--after", "2024-11-01", "--before", "2024-11-10", "--type", "daily"]
+            [
+                "search",
+                "Entry",
+                "--after",
+                "2024-11-01",
+                "--before",
+                "2024-11-10",
+                "--type",
+                "daily",
+            ],
         )
 
         assert result.exit_code == 0
@@ -136,7 +144,7 @@ class TestSearchCommandE2E:
         result = runner.invoke(
             app,
             ["search", "Feeling", "--export", str(export_file)],
-            input="y\n"  # Confirm overwrite if prompted
+            input="y\n",  # Confirm overwrite if prompted
         )
 
         assert result.exit_code == 0
@@ -216,7 +224,7 @@ class TestCrossReferenceE2E:
         """Test cross-reference combined with other filters (T076 - US5)."""
         result = runner.invoke(
             app,
-            ["search", "placeholder", "--ref", "projects/q4-launch", "--type", "daily"]
+            ["search", "placeholder", "--ref", "projects/q4-launch", "--type", "daily"],
         )
 
         assert result.exit_code == 0
@@ -275,9 +283,9 @@ class TestErrorHandlingE2E:
                     "version": "1.0.0",
                     "created_at": datetime.now().isoformat(),
                     "last_updated": datetime.now().isoformat(),
-                    "use_symlink": False
+                    "use_symlink": False,
                 }
-            }
+            },
         }
 
         with open(config_file, "w") as f:
@@ -307,8 +315,7 @@ class TestErrorHandlingE2E:
     def test_invalid_date_range_e2e(self, journal_config):
         """Test error when date range is invalid (after > before)."""
         result = runner.invoke(
-            app,
-            ["search", "test", "--after", "2024-11-10", "--before", "2024-11-01"]
+            app, ["search", "test", "--after", "2024-11-10", "--before", "2024-11-01"]
         )
 
         # Should exit with error code (error message goes to stderr via Rich console)

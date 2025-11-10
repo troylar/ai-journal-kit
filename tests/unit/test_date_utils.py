@@ -6,14 +6,15 @@ Issue: #6 - Search & Filter Enhancement
 Coverage Target: 100%
 """
 
-import pytest
 from datetime import date, timedelta
 from pathlib import Path
 
+import pytest
+
 from ai_journal_kit.core.date_utils import (
+    extract_date_from_filename,
     parse_date,
     parse_relative_date,
-    extract_date_from_filename,
 )
 
 

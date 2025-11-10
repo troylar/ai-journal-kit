@@ -6,9 +6,10 @@ Issue: #6 - Search & Filter Enhancement
 Coverage Target: 100%
 """
 
-import pytest
 from datetime import date
 from pathlib import Path
+
+import pytest
 
 from ai_journal_kit.core.file_scanner import FileScanner
 from ai_journal_kit.core.search_result import EntryType
@@ -89,8 +90,7 @@ class TestFileScanner:
         """Test scanning with date range filter."""
         scanner = FileScanner(test_journal)
         files = scanner.scan(
-            date_after=date(2024, 11, 5),
-            date_before=date(2024, 11, 10)
+            date_after=date(2024, 11, 5), date_before=date(2024, 11, 10)
         )
         # Should include 2024-11-05.md and 2024-11-10.md
         assert len(files) >= 2
@@ -152,7 +152,7 @@ class TestFileScannerIntegration:
         files = scanner.scan(
             entry_types=[EntryType.DAILY],
             date_after=date(2024, 11, 1),
-            date_before=date(2024, 11, 5)
+            date_before=date(2024, 11, 5),
         )
         # Should include 2024-11-01.md and 2024-11-05.md
         assert len(files) == 2

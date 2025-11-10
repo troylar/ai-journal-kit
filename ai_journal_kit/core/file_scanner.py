@@ -8,10 +8,9 @@ Issue: #6 - Search & Filter Enhancement
 
 from datetime import date
 from pathlib import Path
-from typing import List, Optional
 
-from ai_journal_kit.core.search_result import EntryType
 from ai_journal_kit.core.date_utils import extract_date_from_filename
+from ai_journal_kit.core.search_result import EntryType
 
 
 class FileScanner:
@@ -37,10 +36,10 @@ class FileScanner:
     def scan(
         self,
         pattern: str = "*.md",
-        entry_types: Optional[List[EntryType]] = None,
-        date_after: Optional[date] = None,
-        date_before: Optional[date] = None,
-    ) -> List[Path]:
+        entry_types: list[EntryType] | None = None,
+        date_after: date | None = None,
+        date_before: date | None = None,
+    ) -> list[Path]:
         """
         Scan for files matching criteria.
 

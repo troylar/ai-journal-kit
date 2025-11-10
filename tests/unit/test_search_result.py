@@ -6,9 +6,10 @@ Issue: #6 - Search & Filter Enhancement
 Coverage Target: 100%
 """
 
-import pytest
 from datetime import date
 from pathlib import Path
+
+import pytest
 
 from ai_journal_kit.core.search_result import (
     EntryType,
@@ -94,7 +95,7 @@ class TestSearchQuery:
         query = SearchQuery(
             search_text="test",
             date_after=date(2024, 11, 1),
-            date_before=date(2024, 11, 10)
+            date_before=date(2024, 11, 10),
         )
         assert query.date_after == date(2024, 11, 1)
         assert query.date_before == date(2024, 11, 10)
@@ -107,7 +108,7 @@ class TestSearchQuery:
             SearchQuery(
                 search_text="test",
                 date_after=date(2024, 11, 10),
-                date_before=date(2024, 11, 1)
+                date_before=date(2024, 11, 1),
             )
 
         error_msg = str(exc_info.value)
@@ -135,8 +136,7 @@ class TestSearchQuery:
     def test_entry_types_custom(self):
         """Test setting specific entry types."""
         query = SearchQuery(
-            search_text="test",
-            entry_types=[EntryType.DAILY, EntryType.PROJECT]
+            search_text="test", entry_types=[EntryType.DAILY, EntryType.PROJECT]
         )
         assert len(query.entry_types) == 2
         assert EntryType.DAILY in query.entry_types
@@ -153,7 +153,7 @@ class TestSearchResult:
             entry_type=EntryType.DAILY,
             entry_date=date(2024, 11, 1),
             line_number=5,
-            matched_line="Feeling anxious about the project launch"
+            matched_line="Feeling anxious about the project launch",
         )
         assert result.file_path == Path("daily/2024-11-01.md")
         assert result.entry_type == EntryType.DAILY
@@ -166,7 +166,7 @@ class TestSearchResult:
             entry_type=EntryType.DAILY,
             entry_date=date(2024, 11, 1),
             line_number=5,
-            matched_line="Test line"
+            matched_line="Test line",
         )
         assert result.display_date == "November 01, 2024"
 
@@ -177,7 +177,7 @@ class TestSearchResult:
             entry_type=EntryType.PROJECT,
             entry_date=None,
             line_number=5,
-            matched_line="Test line"
+            matched_line="Test line",
         )
         assert result.display_date == "No date"
 
@@ -190,7 +190,7 @@ class TestSearchResult:
             line_number=5,
             matched_line="Feeling anxious",
             context_before=["Previous line 1", "Previous line 2"],
-            context_after=["Next line 1"]
+            context_after=["Next line 1"],
         )
         display = result.format_display()
         assert "2024-11-01.md" in display
@@ -208,7 +208,7 @@ class TestSearchResult:
             line_number=5,
             matched_line="Matched line",
             context_before=["Line 1", "Line 2", "Line 3"],
-            context_after=["Line 6", "Line 7", "Line 8"]
+            context_after=["Line 6", "Line 7", "Line 8"],
         )
         context = result.get_context(lines_before=2, lines_after=2)
         assert "Line 2" in context
@@ -227,7 +227,7 @@ class TestSearchResult:
             line_number=5,
             matched_line="Test line",
             context_before=["Before"],
-            context_after=["After"]
+            context_after=["After"],
         )
         result_dict = result.to_dict()
         assert result_dict["file_path"] == "daily/2024-11-01.md"
@@ -250,7 +250,7 @@ class TestSearchResultSet:
             query=query,
             total_count=0,
             execution_time_ms=42.5,
-            files_scanned=10
+            files_scanned=10,
         )
         assert result_set.total_count == 0
         assert result_set.execution_time_ms == 42.5
@@ -264,7 +264,7 @@ class TestSearchResultSet:
             query=query,
             total_count=0,
             execution_time_ms=10.0,
-            files_scanned=5
+            files_scanned=5,
         )
         assert result_set.is_empty is True
 
@@ -276,14 +276,14 @@ class TestSearchResultSet:
             entry_type=EntryType.DAILY,
             entry_date=date(2024, 11, 1),
             line_number=5,
-            matched_line="Test line"
+            matched_line="Test line",
         )
         result_set = SearchResultSet(
             results=[result],
             query=query,
             total_count=1,
             execution_time_ms=10.0,
-            files_scanned=5
+            files_scanned=5,
         )
         assert result_set.is_empty is False
 
@@ -295,21 +295,21 @@ class TestSearchResultSet:
             entry_type=EntryType.DAILY,
             entry_date=date(2024, 11, 1),
             line_number=5,
-            matched_line="Test"
+            matched_line="Test",
         )
         result2 = SearchResult(
             file_path=Path("daily/2024-11-02.md"),
             entry_type=EntryType.DAILY,
             entry_date=date(2024, 11, 2),
             line_number=3,
-            matched_line="Test"
+            matched_line="Test",
         )
         result_set = SearchResultSet(
             results=[result1, result2],
             query=query,
             total_count=2,
             execution_time_ms=125.5,
-            files_scanned=10
+            files_scanned=10,
         )
         summary = result_set.result_summary
         assert "2" in summary
@@ -324,28 +324,28 @@ class TestSearchResultSet:
             entry_type=EntryType.DAILY,
             entry_date=date(2024, 11, 1),
             line_number=5,
-            matched_line="Test"
+            matched_line="Test",
         )
         result2 = SearchResult(
             file_path=Path("daily/2024-11-05.md"),
             entry_type=EntryType.DAILY,
             entry_date=date(2024, 11, 5),
             line_number=3,
-            matched_line="Test"
+            matched_line="Test",
         )
         result3 = SearchResult(
             file_path=Path("daily/2024-11-03.md"),
             entry_type=EntryType.DAILY,
             entry_date=date(2024, 11, 3),
             line_number=7,
-            matched_line="Test"
+            matched_line="Test",
         )
         result_set = SearchResultSet(
             results=[result1, result2, result3],
             query=query,
             total_count=3,
             execution_time_ms=10.0,
-            files_scanned=3
+            files_scanned=3,
         )
         sorted_set = result_set.sort_by_date(descending=True)
         assert sorted_set.results[0].entry_date == date(2024, 11, 5)
@@ -362,14 +362,14 @@ class TestSearchResultSet:
             line_number=5,
             matched_line="Feeling anxious",
             context_before=["Previous context"],
-            context_after=["Following context"]
+            context_after=["Following context"],
         )
         result_set = SearchResultSet(
             results=[result],
             query=query,
             total_count=1,
             execution_time_ms=50.0,
-            files_scanned=10
+            files_scanned=10,
         )
 
         output_file = tmp_path / "results.md"
@@ -389,21 +389,21 @@ class TestSearchResultSet:
             entry_type=EntryType.DAILY,
             entry_date=date(2024, 11, 1),
             line_number=5,
-            matched_line="Test"
+            matched_line="Test",
         )
         project_result = SearchResult(
             file_path=Path("projects/launch.md"),
             entry_type=EntryType.PROJECT,
             entry_date=None,
             line_number=3,
-            matched_line="Test"
+            matched_line="Test",
         )
         result_set = SearchResultSet(
             results=[daily_result, project_result],
             query=query,
             total_count=2,
             execution_time_ms=10.0,
-            files_scanned=2
+            files_scanned=2,
         )
 
         filtered = result_set.filter_by_type(EntryType.DAILY)
@@ -421,21 +421,21 @@ class TestSearchResultSet:
             entry_type=EntryType.DAILY,
             entry_date=date(2024, 11, 1),
             line_number=5,
-            matched_line="Test 1"
+            matched_line="Test 1",
         )
         result2 = SearchResult(
             file_path=file1,
             entry_type=EntryType.DAILY,
             entry_date=date(2024, 11, 1),
             line_number=10,
-            matched_line="Test 2"
+            matched_line="Test 2",
         )
         result3 = SearchResult(
             file_path=file2,
             entry_type=EntryType.DAILY,
             entry_date=date(2024, 11, 2),
             line_number=3,
-            matched_line="Test 3"
+            matched_line="Test 3",
         )
 
         result_set = SearchResultSet(
@@ -443,7 +443,7 @@ class TestSearchResultSet:
             query=query,
             total_count=3,
             execution_time_ms=10.0,
-            files_scanned=2
+            files_scanned=2,
         )
 
         grouped = result_set.group_by_file()

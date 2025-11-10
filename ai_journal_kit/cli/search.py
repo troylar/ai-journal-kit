@@ -6,10 +6,8 @@ using text search and filters.
 Issue: #6 - Search & Filter Enhancement
 """
 
-import os
 from datetime import date
 from pathlib import Path
-from typing import List, Optional
 
 import typer
 from rich.console import Console
@@ -18,7 +16,7 @@ from ai_journal_kit.core.config import load_config
 from ai_journal_kit.core.date_utils import parse_date
 from ai_journal_kit.core.search_engine import SearchEngine
 from ai_journal_kit.core.search_result import EntryType, SearchQuery
-from ai_journal_kit.utils.ui import console, error_console, show_error, show_success
+from ai_journal_kit.utils.ui import console, show_error, show_success
 
 # Typer app for search command
 app = typer.Typer()
@@ -26,27 +24,27 @@ app = typer.Typer()
 
 def search(
     query: str = typer.Argument(..., help="Text to search for in journal entries"),
-    after: Optional[str] = typer.Option(
+    after: str | None = typer.Option(
         None,
         "--after",
         help="Filter results after date (YYYY-MM-DD or relative like '7d')",
     ),
-    before: Optional[str] = typer.Option(
+    before: str | None = typer.Option(
         None,
         "--before",
         help="Filter results before date (YYYY-MM-DD)",
     ),
-    type: Optional[str] = typer.Option(
+    type: str | None = typer.Option(
         None,
         "--type",
         help="Filter by entry type: daily, project, people, memory (comma-separated)",
     ),
-    ref: Optional[str] = typer.Option(
+    ref: str | None = typer.Option(
         None,
         "--ref",
         help="Search for cross-references (e.g., 'people/sarah')",
     ),
-    export: Optional[Path] = typer.Option(
+    export: Path | None = typer.Option(
         None,
         "--export",
         help="Export results to markdown file",
@@ -56,7 +54,7 @@ def search(
         "--case-sensitive",
         help="Enable case-sensitive search",
     ),
-    limit: Optional[int] = typer.Option(
+    limit: int | None = typer.Option(
         None,
         "--limit",
         help="Limit results to N matches",
@@ -145,13 +143,16 @@ def search(
                 date_after=date_after,
                 date_before=date_before,
                 entry_types=entry_types or list(EntryType),
+                cross_reference=None,
                 case_sensitive=case_sensitive,
                 limit=limit,
             )
             result_set = engine.search(search_query)
 
         # Display header
-        display_search_header(result_set.query, result_set.total_count, result_set.execution_time_ms)
+        display_search_header(
+            result_set.query, result_set.total_count, result_set.execution_time_ms
+        )
 
         # Display results
         format_search_results(result_set, console)
@@ -197,7 +198,9 @@ def format_search_results(result_set, console: Console) -> None:
         console.print(display_text)
 
 
-def display_search_header(query: SearchQuery, result_count: int, execution_time: float) -> None:
+def display_search_header(
+    query: SearchQuery, result_count: int, execution_time: float
+) -> None:
     """
     Display search header with query and filters.
 
@@ -225,10 +228,12 @@ def display_search_header(query: SearchQuery, result_count: int, execution_time:
     if filters:
         console.print(f"[dim]Filters: {' | '.join(filters)}[/dim]")
 
-    console.print(f"[bold green]Found {result_count} results[/bold green] [dim]({execution_time:.0f}ms)[/dim]\n")
+    console.print(
+        f"[bold green]Found {result_count} results[/bold green] [dim]({execution_time:.0f}ms)[/dim]\n"
+    )
 
 
-def parse_entry_types(type_str: str) -> List[EntryType]:
+def parse_entry_types(type_str: str) -> list[EntryType]:
     """
     Parse comma-separated entry types.
 
@@ -256,9 +261,7 @@ def parse_entry_types(type_str: str) -> List[EntryType]:
     return types
 
 
-def validate_date_range(
-    date_after: Optional[date], date_before: Optional[date]
-) -> None:
+def validate_date_range(date_after: date | None, date_before: date | None) -> None:
     """
     Validate that date_after <= date_before.
 

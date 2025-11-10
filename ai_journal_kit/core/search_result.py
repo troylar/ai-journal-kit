@@ -9,7 +9,6 @@ Issue: #6 - Search & Filter Enhancement
 from datetime import date
 from enum import Enum
 from pathlib import Path
-from typing import List, Optional, Tuple
 
 from pydantic import BaseModel, Field, field_validator
 
@@ -92,20 +91,23 @@ class EntryType(str, Enum):
 class SearchQuery(BaseModel):
     """Search query with filters and validation."""
 
-    search_text: str = Field(..., min_length=1, description="The text pattern to search for")
-    date_after: Optional[date] = Field(None, description="Filter results after this date")
-    date_before: Optional[date] = Field(None, description="Filter results before this date")
-    entry_types: List[EntryType] = Field(
-        default_factory=lambda: list(EntryType),
-        description="Filter by entry types"
+    search_text: str = Field(
+        ..., min_length=1, description="The text pattern to search for"
     )
-    cross_reference: Optional[str] = Field(None, description="Search for cross-references")
+    date_after: date | None = Field(None, description="Filter results after this date")
+    date_before: date | None = Field(
+        None, description="Filter results before this date"
+    )
+    entry_types: list[EntryType] = Field(
+        default_factory=lambda: list(EntryType), description="Filter by entry types"
+    )
+    cross_reference: str | None = Field(None, description="Search for cross-references")
     case_sensitive: bool = Field(False, description="Enable case-sensitive search")
-    limit: Optional[int] = Field(None, gt=0, description="Maximum number of results")
+    limit: int | None = Field(None, gt=0, description="Maximum number of results")
 
     @field_validator("date_before")
     @classmethod
-    def validate_date_range(cls, v: Optional[date], info) -> Optional[date]:
+    def validate_date_range(cls, v: date | None, info) -> date | None:
         """Ensure date_after <= date_before."""
         if v and "date_after" in info.data and info.data["date_after"]:
             if info.data["date_after"] > v:
@@ -114,7 +116,7 @@ class SearchQuery(BaseModel):
 
     @field_validator("entry_types")
     @classmethod
-    def validate_entry_types(cls, v: List[EntryType]) -> List[EntryType]:
+    def validate_entry_types(cls, v: list[EntryType]) -> list[EntryType]:
         """Ensure at least one entry type."""
         if not v:
             return list(EntryType)
@@ -126,12 +128,12 @@ class SearchResult(BaseModel):
 
     file_path: Path
     entry_type: EntryType
-    entry_date: Optional[date]
+    entry_date: date | None
     line_number: int = Field(..., gt=0)
     matched_line: str
-    context_before: List[str] = Field(default_factory=list)
-    context_after: List[str] = Field(default_factory=list)
-    match_positions: List[Tuple[int, int]] = Field(default_factory=list)
+    context_before: list[str] = Field(default_factory=list)
+    context_after: list[str] = Field(default_factory=list)
+    match_positions: list[tuple[int, int]] = Field(default_factory=list)
 
     class Config:
         arbitrary_types_allowed = True
@@ -185,9 +187,9 @@ class SearchResult(BaseModel):
             Multi-line string with context
         """
         context_lines = (
-            self.context_before[-lines_before:] +
-            [self.matched_line] +
-            self.context_after[:lines_after]
+            self.context_before[-lines_before:]
+            + [self.matched_line]
+            + self.context_after[:lines_after]
         )
         return "\n".join(context_lines)
 
@@ -207,7 +209,7 @@ class SearchResult(BaseModel):
 class SearchResultSet(BaseModel):
     """Collection of search results with metadata."""
 
-    results: List[SearchResult]
+    results: list[SearchResult]
     query: SearchQuery
     total_count: int
     execution_time_ms: float
@@ -238,16 +240,14 @@ class SearchResultSet(BaseModel):
             New SearchResultSet with sorted results
         """
         sorted_results = sorted(
-            self.results,
-            key=lambda r: r.entry_date or date.min,
-            reverse=descending
+            self.results, key=lambda r: r.entry_date or date.min, reverse=descending
         )
         return SearchResultSet(
             results=sorted_results,
             query=self.query,
             total_count=self.total_count,
             execution_time_ms=self.execution_time_ms,
-            files_scanned=self.files_scanned
+            files_scanned=self.files_scanned,
         )
 
     def export_to_markdown(self, output_path: Path) -> None:
@@ -265,7 +265,7 @@ class SearchResultSet(BaseModel):
         lines = []
         lines.append("# Search Results")
         lines.append("")
-        lines.append(f"**Query**: \"{self.query.search_text}\"")
+        lines.append(f'**Query**: "{self.query.search_text}"')
 
         # Add filter information
         filters = []
@@ -280,7 +280,9 @@ class SearchResultSet(BaseModel):
         if filters:
             lines.append(f"**Filters**: {', '.join(filters)}")
 
-        lines.append(f"**Results**: {self.total_count} matches in {len(set(r.file_path for r in self.results))} files")
+        lines.append(
+            f"**Results**: {self.total_count} matches in {len(set(r.file_path for r in self.results))} files"
+        )
         lines.append(f"**Generated**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         lines.append("")
         lines.append("---")
@@ -319,17 +321,17 @@ class SearchResultSet(BaseModel):
             query=self.query,
             total_count=len(filtered_results),
             execution_time_ms=self.execution_time_ms,
-            files_scanned=self.files_scanned
+            files_scanned=self.files_scanned,
         )
 
-    def group_by_file(self) -> dict[Path, List[SearchResult]]:
+    def group_by_file(self) -> dict[Path, list[SearchResult]]:
         """
         Group results by source file.
 
         Returns:
             Dictionary mapping file paths to lists of results
         """
-        grouped: dict[Path, List[SearchResult]] = {}
+        grouped: dict[Path, list[SearchResult]] = {}
         for result in self.results:
             if result.file_path not in grouped:
                 grouped[result.file_path] = []

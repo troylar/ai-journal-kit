@@ -6,9 +6,9 @@ Issue: #6 - Search & Filter Enhancement
 Coverage Target: 100%
 """
 
-import pytest
 from datetime import date
-from pathlib import Path
+
+import pytest
 
 from ai_journal_kit.core.search_engine import SearchEngine
 from ai_journal_kit.core.search_result import EntryType, SearchQuery
@@ -57,10 +57,7 @@ class TestSearchEngineIntegration:
     def test_search_with_date_filter_integration(self, test_journal_path):
         """Test end-to-end search with date filtering."""
         engine = SearchEngine(test_journal_path)
-        query = SearchQuery(
-            search_text="Feeling",
-            date_after=date(2024, 11, 5)
-        )
+        query = SearchQuery(search_text="Feeling", date_after=date(2024, 11, 5))
 
         result_set = engine.search(query)
 
@@ -74,10 +71,7 @@ class TestSearchEngineIntegration:
     def test_search_with_type_filter_integration(self, test_journal_path):
         """Test end-to-end search with entry type filtering."""
         engine = SearchEngine(test_journal_path)
-        query = SearchQuery(
-            search_text="Entry",
-            entry_types=[EntryType.DAILY]
-        )
+        query = SearchQuery(search_text="Entry", entry_types=[EntryType.DAILY])
 
         result_set = engine.search(query)
 
@@ -92,7 +86,7 @@ class TestSearchEngineIntegration:
             search_text="Feeling",
             date_after=date(2024, 11, 1),
             date_before=date(2024, 11, 5),
-            entry_types=[EntryType.DAILY]
+            entry_types=[EntryType.DAILY],
         )
 
         result_set = engine.search(query)
@@ -112,6 +106,7 @@ class TestSearchEngineIntegration:
 
         # Create 100 files with various content using unique dates
         from datetime import timedelta
+
         base_date = date(2024, 1, 1)
         for i in range(100):
             file_date = base_date + timedelta(days=i)
@@ -156,10 +151,7 @@ class TestDateFilteringIntegration:
         seven_days_ago = parse_date("7d")
 
         engine = SearchEngine(test_journal_path)
-        query = SearchQuery(
-            search_text="Entry",
-            date_after=seven_days_ago
-        )
+        query = SearchQuery(search_text="Entry", date_after=seven_days_ago)
 
         result_set = engine.search(query)
 
@@ -176,7 +168,7 @@ class TestDateFilteringIntegration:
             SearchQuery(
                 search_text="test",
                 date_after=date(2024, 11, 10),
-                date_before=date(2024, 11, 1)
+                date_before=date(2024, 11, 1),
             )
 
     def test_date_extraction_from_files_integration(self, test_journal_path):
@@ -189,6 +181,7 @@ class TestDateFilteringIntegration:
         # All daily files should have dates extracted
         for file_path in files:
             from ai_journal_kit.core.date_utils import extract_date_from_filename
+
             extracted_date = extract_date_from_filename(file_path)
             assert extracted_date is not None
             assert isinstance(extracted_date, date)
@@ -212,8 +205,7 @@ class TestCrossReferenceIntegration:
         engine = SearchEngine(test_journal_path)
 
         result_set = engine.search_cross_references(
-            "people/sarah",
-            entry_types=[EntryType.DAILY]
+            "people/sarah", entry_types=[EntryType.DAILY]
         )
 
         # Should find only daily entries with the reference
@@ -226,9 +218,7 @@ class TestCrossReferenceIntegration:
         engine = SearchEngine(test_journal_path)
 
         result_set = engine.search_cross_references(
-            "people/sarah",
-            date_after=date(2024, 11, 5),
-            date_before=date(2024, 11, 5)
+            "people/sarah", date_after=date(2024, 11, 5), date_before=date(2024, 11, 5)
         )
 
         # Should find only references in date range

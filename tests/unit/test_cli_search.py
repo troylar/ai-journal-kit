@@ -6,21 +6,25 @@ Issue: #6 - Search & Filter Enhancement
 Coverage Target: 100%
 """
 
-import pytest
 from datetime import date
 from pathlib import Path
+
+import pytest
+from rich.console import Console
 from typer.testing import CliRunner
 
 from ai_journal_kit.cli.search import (
-    search,
+    display_search_header,
+    format_search_results,
     parse_entry_types,
     validate_date_range,
-    format_search_results,
-    display_search_header,
 )
-from ai_journal_kit.core.search_result import EntryType, SearchQuery, SearchResult, SearchResultSet
-from rich.console import Console
-
+from ai_journal_kit.core.search_result import (
+    EntryType,
+    SearchQuery,
+    SearchResult,
+    SearchResultSet,
+)
 
 runner = CliRunner()
 
