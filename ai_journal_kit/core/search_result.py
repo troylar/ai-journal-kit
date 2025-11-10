@@ -190,7 +190,7 @@ class SearchResult(BaseModel):
     def to_dict(self) -> dict:
         """Convert to dictionary for serialization."""
         return {
-            "file_path": str(self.file_path),
+            "file_path": self.file_path.as_posix(),
             "entry_type": self.entry_type.value,
             "entry_date": self.entry_date.isoformat() if self.entry_date else None,
             "line_number": self.line_number,
