@@ -8,6 +8,7 @@ from ai_journal_kit.cli.customize_template import customize_template as customiz
 from ai_journal_kit.cli.doctor import doctor as doctor_command
 from ai_journal_kit.cli.list_journals import list_journals as list_journals_command
 from ai_journal_kit.cli.move import move as move_command
+from ai_journal_kit.cli.search import search as search_command
 from ai_journal_kit.cli.setup import setup as setup_command
 from ai_journal_kit.cli.status import status as status_command
 from ai_journal_kit.cli.switch_framework import switch_framework as switch_framework_command
@@ -47,6 +48,7 @@ def main(
 app.command(name="setup")(setup_command)
 app.command(name="use")(use_journal_command)
 app.command(name="list")(list_journals_command)
+app.command(name="search")(search_command)
 app.command(name="add-ide")(add_ide_command)
 app.command(name="switch-framework")(switch_framework_command)
 app.command(name="customize-template")(customize_template_command)
