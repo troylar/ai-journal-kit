@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ai-journal-kit"
-version = "1.1.1"
+version = "1.1.2"
 description = "AI-powered journaling system with beautiful CLI for setup, customization, and updates"
 authors = [{ name = "Troy Larson", email = "troy@calvinware.com" }]
 readme = "README.md"
@@ -31,6 +31,7 @@ dependencies = [
     "platformdirs>=4.0.0",
     "pydantic>=2.0.0",
     "questionary>=2.0.0",
+    "packaging>=23.0",
 ]
 
 [project.optional-dependencies]
